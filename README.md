@@ -94,13 +94,14 @@ Organization에서 FrontEnd 별도의 레파지토리에서 관리합니다.
 
 # 3. 라이브러리
 
-- styled-components
+- styled-components 
 - react-query
 - redux, react-redux
-- react-hook-form
 - react-router-dom
 - axios
+
 - framer-motion
+- react-hook-form
 
 # 개발기간
 
