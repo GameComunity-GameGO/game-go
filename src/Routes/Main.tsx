@@ -3,9 +3,11 @@ import { useState } from "react";
 import styled from "styled-components";
 import { images } from "../utils/images";
 import useInterval from "../hooks/useInterval";
-const Wrapper = styled.div`
-  width: 70vw;
+import CategoryNav from "../components/CategoryNav";
+const Wrap = styled.div`
+  width: 80vw;
   height: 100vh;
+  min-width: 700px;
 `;
 const Slider = styled(motion.div)<{ bgphoto: string }>`
   height: 60vh;
@@ -48,6 +50,7 @@ const SlideBtn = styled.div`
     right: 0;
   }
 `;
+
 function Main() {
   const [activeIndex, setactiveIndex] = useState(0);
 
@@ -64,7 +67,7 @@ function Main() {
     nextSlide();
   }, 8000);
   return (
-    <Wrapper>
+    <Wrap>
       <Slider bgphoto={images[activeIndex]}>
         <SlideBtn>
           <svg
@@ -103,7 +106,8 @@ function Main() {
           </Ul>
         </SliderIndex>
       </Slider>
-    </Wrapper>
+      <CategoryNav />
+    </Wrap>
   );
 }
 

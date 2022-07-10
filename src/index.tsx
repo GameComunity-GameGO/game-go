@@ -60,7 +60,7 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: #2F3341;
+  background-color: #373E59;
   color: whitesmoke;
   line-height: 1.2;
   overflow-x:hidden;
