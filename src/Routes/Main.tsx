@@ -1,112 +1,39 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
-import { images } from "../utils/images";
-import useInterval from "../hooks/useInterval";
 import CategoryNav from "../components/CategoryNav";
+import Board from "../components/Board";
+import ImageSlider from "../components/ImageSlider";
 const Wrap = styled.div`
   width: 80vw;
   height: 100vh;
   min-width: 700px;
 `;
-const Slider = styled(motion.div)<{ bgphoto: string }>`
-  height: 60vh;
-  background-image: url(${(props) => props.bgphoto});
-  background-size: cover;
-  background-position: center center;
-  position: relative;
-  display: flex;
-  align-items: center;
-`;
-const SliderIndex = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 30px;
-  margin-right: 10px;
-`;
-const Ul = styled.ul`
-  display: flex;
-`;
-const Li = styled.li<{ match: string }>`
-  width: 15px;
-  height: 15px;
-  border-radius: 100%;
-  background-color: ${(props) => props.match};
-  cursor: pointer;
-  margin-right: 10px;
-`;
-const SlideBtn = styled.div`
-  svg {
-    height: 30px;
-    cursor: pointer;
-    position: absolute;
-    margin: 0px 15px;
-  }
-  svg:first-child {
-    left: 0;
-  }
-  svg:last-child {
-    right: 0;
-  }
-`;
 
 function Main() {
-  const [activeIndex, setactiveIndex] = useState(0);
+  const [dumyTag, setDumyTag] = useState({
+    tag: ["아베", "일본"],
+  });
 
-  const nextSlide = () => {
-    if (activeIndex < 2) setactiveIndex(activeIndex + 1);
-    else setactiveIndex(0);
-  };
-  const prevSlide = () => {
-    console.log(activeIndex);
-    if (activeIndex > 0) setactiveIndex(activeIndex - 1);
-    else setactiveIndex(2);
-  };
-  useInterval(() => {
-    nextSlide();
-  }, 8000);
   return (
     <Wrap>
-      <Slider bgphoto={images[activeIndex]}>
-        <SlideBtn>
-          <svg
-            onClick={prevSlide}
-            fill="white"
-            viewBox="0 0 256 512"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M192 448c-8.188 0-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l137.4 137.4c12.5 12.5 12.5 32.75 0 45.25C208.4 444.9 200.2 448 192 448z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <svg
-            onClick={nextSlide}
-            fill="white"
-            viewBox="0 0 256 512"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M64 448c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L178.8 256L41.38 118.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l160 160c12.5 12.5 12.5 32.75 0 45.25l-160 160C80.38 444.9 72.19 448 64 448z"
-            />
-          </svg>
-        </SlideBtn>
-        <SliderIndex>
-          <Ul>
-            {images.map((_data, index) => (
-              <Li
-                key={index}
-                onClick={() => setactiveIndex(index)}
-                match={Number(index) === activeIndex ? "#F7F7F7" : "#6B645D"}
-              ></Li>
-            ))}
-          </Ul>
-        </SliderIndex>
-      </Slider>
+      <ImageSlider />
       <CategoryNav />
+      <Board
+        boardName={"인기 게시판"}
+        date={"1일 전"}
+        tag={dumyTag}
+        subTitle={"일본 난리남"}
+        subDetail={"일본 아베 신조 죽음"}
+        userName={"마자파자브라자"}
+      />
+      <Board
+        boardName={"게이머 구하기"}
+        date={"1일 전"}
+        tag={dumyTag}
+        subTitle={"솔랭 다이아1 빡겜러 구함"}
+        subDetail={"저는 실버1입니다"}
+        userName={"호카손자"}
+      />
     </Wrap>
   );
 }

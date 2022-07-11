@@ -19,8 +19,9 @@ const Li = styled.li`
   padding: 5px;
   border-radius: 10px;
   background-color: #187f7f;
+  cursor: pointer;
 `;
-function CategoryNav() {
+function CategoryNav({ view }: any) {
   const [category, setCategory] = useState([
     "리그오브레전드",
     "롤토체스",
@@ -32,7 +33,9 @@ function CategoryNav() {
     <Wrap>
       <Ul>
         {category.map((data, index) => (
-          <Li key={index}>{data}</Li>
+          <Li key={index} onClick={view}>
+            {data}
+          </Li>
         ))}
       </Ul>
     </Wrap>
