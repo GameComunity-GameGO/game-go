@@ -20,6 +20,9 @@ const Li = styled.li`
   border-radius: 10px;
   background-color: #187f7f;
   cursor: pointer;
+  :hover {
+    color: #282e40;
+  }
 `;
 function CategoryNav({ view }: any) {
   const [category, setCategory] = useState([

@@ -1,39 +1,66 @@
-import { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CategoryNav from "../components/CategoryNav";
-import Board from "../components/Board";
-import ImageSlider from "../components/ImageSlider";
+import { categorys } from "../utils/gameCategory";
 const Wrap = styled.div`
   width: 80vw;
   height: 100vh;
   min-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
-
+const Title = styled.div`
+  font-size: 60px;
+  font-weight: 600;
+  margin-bottom: 30px;
+`;
+const CategoryWrap = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+`;
+const BoxWrap = styled(motion.div)`
+  :hover {
+    cursor: pointer;
+  }
+  h4 {
+    margin-top: 10px;
+    color: #aeafbc;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+  }
+`;
+const Box = styled.div<{ bgphoto: string }>`
+  background-image: url(${(props) => props.bgphoto});
+  height: 35vh;
+  width: 230px;
+  background-position: center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border-radius: 10px;
+  margin: 5px;
+`;
 function Main() {
-  const [dumyTag, setDumyTag] = useState({
-    tag: ["아베", "일본"],
-  });
-
+  const navigate = useNavigate();
   return (
     <Wrap>
-      <ImageSlider />
-      <CategoryNav />
-      <Board
-        boardName={"인기 게시판"}
-        date={"1일 전"}
-        tag={dumyTag}
-        subTitle={"일본 난리남"}
-        subDetail={"일본 아베 신조 죽음"}
-        userName={"마자파자브라자"}
-      />
-      <Board
-        boardName={"게이머 구하기"}
-        date={"1일 전"}
-        tag={dumyTag}
-        subTitle={"솔랭 다이아1 빡겜러 구함"}
-        subDetail={"저는 실버1입니다"}
-        userName={"호카손자"}
-      />
+      <Title>GG.GG</Title>
+      <CategoryWrap>
+        {categorys.map((data, index) => (
+          <BoxWrap key={index} whileHover={{ scale: 1.03 }}>
+            <Box
+              bgphoto={data.img}
+              onClick={() => navigate(`/gamepage/${data.game}`)}
+            ></Box>
+            <h4>{data.game}</h4>
+          </BoxWrap>
+        ))}
+      </CategoryWrap>
     </Wrap>
   );
 }
