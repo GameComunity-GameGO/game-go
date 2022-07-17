@@ -43,7 +43,8 @@ const SlideBtn = styled.div`
     right: 0;
   }
 `;
-function ImageSlider({ view }: any) {
+function ImageSlider({ game }: any) {
+  console.log(game);
   const [activeIndex, setactiveIndex] = useState(0);
   const nextSlide = () => {
     if (activeIndex < 2) setactiveIndex(activeIndex + 1);

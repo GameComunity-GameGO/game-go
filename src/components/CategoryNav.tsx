@@ -31,6 +31,7 @@ function CategoryNav({ view }: any) {
     "오버워치",
     "배틀그라운드",
     "로스트아크",
+    "에이펙스",
   ]);
   return (
     <Wrap>
