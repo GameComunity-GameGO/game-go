@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   width: 100%;
@@ -31,13 +32,13 @@ function CategoryNav({ view }: any) {
     "오버워치",
     "배틀그라운드",
     "로스트아크",
-    "에이펙스",
   ]);
+  const navigate = useNavigate();
   return (
     <Wrap>
       <Ul>
         {category.map((data, index) => (
-          <Li key={index} onClick={view}>
+          <Li onClick={() => navigate(`/gamepage/${data}`)} key={index}>
             {data}
           </Li>
         ))}

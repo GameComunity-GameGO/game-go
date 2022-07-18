@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import BoardDetails from "./Routes/BoardDetails";
 import GamePage from "./Routes/GamePage";
 
 import Main from "./Routes/Main";
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />}></Route>
         <Route path="/gamepage/:game" element={<GamePage />}></Route>
+        <Route path="/gamepage/:game/:type" element={<BoardDetails />}></Route>
       </Routes>
     </Router>
   );

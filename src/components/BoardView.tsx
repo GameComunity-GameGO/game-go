@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Board from "./Board";
 
 const Wrap = styled.div`
   width: 100%;
@@ -12,54 +14,7 @@ const Contents = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Content = styled.div`
-  height: fit-content;
-  margin: 0px 5px;
-  background-color: #282e40;
-  padding: 20px;
-  width: 360px;
-`;
 
-const ContentData = styled.div`
-  color: gold;
-  margin-bottom: 10px;
-`;
-const ContentHeader = styled.div`
-  font-weight: 400;
-  margin-bottom: 20px;
-`;
-const ContentDetail = styled.div``;
-const Detail = styled.div`
-  height: 80px;
-`;
-const UserJoin = styled.div`
-  display: flex;
-  justify-content: space-between;
-  div:first-child {
-    color: #616161;
-  }
-  div:last-child {
-    color: #2196f3;
-    :hover {
-      cursor: pointer;
-    }
-  }
-`;
-const TagWrap = styled.div``;
-const Tag = styled.div``;
-const TagUl = styled.ul`
-  display: flex;
-`;
-const TagLi = styled.li`
-  margin-right: 10px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px;
-  border-radius: 10px;
-  background-color: #187f7f;
-  cursor: pointer;
-`;
 const Title = styled.div`
   margin-top: 40px;
   font-weight: 600;
@@ -93,6 +48,7 @@ const Svg = styled.svg`
   cursor: pointer;
 `;
 function BoardView({
+  game,
   date,
   subTitle,
   subDetail,
@@ -100,6 +56,7 @@ function BoardView({
   tag,
   boardName,
 }: any) {
+  const navigate = useNavigate();
   const offset = 3;
   const [dumy, setDumy] = useState([
     "1",
@@ -130,7 +87,9 @@ function BoardView({
     <Wrap>
       <Title>{boardName}</Title>
       <SeeMore>
-        <span>더 보기</span>
+        <span onClick={() => navigate(`/gamepage/${game}/${boardName}`)}>
+          더 보기
+        </span>
       </SeeMore>
       <Contents>
         <SlideBtn>
@@ -150,30 +109,15 @@ function BoardView({
         {dumy
           .slice(offset * index, offset * index + offset)
           .map((item, index) => (
-            <Content key={index}>
-              <ContentHeader>
-                <ContentData>
-                  {date} {item}
-                </ContentData>
-                <TagWrap>
-                  <Tag>
-                    <TagUl>
-                      {tag.tag.map((item: string, index: number) => (
-                        <TagLi key={index}>{item}</TagLi>
-                      ))}
-                    </TagUl>
-                  </Tag>
-                </TagWrap>
-                <span>{subTitle}</span>
-              </ContentHeader>
-              <ContentDetail>
-                <Detail>{subDetail}</Detail>
-                <UserJoin>
-                  <div>{userName}</div>
-                  <div>보러가기</div>
-                </UserJoin>
-              </ContentDetail>
-            </Content>
+            <Board
+              key={index}
+              date={date}
+              item={item}
+              tag={tag}
+              subTitle={subTitle}
+              subDetail={subDetail}
+              userName={userName}
+            />
           ))}
         <SlideBtn>
           <Svg
