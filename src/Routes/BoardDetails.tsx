@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Board from "../components/Board";
 import Search from "../components/Search";
 const Wrap = styled.div`
+  width: 80vw;
   height: fit-content;
   min-width: 700px;
 `;
@@ -26,9 +27,6 @@ const Contents = styled.div`
   margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* @media (max-width: 952px) {
-    grid-template-columns: repeat(2, 1fr);
-  } */
   justify-items: center;
   justify-content: center;
 `;
@@ -46,13 +44,56 @@ const CreateBtn = styled.div`
 `;
 const CreateWrap = styled.div`
   background-color: #282e40;
+  border-radius: 10px;
   width: 100%;
-  height: 240px;
-`;
-const SearchWrap = styled.div`
+  height: 260px;
   display: flex;
   justify-content: center;
 `;
+const SearchWrap = styled.div`
+  display: flex;
+`;
+const Form = styled.form`
+  display: flex;
+  align-items: center;
+  input {
+    background-color: #373e59;
+    border: none;
+    width: 300px;
+    height: 50px;
+    margin-bottom: 5px;
+    border: 1px solid black;
+  }
+
+  div:nth-child(2) > input {
+    height: 100px;
+    margin-right: 5px;
+  }
+  button {
+    position: relative;
+    width: 70px;
+    height: 40px;
+    top: 30px;
+    background-color: #373e59;
+    border: none;
+    border: 1px solid black;
+  }
+`;
+const LeftContents = styled.div`
+  margin-right: 30px;
+  span {
+    font-size: 12px;
+    font-weight: 400;
+  }
+`;
+const RightContents = styled.div``;
+const Img = styled.div<{ bgphoto: string }>`
+  height: 120px;
+  background-image: url(${(props) => props.bgphoto});
+  background-size: cover;
+  background-position: center center;
+`;
+
 interface ICreate {
   username: string;
   content: string;
@@ -111,15 +152,35 @@ function BoardDetails() {
       </SearchWrap> */}
       {createView && (
         <CreateWrap>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("username")} placeholder="유저명" type="text" />
-            <input
-              {...register("content")}
-              placeholder="내용 (200자 이내)"
-              type="text"
-            />
-            <button type="submit">등록</button>
-          </form>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <LeftContents>
+              <span>
+                타인을 사칭하거나 모욕하는 일은
+                <br /> 법률에 의해 제제를 받을 수 있습니다.
+              </span>
+              <div>
+                <Img bgphoto={"https://your.gg/images/duo_warning.png"}></Img>
+              </div>
+            </LeftContents>
+            <RightContents>
+              <div>
+                <input
+                  {...register("username")}
+                  placeholder="유저명"
+                  type="text"
+                />
+              </div>
+              <div>
+                <input
+                  {...register("content")}
+                  placeholder="내용 (200자 이내)"
+                  type="text"
+                />
+
+                <button type="submit">등록</button>
+              </div>
+            </RightContents>
+          </Form>
         </CreateWrap>
       )}
 

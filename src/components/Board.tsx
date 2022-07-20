@@ -9,7 +9,7 @@ const Content = styled.div`
   @media (max-width: 720px) {
     width: 220px;
   }
-  width: 28vw;
+  width: 26vw;
   margin-bottom: 10px;
 `;
 
