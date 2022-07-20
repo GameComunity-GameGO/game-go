@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useInterval from "../hooks/useInterval";
 import { images } from "../utils/images";
@@ -43,14 +43,14 @@ const SlideBtn = styled.div`
     right: 0;
   }
 `;
-function ImageSlider({ view }: any) {
+function ImageSlider() {
   const [activeIndex, setactiveIndex] = useState(0);
+
   const nextSlide = () => {
     if (activeIndex < 2) setactiveIndex(activeIndex + 1);
     else setactiveIndex(0);
   };
   const prevSlide = () => {
-    console.log(activeIndex);
     if (activeIndex > 0) setactiveIndex(activeIndex - 1);
     else setactiveIndex(2);
   };

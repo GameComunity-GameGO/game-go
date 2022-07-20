@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import BoardDetails from "./Routes/BoardDetails";
 import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
 

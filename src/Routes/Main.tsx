@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { categorys } from "../utils/gameCategory";
 const Wrap = styled.div`
   width: 80vw;
-  height: 100vh;
   min-width: 700px;
   display: flex;
   flex-direction: column;
@@ -14,14 +13,19 @@ const Wrap = styled.div`
 const Title = styled.div`
   font-size: 60px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin: 15px 0px;
 `;
 const CategoryWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  width: 900px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  @media (max-width: 899px) {
+    width: 100%;
+  }
 `;
 const BoxWrap = styled(motion.div)`
+  margin: 10px;
   :hover {
     cursor: pointer;
   }
@@ -35,15 +39,16 @@ const BoxWrap = styled(motion.div)`
 `;
 const Box = styled.div<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
-  height: 35vh;
-  width: 230px;
+  height: 34vh;
+  width: 220px;
+
   background-position: center center;
   background-size: cover;
   display: flex;
   justify-content: center;
+
   align-items: flex-end;
   border-radius: 10px;
-  margin: 5px;
 `;
 function Main() {
   const navigate = useNavigate();
