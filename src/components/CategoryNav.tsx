@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
-  width: 100%;
+  width: 1000px;
   height: 45px;
   background-color: #282e40;
   display: flex;
@@ -19,10 +19,10 @@ const Li = styled.li`
   font-weight: 400;
   padding: 5px;
   border-radius: 10px;
-  background-color: #187f7f;
+  background-color: #373e59;
   cursor: pointer;
   :hover {
-    color: #282e40;
+    color: #2196f3;
   }
 `;
 function CategoryNav({ view }: any) {

@@ -1,30 +1,40 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Board from "../components/Board";
+import CategoryNav from "../components/CategoryNav";
+import ChatWrite from "../components/ChatWrite";
+import GamerWrite from "../components/GamerWrite";
 import Search from "../components/Search";
 const Wrap = styled.div`
-  width: 80vw;
-  height: fit-content;
-  min-width: 700px;
+  width: 1000px;
+  height: 100%;
 `;
 const Header = styled.div`
+  height: 230px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  justify-content: end;
+  margin-bottom: 15px;
 `;
 const GameTitle = styled.div`
-  font-size: 32px;
-  font-weight: 600;
+  span:first-child {
+    display: block;
+    font-size: 38px;
+    font-weight: 600;
+  }
+
+  span:nth-child(2) {
+    font-size: 16px;
+    font-weight: 600;
+  }
   span:last-child {
-    color: #187f7f;
+    font-size: 14px;
+    font-weight: 400;
   }
 `;
 const Contents = styled.div`
-  margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
@@ -37,72 +47,40 @@ const Logo = styled.div`
 `;
 const CreateBtn = styled.div`
   text-align: center;
-  width: 80px;
-  font-weight: 600;
-  font-size: 28px;
+  width: 95px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #282e40;
   cursor: pointer;
-`;
-const CreateWrap = styled.div`
-  background-color: #282e40;
-  border-radius: 10px;
-  width: 100%;
-  height: 260px;
-  display: flex;
-  justify-content: center;
-`;
-const SearchWrap = styled.div`
-  display: flex;
-`;
-const Form = styled.form`
-  display: flex;
-  align-items: center;
-  input {
-    background-color: #373e59;
-    border: none;
-    width: 300px;
-    height: 50px;
-    margin-bottom: 5px;
-    border: 1px solid black;
+  border-radius: 5px;
+  :hover {
+    color: #2196f3;
   }
-
-  div:nth-child(2) > input {
-    height: 100px;
-    margin-right: 5px;
-  }
-  button {
-    position: relative;
-    width: 70px;
-    height: 40px;
-    top: 30px;
-    background-color: #373e59;
-    border: none;
-    border: 1px solid black;
-  }
-`;
-const LeftContents = styled.div`
-  margin-right: 30px;
-  span {
-    font-size: 12px;
-    font-weight: 400;
-  }
-`;
-const RightContents = styled.div``;
-const Img = styled.div<{ bgphoto: string }>`
-  height: 120px;
-  background-image: url(${(props) => props.bgphoto});
-  background-size: cover;
-  background-position: center center;
+  font-weight: 400;
 `;
 
-interface ICreate {
-  username: string;
-  content: string;
-}
+const HeaderFormWrap = styled.div`
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+`;
+const Select = styled.select`
+  width: 140px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  border: 1px solid #282e40;
+  background-color: #373e59;
+  color: whitesmoke;
+  padding: 5px;
+  font-weight: 400;
+`;
+
 function BoardDetails() {
   const { pathname } = useLocation();
   const { game: game, type: type } = useParams();
   const [createView, setCreateView] = useState(false);
-  const [createText, setCrateText] = useState("글쓰기");
   const [dumy, setDumy] = useState([
     "1",
     "2",
@@ -123,72 +101,123 @@ function BoardDetails() {
   const [dumyTag, setDumyTag] = useState({
     tag: ["랭크", "빡겜"],
   });
+  const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
+  const LevelList = [
+    "모든 티어",
+    "챌린저",
+    "그랜드마스터",
+    "마스터",
+    "다이아몬드",
+    "플래티넘",
+    "골드",
+    "실버",
+    "브론즈",
+    "아이언",
+  ];
+  const Line = ["모든 포지션", "탑", "정글", "미드", "원딜", "서포터"];
+  const Voice = ["보이스 OFF", "보이스 ON"];
+  const Tag = ["자유", "빡겜", "친목"];
+  const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<ICreate>();
-  const onSubmit = ({ username, content }: any) => {};
+  const navigate = useNavigate();
   return (
     <Wrap>
+      <CategoryNav />
       <Header>
-        <Link to="/">
+        {/* <Link to="/">
           <Logo>GG.GG</Logo>
-        </Link>
+        </Link> */}
         <GameTitle>
-          <span>{game} </span>
           <span>{type}</span>
+          <span>{game} </span>
+          <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
         </GameTitle>
-        <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
-          {createView ? "닫기" : "글쓰기"}
-        </CreateBtn>
+        <HeaderFormWrap>
+          {type === "게시판" ? (
+            <>
+              <div>
+                <Select>
+                  {Type.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <CreateBtn
+                onClick={() => navigate(`/gamepage/${game}/${type}/boardwrite`)}
+              >
+                글쓰기
+              </CreateBtn>
+            </>
+          ) : type === "채팅방" ? (
+            <>
+              <div>
+                <Select>
+                  {Tag.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Select>
+                <Select>
+                  {Voice.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
+                {createView ? "닫기" : "채팅방 생성"}
+              </CreateBtn>
+            </>
+          ) : type === "게이머 구하기" ? (
+            <>
+              <div>
+                <Select>
+                  {GameList.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Select>
+                <Select>
+                  {LevelList.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Select>
+                <Select>
+                  {Line.map((item) => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
+                {createView ? "닫기" : "구하기"}
+              </CreateBtn>
+            </>
+          ) : null}
+        </HeaderFormWrap>
       </Header>
-      {/* <SearchWrap>
-        <Search />
-      </SearchWrap> */}
-      {createView && (
-        <CreateWrap>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <LeftContents>
-              <span>
-                타인을 사칭하거나 모욕하는 일은
-                <br /> 법률에 의해 제제를 받을 수 있습니다.
-              </span>
-              <div>
-                <Img bgphoto={"https://your.gg/images/duo_warning.png"}></Img>
-              </div>
-            </LeftContents>
-            <RightContents>
-              <div>
-                <input
-                  {...register("username")}
-                  placeholder="유저명"
-                  type="text"
-                />
-              </div>
-              <div>
-                <input
-                  {...register("content")}
-                  placeholder="내용 (200자 이내)"
-                  type="text"
-                />
 
-                <button type="submit">등록</button>
-              </div>
-            </RightContents>
-          </Form>
-        </CreateWrap>
-      )}
+      {createView && type === "채팅방" ? (
+        <ChatWrite />
+      ) : createView && type === "게이머 구하기" ? (
+        <GamerWrite />
+      ) : null}
 
       <Contents>
         {dumy.map((item, index) => (
           <Board
             key={index}
-            date={"0일전"}
+            date={"일전"}
             item={item}
             tag={dumyTag}
             subTitle={"subTitle"}

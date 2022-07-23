@@ -2,8 +2,9 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { categorys } from "../utils/gameCategory";
+
 const Wrap = styled.div`
-  width: 80vw;
+  /* width: 80vw; */
   min-width: 700px;
   display: flex;
   flex-direction: column;
@@ -16,12 +17,12 @@ const Title = styled.div`
   margin: 15px 0px;
 `;
 const CategoryWrap = styled.div`
-  width: 900px;
+  width: 800px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   @media (max-width: 899px) {
-    width: 100%;
+    width: 600px;
   }
 `;
 const BoxWrap = styled(motion.div)`

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 import CategoryNav from "../components/CategoryNav";
-import BoardView from "../components/BoardView";
+import BoardView from "../components/BoardSlider";
 import ImageSlider from "../components/ImageSlider";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
+
 const Wrap = styled.div`
-  width: 80vw;
-  height: 100vh;
-  min-width: 700px;
+  height: 100%;
 `;
 const SearchWrap = styled.div`
   display: flex;
@@ -21,7 +20,9 @@ const GameTitle = styled.div`
   margin-top: 30px;
   margin-bottom: 15px;
 `;
-const BoardWrap = styled.div``;
+const BoardWrap = styled.div`
+  width: 1000px;
+`;
 
 function GamePage() {
   const [dumyTag, setDumyTag] = useState({
@@ -52,8 +53,8 @@ function GamePage() {
           boardName={"채팅방"}
           date={"1일 전"}
           tag={dumyTag}
-          subTitle={"솔랭 다이아1 빡겜러 구함"}
-          subDetail={"저는 실버1입니다"}
+          subTitle={"빡겜방"}
+          subDetail={"빡겜 하는 분만 원해요 티어는 다이아 이상만"}
           userName={"호카손자"}
         />
         <BoardView
@@ -61,7 +62,7 @@ function GamePage() {
           boardName={"게이머 구하기"}
           date={"1일 전"}
           tag={dumyTag}
-          subTitle={"솔랭 다이아1 빡겜러 구함"}
+          subTitle={"솔랭 다이아4 예티 구함"}
           subDetail={"저는 실버1입니다"}
           userName={"호카손자"}
         />
