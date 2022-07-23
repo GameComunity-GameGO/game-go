@@ -53,8 +53,8 @@ function GamePage() {
           boardName={"채팅방"}
           date={"1일 전"}
           tag={dumyTag}
-          subTitle={"솔랭 다이아1 빡겜러 구함"}
-          subDetail={"저는 실버1입니다"}
+          subTitle={"빡겜방"}
+          subDetail={"빡겜 하는 분만 원해요 티어는 다이아 이상만"}
           userName={"호카손자"}
         />
         <BoardView
@@ -62,7 +62,7 @@ function GamePage() {
           boardName={"게이머 구하기"}
           date={"1일 전"}
           tag={dumyTag}
-          subTitle={"솔랭 다이아1 빡겜러 구함"}
+          subTitle={"솔랭 다이아4 예티 구함"}
           subDetail={"저는 실버1입니다"}
           userName={"호카손자"}
         />
