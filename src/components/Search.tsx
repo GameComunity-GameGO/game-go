@@ -19,7 +19,7 @@ const Form = styled.form`
   position: relative;
   svg {
     position: absolute;
-    height: 25px;
+    height: 20px;
     fill: whitesmoke;
     right: 0;
     margin-right: 10px;

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 import CategoryNav from "../components/CategoryNav";
-import BoardView from "../components/BoardView";
+import BoardView from "../components/BoardSlider";
 import ImageSlider from "../components/ImageSlider";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
+
 const Wrap = styled.div`
-  width: 80vw;
-  height: 100vh;
-  min-width: 700px;
+  height: 100%;
 `;
 const SearchWrap = styled.div`
   display: flex;
@@ -21,7 +20,9 @@ const GameTitle = styled.div`
   margin-top: 30px;
   margin-bottom: 15px;
 `;
-const BoardWrap = styled.div``;
+const BoardWrap = styled.div`
+  width: 1000px;
+`;
 
 function GamePage() {
   const [dumyTag, setDumyTag] = useState({

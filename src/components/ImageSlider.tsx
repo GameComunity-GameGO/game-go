@@ -3,7 +3,8 @@ import styled from "styled-components";
 import useInterval from "../hooks/useInterval";
 import { images } from "../utils/images";
 const Slider = styled.div<{ bgphoto: string }>`
-  height: 60vh;
+  width: 1000px;
+  height: 55vh;
   background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;

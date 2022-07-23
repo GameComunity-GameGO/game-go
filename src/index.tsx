@@ -63,7 +63,7 @@ body {
   background-color: #373E59;
   color: whitesmoke;
   line-height: 1.2;
-  overflow-x:hidden;
+  /* min-width: 1000px; */
   display: flex;
   justify-content: center;
 }

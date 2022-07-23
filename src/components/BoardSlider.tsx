@@ -5,7 +5,7 @@ import Board from "./Board";
 
 const Wrap = styled.div`
   width: 100%;
-  height: 320px;
+  height: 270px;
 `;
 
 const Contents = styled.div`
@@ -29,7 +29,7 @@ const SeeMore = styled.div`
   span {
     cursor: pointer;
     :hover {
-      color: #282e40;
+      color: #2196f3;
     }
   }
 `;
@@ -41,11 +41,15 @@ const SlideBtn = styled.div`
   background-color: #282e40;
   border-radius: 10px;
   width: 40px;
+  margin-bottom: 10px;
 `;
 const Svg = styled.svg`
-  height: 30px;
-  width: 25px;
+  height: 25px;
+  width: 20px;
   cursor: pointer;
+  :hover {
+    fill: #2196f3;
+  }
 `;
 function BoardView({
   game,
