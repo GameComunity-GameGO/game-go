@@ -72,22 +72,12 @@ interface ICreate {
   username: string;
   content: string;
 }
-function GamerWrite() {
+function ChatWrite() {
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const Line = ["모든 포지션", "탑", "정글", "미드", "원딜", "서포터"];
 
-  const LevelList = [
-    "모든 티어",
-    "챌린저",
-    "그랜드마스터",
-    "마스터",
-    "다이아몬드",
-    "플래티넘",
-    "골드",
-    "실버",
-    "브론즈",
-    "아이언",
-  ];
+  const Tag = ["자유", "빡겜", "친목"];
+  const Voice = ["보이스 OFF", "보이스 ON"];
   const {
     register,
     handleSubmit,
@@ -110,21 +100,14 @@ function GamerWrite() {
         <RightContents>
           <div>
             <Select style={{ borderColor: "black" }}>
-              {GameList.map((item) => (
+              {Tag.map((item) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
               ))}
             </Select>
             <Select style={{ borderColor: "black" }}>
-              {LevelList.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </Select>
-            <Select style={{ borderColor: "black" }}>
-              {Line.map((item) => (
+              {Voice.map((item) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
@@ -132,16 +115,19 @@ function GamerWrite() {
             </Select>
           </div>
           <div>
-            <input {...register("username")} placeholder="유저명" type="text" />
+            <input
+              {...register("username")}
+              placeholder="채팅방 이름"
+              type="text"
+            />
           </div>
           <div>
             <input
               {...register("content")}
-              placeholder="내용 (200자 이내)"
+              placeholder="채팅방 소개 (50자 이내)"
               type="text"
             />
-
-            <button type="submit">등록</button>
+            <button type="submit">생성</button>
           </div>
         </RightContents>
       </Form>
@@ -149,4 +135,4 @@ function GamerWrite() {
   );
 }
 
-export default GamerWrite;
+export default ChatWrite;

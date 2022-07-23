@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Board from "../components/Board";
 import CategoryNav from "../components/CategoryNav";
+import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
 import Search from "../components/Search";
 const Wrap = styled.div`
@@ -120,7 +121,7 @@ function BoardDetails() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
+  const navigate = useNavigate();
   return (
     <Wrap>
       <CategoryNav />
@@ -145,7 +146,11 @@ function BoardDetails() {
                   ))}
                 </Select>
               </div>
-              <CreateBtn>글쓰기</CreateBtn>
+              <CreateBtn
+                onClick={() => navigate(`/gamepage/${game}/${type}/boardwrite`)}
+              >
+                글쓰기
+              </CreateBtn>
             </>
           ) : type === "채팅방" ? (
             <>
@@ -165,7 +170,9 @@ function BoardDetails() {
                   ))}
                 </Select>
               </div>
-              <CreateBtn>채팅방 생성</CreateBtn>
+              <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
+                {createView ? "닫기" : "채팅방 생성"}
+              </CreateBtn>
             </>
           ) : type === "게이머 구하기" ? (
             <>
@@ -200,8 +207,9 @@ function BoardDetails() {
         </HeaderFormWrap>
       </Header>
 
-      {createView && type === "채팅방" ? null : createView &&
-        type === "게이머 구하기" ? (
+      {createView && type === "채팅방" ? (
+        <ChatWrite />
+      ) : createView && type === "게이머 구하기" ? (
         <GamerWrite />
       ) : null}
 
