@@ -1,49 +1,50 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Board from "../components/Board";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import CategoryNav from "../components/CategoryNav";
+import ImageSlider from "../components/ImageSlider";
+import Search from "../components/Search";
 
 const Wrap = styled.div`
   width: 80vw;
   height: 100vh;
   min-width: 700px;
 `;
-const Title = styled.div`
-  margin-top: 40px;
-  font-weight: 600;
-  font-size: 26px;
-  margin-left: 40px;
-`;
-const Label = styled.div`
-  margin-top: 40px;
-  font-weight: 60;
-  font-size: 26px;
-  margin-right: 40px;
-`;
-const Ul = styled.ul`
-  list-style: none;
-  padding: 0px;
-`;
-const Li = styled.li`
-  width: 28vw;
+const SearchWrap = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  font-size: 1.6vw;
-  margin 0 auto;
+`;
+const GameTitle = styled.div`
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: 30px;
+  margin-bottom: 15px;
+`;
+const Title = styled.div`
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 40px;
+  margin-right: 40px;
 `;
 
 function MyPage() {
+  const navigate = useNavigate();
+  const { game: game } = useParams();
   return (
     <Wrap>
-      <Title>마이 페이지</Title>
-      <Ul>
-      <Li>
-      <Label>닉네임</Label>
-      <Label>성별</Label>
-      </Li>  
-      </Ul>
+      <ImageSlider />
+      <CategoryNav />
+      <SearchWrap>
+        <GameTitle>{game}</GameTitle>
+        <Search />
+      </SearchWrap>
+      <Title>GG.GG</Title>
+      <Sidebar></Sidebar>
     </Wrap>
   );
-  }
+}
 
 export default MyPage;
