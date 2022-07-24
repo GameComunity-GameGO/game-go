@@ -7,7 +7,11 @@ import { useParams } from "react-router-dom";
 import Search from "../components/Search";
 
 const Wrap = styled.div`
+  min-width: 1000px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const SearchWrap = styled.div`
   display: flex;

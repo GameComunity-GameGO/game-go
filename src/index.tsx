@@ -64,8 +64,6 @@ body {
   color: whitesmoke;
   line-height: 1.2;
   /* min-width: 1000px; */
-  display: flex;
-  justify-content: center;
 }
 a {
   text-decoration:none;

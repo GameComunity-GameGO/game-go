@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 const CreateWrap = styled.div`
+  width: 1000px;
   background-color: #282e40;
   border-radius: 10px;
   height: 260px;

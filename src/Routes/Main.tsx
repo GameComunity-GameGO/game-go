@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { categorys } from "../utils/gameCategory";
 
 const Wrap = styled.div`
-  /* width: 80vw; */
-  min-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +20,7 @@ const CategoryWrap = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   @media (max-width: 899px) {
-    width: 600px;
+    width: 700px;
   }
 `;
 const BoxWrap = styled(motion.div)`

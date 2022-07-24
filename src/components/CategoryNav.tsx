@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
-  width: 1000px;
+  width: 100%;
   height: 45px;
   background-color: #282e40;
   display: flex;

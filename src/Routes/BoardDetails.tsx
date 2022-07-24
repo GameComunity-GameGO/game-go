@@ -6,17 +6,32 @@ import Board from "../components/Board";
 import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
-import Search from "../components/Search";
 const Wrap = styled.div`
-  width: 1000px;
+  min-width: 1000px;
   height: 100%;
-`;
-const Header = styled.div`
-  height: 230px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  align-items: center;
+`;
+const Header = styled.div`
+  width: 100%;
+  height: 230px;
   margin-bottom: 15px;
+`;
+const HeaderContents = styled.div`
+  position: relative;
+  bottom: 200px;
+`;
+const Banner = styled.div<{ bgphoto: string }>`
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), #282e40),
+    url(${(props) => props.bgphoto});
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  display: flex;
+  align-items: center;
 `;
 const GameTitle = styled.div`
   span:first-child {
@@ -35,6 +50,7 @@ const GameTitle = styled.div`
   }
 `;
 const Contents = styled.div`
+  width: 1000px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
@@ -51,6 +67,7 @@ const CreateBtn = styled.div`
   padding: 10px;
   font-size: 14px;
   border: 1px solid #282e40;
+  background-color: #373e59;
   cursor: pointer;
   border-radius: 5px;
   :hover {
@@ -60,9 +77,11 @@ const CreateBtn = styled.div`
 `;
 
 const HeaderFormWrap = styled.div`
+  width: 1000px;
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 `;
 const Select = styled.select`
   width: 140px;
@@ -126,9 +145,13 @@ function BoardDetails() {
     <Wrap>
       <CategoryNav />
       <Header>
-        {/* <Link to="/">
-          <Logo>GG.GG</Logo>
-        </Link> */}
+        <Banner
+          bgphoto={
+            "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt728b7e80503d4a3b/60b813c6a8cd6a0a26e29220/Patch_11_12_Notes_Banner.jpg"
+          }
+        ></Banner>
+      </Header>
+      <HeaderContents>
         <GameTitle>
           <span>{type}</span>
           <span>{game} </span>
@@ -205,27 +228,27 @@ function BoardDetails() {
             </>
           ) : null}
         </HeaderFormWrap>
-      </Header>
 
-      {createView && type === "채팅방" ? (
-        <ChatWrite />
-      ) : createView && type === "게이머 구하기" ? (
-        <GamerWrite />
-      ) : null}
+        {createView && type === "채팅방" ? (
+          <ChatWrite />
+        ) : createView && type === "게이머 구하기" ? (
+          <GamerWrite />
+        ) : null}
 
-      <Contents>
-        {dumy.map((item, index) => (
-          <Board
-            key={index}
-            date={"일전"}
-            item={item}
-            tag={dumyTag}
-            subTitle={"subTitle"}
-            subDetail={"subDetail"}
-            userName={"userName"}
-          />
-        ))}
-      </Contents>
+        <Contents>
+          {dumy.map((item, index) => (
+            <Board
+              key={index}
+              date={"일전"}
+              item={item}
+              tag={dumyTag}
+              subTitle={"subTitle"}
+              subDetail={"subDetail"}
+              userName={"userName"}
+            />
+          ))}
+        </Contents>
+      </HeaderContents>
     </Wrap>
   );
 }
