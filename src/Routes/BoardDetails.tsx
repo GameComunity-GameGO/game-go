@@ -7,6 +7,7 @@ import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
 const Wrap = styled.div`
+  min-width: 1000px;
   height: 100%;
   display: flex;
   flex-direction: column;

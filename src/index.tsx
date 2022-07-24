@@ -63,10 +63,7 @@ body {
   background-color: #373E59;
   color: whitesmoke;
   line-height: 1.2;
-  
-  
-
-  min-width: 1000px;
+  /* min-width: 1000px; */
 }
 a {
   text-decoration:none;

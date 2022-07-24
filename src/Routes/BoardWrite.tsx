@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CategoryNav from "../components/CategoryNav";
 const Wrap = styled.div`
-  /* width: 100%; */
+  min-width: 1000px;
   height: 120vh;
   display: flex;
   flex-direction: column;
