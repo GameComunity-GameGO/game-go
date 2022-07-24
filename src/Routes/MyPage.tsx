@@ -4,44 +4,69 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CategoryNav from "../components/CategoryNav";
-import ImageSlider from "../components/ImageSlider";
-import Search from "../components/Search";
 
 const Wrap = styled.div`
-  width: 80vw;
-  height: 100vh;
-  min-width: 700px;
-`;
-const SearchWrap = styled.div`
+  min-width: 1000px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-const GameTitle = styled.div`
-  font-size: 32px;
-  font-weight: 600;
-  margin-top: 30px;
+const Header = styled.div`
+  width: 100%;
+  height: 230px;
   margin-bottom: 15px;
 `;
+const HeaderContents = styled.div`
+  position: relative;
+  bottom: 200px;
+  width: 1000px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+const Banner = styled.div<{ bgphoto: string }>`
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0), #282e40),
+    url(${(props) => props.bgphoto});
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
 const Title = styled.div`
-  margin-top: 20px;
-  font-weight: 600;
-  font-size: 40px;
-  margin-right: 40px;
+  span:first-child {
+    display: block;
+    font-size: 38px;
+    font-weight: 600;
+  }
+
+  span:nth-child(2) {
+    font-size: 16px;
+    font-weight: 600;
+  }
 `;
 
 function MyPage() {
-  const navigate = useNavigate();
-  const { game: game } = useParams();
   return (
     <Wrap>
-      <ImageSlider />
       <CategoryNav />
-      <SearchWrap>
-        <GameTitle>{game}</GameTitle>
-        <Search />
-      </SearchWrap>
-      <Title>GG.GG</Title>
+      <Header>
+        <Banner
+          bgphoto={
+            "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt728b7e80503d4a3b/60b813c6a8cd6a0a26e29220/Patch_11_12_Notes_Banner.jpg"
+          }
+        ></Banner>
+      </Header>
+      <HeaderContents>
+        <Title>
+          <span>마이페이지</span>
+          <span>000님, 환영합니다.</span>
+        </Title>
+      </HeaderContents>
       <Sidebar></Sidebar>
     </Wrap>
   );
