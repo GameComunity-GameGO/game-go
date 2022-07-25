@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CategoryNav from "../components/CategoryNav";
+import ProfileBox from "../components/ProfileBox";
+import img from "../utils/test.jpeg";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -49,8 +51,15 @@ const Title = styled.div`
     font-weight: 600;
   }
 `;
-
+const Content = styled.div`
+  display: inline-flex;
+`;
+const Box = styled.div`
+  display: grid;
+`;
 function MyPage() {
+  const { type: type } = useParams();
+  const navigate = useNavigate();
   return (
     <Wrap>
       <CategoryNav />
@@ -67,7 +76,17 @@ function MyPage() {
           <span>000님, 환영합니다.</span>
         </Title>
       </HeaderContents>
-      <Sidebar></Sidebar>
+      <Content>
+        <Sidebar></Sidebar>
+        <Box>
+          <ProfileBox
+            image={img}
+            content={"hi"}
+            name={"게이머"}
+            profile={"회원정보들"}
+          ></ProfileBox>
+        </Box>
+      </Content>
     </Wrap>
   );
 }

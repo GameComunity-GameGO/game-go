@@ -7,8 +7,8 @@ const Side = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 25%;
-  height: 90%;
+  width: 250px;
+  height: 600px;
   background-color: #282e40;
 `;
 const Profile = styled.img`
