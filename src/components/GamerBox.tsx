@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Box = styled.div`
-  position: relative;
   border-radius: 5px;
   height: fit-content;
   margin: 0px 10px;
@@ -15,19 +14,19 @@ const Box = styled.div`
     display: block;
     font-size: 18px;
     font-weight: 600;
-    color: white;
+    color: whitesmoke;
+    padding: 2px;
   }
 `;
 const Wrapper = styled.div`
-  margin-top: 40px;
-  width: 160px;
-  height: 130px;
+  margin-top: 30px;
   position: relative;
+  display: flex;
+  justify-content: center;
 `;
 const Image = styled.img`
-  width: 160px;
-  height: 130px;
-  position: absolute;
+  width: 100%;
+  height: 30%;
 `;
 const CreateBtn = styled.div`
   text-align: center;
@@ -45,36 +44,37 @@ const CreateBtn = styled.div`
 `;
 const Info = styled.div`
   margin-top: 40px;
-  width: 130px;
   height: 130px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   span:first-child {
     display: block;
     font-size: 18px;
     font-weight: 400;
     color: white;
-  }
-  span:last-child {
-    font-size: 14px;
-    font-weight: 400;
-  }
+`;
+const InfoItem = styled.div`
+  margin: 2px 10px;
+  font-weight: 400;
+  padding: 5px;
 `;
 
-const GamerBox = ({ image, name, profile }: any) => {
+const GamerBox = ({ image, name, email, content }: any) => {
   const navigate = useNavigate();
   return (
     <Box>
-      <span>게이머 정보</span>
+      <span>프로필</span>
       <Wrapper>
-        <Image src={image}></Image>
+        <Image src={process.env.PUBLIC_URL + "/image/level.jpeg"}></Image>
       </Wrapper>
       <Info>
         <span>{name} 님</span>
-        <span>{profile}</span>
+        <InfoItem>{email}</InfoItem>
+        <InfoItem>{content}</InfoItem>
+        <InfoItem>{content}</InfoItem>
       </Info>
-      <CreateBtn onClick={() => navigate(`/mypage/정보수정`)}>
-        정보 수정
+      <CreateBtn onClick={() => navigate(`/mypage/프로필변경`)}>
+        프로필 수정
       </CreateBtn>
     </Box>
   );

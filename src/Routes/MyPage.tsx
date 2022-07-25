@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CategoryNav from "../components/CategoryNav";
 import ProfileBox from "../components/ProfileBox";
-import img from "../utils/test.jpeg";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -22,11 +21,6 @@ const Header = styled.div`
 const HeaderContents = styled.div`
   position: relative;
   bottom: 200px;
-  width: 1000px;
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
 `;
 const Banner = styled.div<{ bgphoto: string }>`
   width: 100%;
@@ -48,18 +42,17 @@ const Title = styled.div`
 
   span:nth-child(2) {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 300;
   }
 `;
 const Content = styled.div`
+  margin-top: 90px;
   display: inline-flex;
 `;
 const Box = styled.div`
   display: grid;
 `;
 function MyPage() {
-  const { type: type } = useParams();
-  const navigate = useNavigate();
   return (
     <Wrap>
       <CategoryNav />
@@ -73,20 +66,20 @@ function MyPage() {
       <HeaderContents>
         <Title>
           <span>마이페이지</span>
-          <span>000님, 환영합니다.</span>
+          <span>자신의 정보를 확인하세요!</span>
         </Title>
+        <Content>
+          <Sidebar></Sidebar>
+          <Box>
+            <ProfileBox
+              image={process.env.PUBLIC_URL + "/image/timo.png"}
+              name={"게이머"}
+              email={"gggg@gmail.com"}
+              content={"닉네임"}
+            ></ProfileBox>
+          </Box>
+        </Content>
       </HeaderContents>
-      <Content>
-        <Sidebar></Sidebar>
-        <Box>
-          <ProfileBox
-            image={img}
-            content={"hi"}
-            name={"게이머"}
-            profile={"회원정보들"}
-          ></ProfileBox>
-        </Box>
-      </Content>
     </Wrap>
   );
 }

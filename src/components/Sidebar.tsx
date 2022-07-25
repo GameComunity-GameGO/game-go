@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import img from "../utils/test.jpeg";
 
 const Side = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 250px;
-  height: 600px;
+  height: 530px;
   background-color: #282e40;
 `;
 const Profile = styled.img`
@@ -33,7 +32,6 @@ const SidebarItem = styled.div`
   margin: 2px 10px;
   font-weight: 400;
   padding: 5px;
-  border-radius: 10px;
   cursor: pointer;
   :hover {
     color: #187f7f;
@@ -50,7 +48,7 @@ function Sidebar({ view }: any) {
   const navigate = useNavigate();
   return (
     <Side>
-      <Profile src={img}></Profile>
+      <Profile src={process.env.PUBLIC_URL + "/image/test.jpeg"}></Profile>
       <User>
         게이머 <br></br>gggg@gmail.com<br></br>010-0000-0000
       </User>
