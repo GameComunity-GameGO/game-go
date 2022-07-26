@@ -63,7 +63,7 @@ const GamerBox = ({ image, name, email, content }: any) => {
   const navigate = useNavigate();
   return (
     <Box>
-      <span>프로필</span>
+      <span>게이머 정보</span>
       <Wrapper>
         <Image src={process.env.PUBLIC_URL + "/image/level.jpeg"}></Image>
       </Wrapper>

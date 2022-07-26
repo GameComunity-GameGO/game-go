@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CategoryNav from "../components/CategoryNav";
 import ProfileBox from "../components/ProfileBox";
+import GamerBox from "../components/GamerBox";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -53,6 +54,8 @@ const Box = styled.div`
   display: grid;
 `;
 function MyPage() {
+  const { type: type } = useParams();
+  const navigate = useNavigate();
   return (
     <Wrap>
       <CategoryNav />
@@ -70,14 +73,37 @@ function MyPage() {
         </Title>
         <Content>
           <Sidebar></Sidebar>
-          <Box>
-            <ProfileBox
-              image={process.env.PUBLIC_URL + "/image/timo.png"}
-              name={"게이머"}
-              email={"gggg@gmail.com"}
-              content={"닉네임"}
-            ></ProfileBox>
-          </Box>
+          {type === "프로필" ? (
+            <>
+              <div>
+                <Box>
+                  <ProfileBox
+                    image={process.env.PUBLIC_URL + "/image/timo.png"}
+                    name={"게이머"}
+                    email={"gggg@gmail.com"}
+                    content={"닉네임"}
+                  ></ProfileBox>
+                </Box>
+              </div>
+            </>
+          ) : type === "게이머 정보 관리" ? (
+            <>
+              <div>
+                <Box>
+                  <GamerBox
+                    image={process.env.PUBLIC_URL + "/image/timo.png"}
+                    name={"게이머"}
+                    email={"gggg@gmail.com"}
+                    content={"닉네임"}
+                  ></GamerBox>
+                </Box>
+              </div>
+            </>
+          ) : // ) : type === "채팅 관리" ?(
+
+          // ): type === " 계정 설정" ? (
+
+          null}
         </Content>
       </HeaderContents>
     </Wrap>
