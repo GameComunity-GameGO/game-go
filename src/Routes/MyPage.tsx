@@ -78,7 +78,7 @@ function MyPage() {
               <div>
                 <Box>
                   <ProfileBox
-                    image={process.env.PUBLIC_URL + "/image/timo.png"}
+                    //image={process.env.PUBLIC_URL + "/image/timo.png"}
                     name={"게이머"}
                     email={"gggg@gmail.com"}
                     content={"닉네임"}
@@ -90,12 +90,7 @@ function MyPage() {
             <>
               <div>
                 <Box>
-                  <GamerBox
-                    image={process.env.PUBLIC_URL + "/image/timo.png"}
-                    name={"게이머"}
-                    email={"gggg@gmail.com"}
-                    content={"닉네임"}
-                  ></GamerBox>
+                  <GamerBox></GamerBox>
                 </Box>
               </div>
             </>
