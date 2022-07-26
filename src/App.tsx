@@ -5,6 +5,7 @@ import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
 
 import Main from "./Routes/Main";
+import Chat from "./Routes/Chat";
 function App() {
   return (
     <Router>
@@ -17,6 +18,8 @@ function App() {
           path="/gamepage/:game/:type/boardwrite"
           element={<BoardWrite />}
         ></Route>
+        {/* chat 페이지 임시 라우터 */}
+        <Route path="/chat" element={<Chat />}></Route>
       </Routes>
     </Router>
   );
