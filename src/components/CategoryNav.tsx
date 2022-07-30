@@ -3,8 +3,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
+  position: sticky;
+  top: 0px;
+  z-index: 1;
   width: 100%;
   height: 45px;
+  min-height: 45px;
   background-color: #282e40;
   display: flex;
   align-items: center;
@@ -27,8 +31,8 @@ const Li = styled.li`
 `;
 function CategoryNav({ view }: any) {
   const [category, setCategory] = useState([
-    "리그오브레전드",
-    "롤토체스",
+    "리그 오브 레전드",
+    "전략적 팀 전투 TFT",
     "오버워치",
     "배틀그라운드",
     "로스트아크",

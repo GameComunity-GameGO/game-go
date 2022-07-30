@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import CategoryNav from "../components/CategoryNav";
+import CategoryNav from "../../components/CategoryNav";
+import Siderbar from "../../components/Siderbar";
 const Wrap = styled.div`
   min-width: 1000px;
-  height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +15,7 @@ const Header = styled.div`
 `;
 const Banner = styled.div<{ bgphoto: string }>`
   width: 100%;
-  height: 100%;
+  height: 155px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), #282e40),
     url(${(props) => props.bgphoto});
   background-size: cover;
@@ -46,14 +46,13 @@ const ContentsWrap = styled.div`
   position: relative;
   bottom: 110px;
 `;
-const SiderBar = styled.div`
-  width: 300px;
-  height: 500px;
-  background-color: #282e40;
-  margin-right: 15px;
+const ContentWrap = styled.div`
+  display: flex;
+  height: fit-content;
 `;
 const Contents = styled.div`
-  width: 1000px;
+  width: 690px;
+  height: fit-content;
   background-color: #282e40;
   padding: 20px;
   span:first-child {
@@ -78,6 +77,7 @@ const Select = styled.select`
   margin-bottom: 5px;
 `;
 const TitleWrap = styled.div``;
+
 const Form = styled.form`
   input {
     width: 100%;
@@ -128,7 +128,7 @@ function BoardWrite() {
     window.scrollTo(0, 0);
   }, [pathname]);
   const navigate = useNavigate();
-  const { game: game, type: type } = useParams();
+  const { game, type } = useParams();
   return (
     <Wrap>
       <CategoryNav />
@@ -139,36 +139,39 @@ function BoardWrite() {
           }
         ></Banner>
       </Header>
-
       <ContentsWrap>
-        {/* <SiderBar></SiderBar> */}
         <GameTitle>
           <span>{type}</span>
           <span>{game} </span>
           <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
         </GameTitle>
-        <Contents>
-          <span>글쓰기</span>
-          <SelectWrap>
-            <Select>
-              {Type.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </Select>
-          </SelectWrap>
-          <TitleWrap>
-            <Form>
-              <input type="text" placeholder="제목"></input>
-              <textarea placeholder="내용"></textarea>
-              <ButtonWrap>
-                <button>취소</button>
-                <button>작성</button>
-              </ButtonWrap>
-            </Form>
-          </TitleWrap>
-        </Contents>
+        <ContentWrap>
+          <Siderbar />
+          <Contents>
+            <span>글쓰기</span>
+            <SelectWrap>
+              <Select>
+                {Type.map((item) => (
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
+            </SelectWrap>
+            <TitleWrap>
+              <Form>
+                <input type="text" placeholder="제목"></input>
+                <textarea placeholder="내용"></textarea>
+                <ButtonWrap>
+                  <button onClick={() => navigate(`/gamepage/${game}/게시판`)}>
+                    취소
+                  </button>
+                  <button>작성</button>
+                </ButtonWrap>
+              </Form>
+            </TitleWrap>
+          </Contents>
+        </ContentWrap>
       </ContentsWrap>
     </Wrap>
   );

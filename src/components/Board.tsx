@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Content = styled.div`
@@ -34,6 +35,8 @@ const UserJoin = styled.div`
     font-size: 14px;
     color: whitesmoke;
     font-weight: 400;
+    display: flex;
+    align-items: end;
   }
   div:last-child {
     font-size: 14px;
@@ -45,6 +48,10 @@ const UserJoin = styled.div`
     :hover {
       color: #2196f3;
     }
+  }
+  img {
+    width: 25px;
+    margin-right: 5px;
   }
 `;
 const TagUl = styled.ul`
@@ -64,8 +71,18 @@ const TagLi = styled.li`
   cursor: pointer;
   margin-right: 5px;
 `;
-
-function Board({ date, item, tag, subTitle, subDetail, userName }: any) {
+function Board({
+  date,
+  item,
+  tag,
+  subTitle,
+  subDetail,
+  userName,
+  game,
+  type,
+  boardName,
+}: any) {
+  const navigate = useNavigate();
   return (
     <Content>
       <TagUl>
@@ -78,14 +95,36 @@ function Board({ date, item, tag, subTitle, subDetail, userName }: any) {
           {/* {date} */}
           {item}일전
         </ContentData>
-
         <span>{subTitle}</span>
       </ContentHeader>
       <ContentDetail>
         <Detail>{subDetail}</Detail>
         <UserJoin>
-          <div>{userName}</div>
-          <div>보러가기</div>
+          {type === "게시판" || boardName === "게시판" ? (
+            <>
+              <div>{userName}</div>
+              <div
+                onClick={() =>
+                  navigate(`/gamepage/${game}/게시판/boardview/${item}`)
+                }
+              >
+                보러가기
+              </div>
+            </>
+          ) : type === "채팅방" || boardName === "채팅방" ? (
+            <>
+              <div>{userName}</div>
+              <div>입장하기</div>
+            </>
+          ) : type === "게이머 구하기" || boardName === "게이머 구하기" ? (
+            <>
+              <div>
+                <img src={process.env.PUBLIC_URL + `/image/${"top"}.png`} />
+                <span>{userName}</span>
+              </div>
+              <div>같이하기</div>
+            </>
+          ) : null}
         </UserJoin>
       </ContentDetail>
     </Content>
