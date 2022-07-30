@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Board from "../components/Board";
-import CategoryNav from "../components/CategoryNav";
-import ChatWrite from "../components/ChatWrite";
-import GamerWrite from "../components/GamerWrite";
+import Board from "../../components/Board";
+import CategoryNav from "../../components/CategoryNav";
+import ChatWrite from "../../components/ChatWrite";
+import GamerWrite from "../../components/GamerWrite";
+import Siderbar from "../../components/Siderbar";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -29,7 +30,6 @@ const Banner = styled.div<{ bgphoto: string }>`
     url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
-  position: relative;
   display: flex;
   align-items: center;
 `;
@@ -50,6 +50,7 @@ const GameTitle = styled.div`
   }
 `;
 const Contents = styled.div`
+  width: 690px;
   width: 1000px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -95,10 +96,13 @@ const Select = styled.select`
   padding: 5px;
   font-weight: 400;
 `;
-
+const ContentWrap = styled.div`
+  display: flex;
+  height: fit-content;
+`;
 function BoardDetails() {
   const { pathname } = useLocation();
-  const { game: game, type: type } = useParams();
+  const { game, type } = useParams();
   const [createView, setCreateView] = useState(false);
   const [dumy, setDumy] = useState([
     "1",
@@ -234,20 +238,24 @@ function BoardDetails() {
         ) : createView && type === "게이머 구하기" ? (
           <GamerWrite />
         ) : null}
-
-        <Contents>
-          {dumy.map((item, index) => (
-            <Board
-              key={index}
-              date={"일전"}
-              item={item}
-              tag={dumyTag}
-              subTitle={"subTitle"}
-              subDetail={"subDetail"}
-              userName={"userName"}
-            />
-          ))}
-        </Contents>
+        <ContentWrap>
+          {/* <Siderbar /> */}
+          <Contents>
+            {dumy.map((item, index) => (
+              <Board
+                game={game}
+                type={type}
+                key={index}
+                date={"일전"}
+                item={item}
+                tag={dumyTag}
+                subTitle={"subTitle"}
+                subDetail={"subDetail"}
+                userName={"userName"}
+              />
+            ))}
+          </Contents>
+        </ContentWrap>
       </HeaderContents>
     </Wrap>
   );

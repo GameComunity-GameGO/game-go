@@ -121,6 +121,8 @@ function BoardView({
               subTitle={subTitle}
               subDetail={subDetail}
               userName={userName}
+              boardName={boardName}
+              game={game}
             />
           ))}
         <SlideBtn>
