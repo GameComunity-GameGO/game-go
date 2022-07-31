@@ -40,12 +40,10 @@ const Box = styled.div<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
   height: 34vh;
   width: 220px;
-
   background-position: center center;
   background-size: cover;
   display: flex;
   justify-content: center;
-
   align-items: flex-end;
   border-radius: 10px;
 `;
