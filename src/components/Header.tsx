@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../auth/Modal";
+import LogIn from "../auth/LogIn";
+import SignUp from "../auth/SignUp";
 const Wrap = styled.div`
   position: sticky;
   z-index: 1;
@@ -29,15 +31,20 @@ const Button = styled.button`
 
 function Header({ view }: any) {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
-
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
   const navigate = useNavigate();
   return (
     <Wrap>
-      {isOpenModal && <Modal onClickToggleModal={onClickToggleModal}></Modal>}
-      <Button onClick={onClickToggleModal}>Login</Button>
+      {isOpenModal && (
+        <Modal
+          children={<SignUp></SignUp>}
+          onClickToggleModal={onClickToggleModal}
+        ></Modal>
+      )}
+      {/* <Button onClick={onClickToggleModal}>LogIn</Button> */}
+      <Button onClick={onClickToggleModal}>SignUp</Button>
       <Button onClick={() => navigate(`/mypage/프로필`)}>Mypage</Button>
     </Wrap>
   );

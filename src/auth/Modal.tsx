@@ -6,8 +6,8 @@ import React, {
   PropsWithChildren,
 } from "react";
 import styled from "styled-components";
-import { Form, Button } from "react-bootstrap";
 import SignUp from "./SignUp";
+import LogIn from "./LogIn";
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
@@ -44,7 +44,9 @@ function Modal({
   return (
     <Wrap>
       <ModalBox>
-        <SignUp></SignUp>
+        {children}
+        {/* <LogIn></LogIn> */}
+        {/* <SignUp></SignUp> */}
       </ModalBox>
       <Backdrop
         onClick={(e: React.MouseEvent) => {
