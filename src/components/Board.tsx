@@ -11,7 +11,6 @@ const Content = styled.div`
   width: 320px;
   margin-bottom: 10px;
 `;
-
 const ContentData = styled.div`
   font-size: 12px;
   color: #2196f3;

@@ -4,6 +4,7 @@ import BoardDetails from "./Routes/Board/BoardDetails";
 import BoardView from "./Routes/Board/BoardView";
 import BoardWrite from "./Routes/Board/BoardWrite";
 import GamePage from "./Routes/GamePage";
+import MyPage from "./Routes/MyPage";
 
 import Main from "./Routes/Main";
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />}></Route>
         <Route path="/gamepage/:game" element={<GamePage />}></Route>
+        <Route path="/mypage/:type" element={<MyPage />}></Route>
         <Route path="/gamepage/:game/:type" element={<BoardDetails />}></Route>
         <Route
           path="/gamepage/:game/:type/boardwrite"
