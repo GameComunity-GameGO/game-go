@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   width: 100%;
@@ -18,9 +19,13 @@ const Li = styled.li`
   font-weight: 400;
   padding: 5px;
   border-radius: 10px;
-  background-color: #187f7f;
+  background-color: #373e59;
+  cursor: pointer;
+  :hover {
+    color: #2196f3;
+  }
 `;
-function CategoryNav() {
+function CategoryNav({ view }: any) {
   const [category, setCategory] = useState([
     "리그오브레전드",
     "롤토체스",
@@ -28,11 +33,14 @@ function CategoryNav() {
     "배틀그라운드",
     "로스트아크",
   ]);
+  const navigate = useNavigate();
   return (
     <Wrap>
       <Ul>
         {category.map((data, index) => (
-          <Li key={index}>{data}</Li>
+          <Li onClick={() => navigate(`/gamepage/${data}`)} key={index}>
+            {data}
+          </Li>
         ))}
       </Ul>
     </Wrap>
