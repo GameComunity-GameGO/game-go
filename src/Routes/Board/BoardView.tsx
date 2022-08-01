@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CategoryNav from "../../components/CategoryNav";
+import CommentView from "../../components/CommentView";
+import CommentWrite from "../../components/CommentWrite";
 import Siderbar from "../../components/Siderbar";
 const Wrap = styled.div`
   min-width: 1000px;
@@ -61,17 +63,23 @@ const PostWrap = styled.div`
   }
 `;
 const ViewWrap = styled.div``;
-const TitleWrap = styled.div``;
+const PostTitle = styled.div``;
 const ContentWrap = styled.div`
   display: flex;
   height: fit-content;
 `;
 const CommentWrap = styled.div`
   width: 690px;
-  height: 300px;
+  height: fit-content;
   padding: 20px;
   background-color: #282e40;
   margin-top: 10px;
+`;
+const CommentTitle = styled.div`
+  font-weight: 400;
+  span {
+    font-size: 20px;
+  }
 `;
 
 function BoardView() {
@@ -103,13 +111,19 @@ function BoardView() {
           <Siderbar />
           <ViewWrap>
             <PostWrap>
-              <TitleWrap>
+              <PostTitle>
                 <span>Title {id}</span>
                 <span>UserName</span>
-              </TitleWrap>
+              </PostTitle>
               <div>Script</div>
             </PostWrap>
-            <CommentWrap>comments</CommentWrap>
+            <CommentWrap>
+              <CommentTitle>
+                <span>댓글</span> 총 0개
+              </CommentTitle>
+              <CommentWrite />
+              <CommentView />
+            </CommentWrap>
           </ViewWrap>
         </ContentWrap>
       </ContentsWrap>
