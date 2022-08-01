@@ -56,6 +56,7 @@ table {
 }
 * {
   box-sizing: border-box;
+  
 }
 body {
   font-weight: 300;
@@ -63,14 +64,40 @@ body {
   background-color: #373E59;
   color: whitesmoke;
   line-height: 1.2;
-  overflow-x:hidden;
-  display: flex;
-  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 a {
   text-decoration:none;
   color:inherit;
 }
+.ql-editor {
+  box-shadow: 0 0 0 1px black !important;
+}
+.ql-toolbar{
+  border: 1px solid black !important;
+}
+.ql-editor, .ql-toolbar{
+  background-color: #373e59;
+}
+
+.quill > .ql-toolbar:first-child {
+  display: none !important;
+}
+.ql-toolbar .ql-stroke {
+    fill: none;
+    stroke: whitesmoke;
+}
+.ql-toolbar .ql-fill {
+    fill: whitesmoke;
+    stroke: none;
+}
+
+.ql-toolbar .ql-picker {
+    color: whitesmoke;
+}
+.ql-toolbar{
+}
+
 `;
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
