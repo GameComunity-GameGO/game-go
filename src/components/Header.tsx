@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Modal from "../auth/LoginModal";
+import Modal from "../auth/Modal";
 const Wrap = styled.div`
   position: sticky;
   z-index: 1;
