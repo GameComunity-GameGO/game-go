@@ -1,27 +1,24 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Modal from "../auth/LoginModal";
 const Wrap = styled.div`
   position: sticky;
-  top: 0px;
   z-index: 1;
   width: 100%;
-  height: 45px;
-  min-height: 45px;
+  height: 30px;
+  min-height: 33px;
   background-color: #282e40;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0px 20px;
+  justify-content: right;
+  padding: 0px 15px;
 `;
-const Ul = styled.ul`
-  display: flex;
-`;
-const Li = styled.li`
+const Button = styled.button`
   margin: 0px 10px;
   font-weight: 400;
   padding: 5px;
+  color: whitesmoke;
   border-radius: 10px;
   background-color: #373e59;
   cursor: pointer;
@@ -29,9 +26,20 @@ const Li = styled.li`
     color: #2196f3;
   }
 `;
-function Header({ view }: any) {
-  const navigate = useNavigate();
-  return <Wrap></Wrap>;
-}
 
+function Header({ view }: any) {
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+
+  const onClickToggleModal = useCallback(() => {
+    setOpenModal(!isOpenModal);
+  }, [isOpenModal]);
+  const navigate = useNavigate();
+  return (
+    <Wrap>
+      {isOpenModal && <Modal onClickToggleModal={onClickToggleModal}></Modal>}
+      <Button onClick={onClickToggleModal}>Login</Button>
+      <Button onClick={() => navigate(`/mypage/프로필`)}>Mypage</Button>
+    </Wrap>
+  );
+}
 export default Header;
