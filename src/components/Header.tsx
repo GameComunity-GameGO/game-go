@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../auth/Modal";
 import LogIn from "../auth/LogIn";
 import SignUp from "../auth/SignUp";
@@ -34,16 +34,21 @@ function Header({ view }: any) {
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
+  const { type: type } = useParams();
   const navigate = useNavigate();
   return (
     <Wrap>
-      {isOpenModal && (
+      {isOpenModal && type === "로그인" ? (
+        <Modal
+          children={<LogIn></LogIn>}
+          onClickToggleModal={onClickToggleModal}
+        ></Modal>
+      ) : isOpenModal && type === "회원가입" ? (
         <Modal
           children={<SignUp></SignUp>}
           onClickToggleModal={onClickToggleModal}
         ></Modal>
-      )}
-      {/* <Button onClick={onClickToggleModal}>LogIn</Button> */}
+      ) : null}
       <Button onClick={onClickToggleModal}>SignUp</Button>
       <Button onClick={() => navigate(`/mypage/프로필`)}>Mypage</Button>
     </Wrap>

@@ -43,11 +43,7 @@ function Modal({
 }: PropsWithChildren<ModalDefaultType>) {
   return (
     <Wrap>
-      <ModalBox>
-        {children}
-        {/* <LogIn></LogIn> */}
-        {/* <SignUp></SignUp> */}
-      </ModalBox>
+      <ModalBox>{children}</ModalBox>
       <Backdrop
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();

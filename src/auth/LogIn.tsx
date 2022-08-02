@@ -78,7 +78,7 @@ export default function LogIn() {
       </Form>
       <LinkContainer>
         아직 회원이 아니신가요?&nbsp;
-        <Link to="/signup">회원가입 하러가기</Link>
+        <Link to="/회원가입">회원가입 하러가기</Link>
       </LinkContainer>
     </Container>
   );
