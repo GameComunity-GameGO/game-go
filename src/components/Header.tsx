@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../auth/Modal";
 import LogIn from "../auth/LogIn";
 import SignUp from "../auth/SignUp";
+
 const Wrap = styled.div`
   position: sticky;
   z-index: 1;
@@ -33,22 +35,23 @@ function Header({ view }: any) {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
+    document.body.style.overflow = "hidden";
   }, [isOpenModal]);
   const { type: type } = useParams();
   const navigate = useNavigate();
+  const { loginToggle, signupToggle } = useSelector((state: any) => ({
+    loginToggle: state.loginToggle,
+    signupToggle: state.signupToggle,
+  }));
+  console.log(signupToggle);
   return (
     <Wrap>
-      {isOpenModal && type === "로그인" ? (
+      {isOpenModal && (
         <Modal
-          children={<LogIn></LogIn>}
+          children={signupToggle ? <LogIn></LogIn> : <SignUp></SignUp>}
           onClickToggleModal={onClickToggleModal}
         ></Modal>
-      ) : isOpenModal && type === "회원가입" ? (
-        <Modal
-          children={<SignUp></SignUp>}
-          onClickToggleModal={onClickToggleModal}
-        ></Modal>
-      ) : null}
+      )}
       <Button onClick={onClickToggleModal}>SignUp</Button>
       <Button onClick={() => navigate(`/mypage/프로필`)}>Mypage</Button>
     </Wrap>

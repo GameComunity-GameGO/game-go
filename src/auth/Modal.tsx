@@ -5,11 +5,11 @@ import React, {
   useEffect,
   PropsWithChildren,
 } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSignUpToggle } from "../redux/action";
 import styled from "styled-components";
-import SignUp from "./SignUp";
-import LogIn from "./LogIn";
 const Wrap = styled.div`
-  width: 100vw;
+  width: 96.5vw;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -41,6 +41,7 @@ function Modal({
   onClickToggleModal,
   children,
 }: PropsWithChildren<ModalDefaultType>) {
+  const dispatch = useDispatch();
   return (
     <Wrap>
       <ModalBox>{children}</ModalBox>
@@ -49,6 +50,8 @@ function Modal({
           e.preventDefault();
           if (onClickToggleModal) {
             onClickToggleModal();
+            dispatch(setSignUpToggle(false));
+            document.body.style.overflow = "unset";
           }
         }}
       />
