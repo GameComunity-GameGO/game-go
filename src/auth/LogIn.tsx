@@ -15,31 +15,44 @@ import axios from "axios";
 
 export default function LogIn() {
   const [logInError, setLogInError] = useState(false);
-  const [email, onChangeEmail] = useInput("");
+  const [username, onChangeUsername] = useInput("");
   const [password, onChangePassword] = useInput("");
 
-  // withCredentials: 쿠키 생성 → post에서는 세번째 매개변수로, get에서는 두번째 매개변수로
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  };
   const onSubmit = useCallback(
     (e: any) => {
       e.preventDefault();
       setLogInError(false);
       axios
         .post(
-          "/api/users/login",
-          { email, password },
-          {
-            withCredentials: true,
-          }
+          "/api/v1/login",
+          JSON.stringify({
+            username: username,
+            // nickname,
+            password: password,
+          }),
+          config
         )
         .then((response) => {
-          // response.data를 data에 저장함 (서버에 재요청하지 않고!!) + 두번째 변수에 false를 넣어주어야 함!!!!
-          // revalidate();
+          console.log(response);
+          const { authorization, authorization_refresh } = response.headers;
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${authorization}`;
+          axios.defaults.headers.common[
+            "Authorization-refresh"
+          ] = `Bearer ${authorization_refresh}`;
         })
         .catch((error) => {
           setLogInError(error.response?.data);
         });
     },
-    [email, password]
+    [username, password]
   );
 
   return (
@@ -50,11 +63,11 @@ export default function LogIn() {
           <span>이메일 주소</span>
           <div>
             <Input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={onChangeEmail}
+              type="username"
+              id="username"
+              name="username"
+              value={username}
+              onChange={onChangeUsername}
             />
           </div>
         </Label>

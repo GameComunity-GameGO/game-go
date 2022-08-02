@@ -1,11 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import axios from "axios";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+
+// axios.defaults.baseURL = "";
+axios.defaults.withCredentials = true;
+
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -97,8 +102,8 @@ a {
 }
 .ql-toolbar{
 }
-
 `;
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

@@ -6,8 +6,6 @@ import React, {
   PropsWithChildren,
 } from "react";
 import styled from "styled-components";
-import SignUp from "./SignUp";
-import LogIn from "./LogIn";
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;

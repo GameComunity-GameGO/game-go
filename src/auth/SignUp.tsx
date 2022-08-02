@@ -15,7 +15,7 @@ import {
 } from "./styles";
 
 const SignUp = () => {
-  const [email, onChangeEmail] = useInput("");
+  const [username, onChangeUsername] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   // email, nickname 중복 -> 커스텀훅으로 제거
   const [password, , setPassword] = useInput("");
@@ -40,23 +40,32 @@ const SignUp = () => {
     [password]
   );
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  };
+
   const onSubmit = useCallback(
     (e: any) => {
       e.preventDefault();
-      console.log(email, nickname, password, passwordCheck);
+      console.log(username, nickname, password, passwordCheck);
       if (!mismatchError) {
-        console.log("서버로 회원가입하기");
+        console.log("서버로 회원가입");
         setSignUpError("");
         setSignUpSuccess(false);
-        // 요청 보내기 직전에 값들을 전부 초기화 해주자. 아니라면 요청을 연달아 날릴 때
-        // 첫번째 요청때 남아있던 결과가 두번째 요청때도 똑같이 표시되는
-        // 문제가 있을 수 있다.
+
         axios
-          .post("/api/users", {
-            email,
-            nickname,
-            password,
-          })
+          .post(
+            "/api/v1/member",
+            JSON.stringify({
+              username: username,
+              // nickname,
+              password: password,
+            }),
+            config
+          )
           .then((response) => {
             // 성공시
             console.log(response);
@@ -70,7 +79,7 @@ const SignUp = () => {
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck]
+    [username, nickname, password, passwordCheck]
   );
   return (
     <Container>
@@ -80,11 +89,11 @@ const SignUp = () => {
           <span>이메일 주소</span>
           <div>
             <Input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={onChangeEmail}
+              type="username"
+              id="username"
+              name="username"
+              value={username}
+              onChange={onChangeUsername}
             />
           </div>
         </Label>

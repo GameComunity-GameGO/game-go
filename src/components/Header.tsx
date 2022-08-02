@@ -49,7 +49,7 @@ function Header({ view }: any) {
           onClickToggleModal={onClickToggleModal}
         ></Modal>
       ) : null}
-      <Button onClick={onClickToggleModal}>SignUp</Button>
+      <Button onClick={onClickToggleModal}>Login</Button>
       <Button onClick={() => navigate(`/mypage/프로필`)}>Mypage</Button>
     </Wrap>
   );
