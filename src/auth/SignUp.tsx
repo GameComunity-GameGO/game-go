@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import useInput from "../hooks/useInput";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import {
   Success,
   Form,
@@ -12,50 +12,41 @@ import {
   Button,
   Header,
   Container,
+  Button2,
 } from "./styles";
 import { setSignUpToggle } from "../redux/action";
 
-const SignUp = () => {
-  const dispatch = useDispatch();
-  const [username, onChangeUsername] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
-  const [password, , setPassword] = useInput("");
-  const [passwordCheck, , setPasswordCheck] = useInput("");
-  const [mismatchError, setMismatchError] = useState(false);
-  const [signUpError, setSignUpError] = useState("");
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
-  const onChangePassword = useCallback(
-    (e: any) => {
-      setPassword(e.target.value);
-      setMismatchError(e.target.value !== passwordCheck);
-    },
-    [passwordCheck]
-  );
-
-  const onChangePasswordCheck = useCallback(
-    (e: any) => {
-      setPasswordCheck(e.target.value);
-      setMismatchError(e.target.value !== password);
-    },
-    [password]
-  );
+interface ISignUp {
+  username: String;
+  password: string;
+  passwordCheck: string;
+  nickname: string;
+}
+function SignUp() {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
     withCredentials: true,
   };
-  const onSubmit = () => {
-    console.log(username, nickname, password, passwordCheck);
-    console.log("서버로 회원가입하기");
+  const [mismatchError, setMismatchError] = useState(false);
+  const [signUpError, setSignUpError] = useState("");
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
 
+  const { register, handleSubmit } = useForm<ISignUp>();
+  const onSubmit = ({ username, password, nickname }: ISignUp) => {
+    console.log(username, nickname, password);
+    console.log("서버로 회원가입하기");
+    getSignUp(username, password, nickname);
+  };
+  const getSignUp = (id: String, pw: String, nickname: String) => {
     axios
       .post(
         "/api/v1/member",
         JSON.stringify({
-          username: username,
-          // nickname,
-          password: password,
+          username: id,
+          // nickname:nickname,
+          password: pw,
         }),
         config
       )
@@ -73,59 +64,36 @@ const SignUp = () => {
     dispatch(setSignUpToggle(true));
     console.log(1);
   };
+  const dispatch = useDispatch();
   return (
     <Container>
       <Header>GG.GG</Header>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Label id="email-label">
           <span>이메일 주소</span>
           <div>
-            <Input
-              type="username"
-              id="username"
-              name="username"
-              value={username}
-              onChange={onChangeUsername}
-            />
+            <Input type="username" id="username" name="username" />
           </div>
         </Label>
         <Label id="nickname-label">
           <span>닉네임</span>
           <div>
-            <Input
-              type="text"
-              id="nickname"
-              name="nickname"
-              value={nickname}
-              onChange={onChangeNickname}
-            />
+            <Input type="text" id="nickname" name="nickname" />
           </div>
         </Label>
         <Label id="password-label">
           <span>비밀번호</span>
           <div>
-            <Input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={onChangePassword}
-            />
+            <Input type="password" id="password" name="password" />
           </div>
         </Label>
         <Label id="password-check-label">
           <span>비밀번호 확인</span>
           <div>
-            <Input
-              type="password"
-              id="password-check"
-              name="password-check"
-              value={passwordCheck}
-              onChange={onChangePasswordCheck}
-            />
+            <Input type="password" id="password-check" name="password-check" />
           </div>
           {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
-          {!nickname && <Error>닉네임을 입력해주세요.</Error>}
+          {/* {!nickname && <Error>닉네임을 입력해주세요.</Error>} */}
           {signUpError && <Error>{signUpError}</Error>}
           {signUpSuccess && (
             <Success>회원가입 되었습니다! 로그인 해주세요.</Success>
@@ -135,10 +103,10 @@ const SignUp = () => {
       </Form>
       <LinkContainer>
         이미 회원이신가요?&nbsp;
-        <Button onClick={toggleHandler}>로그인 하러가기</Button>
+        <Button2 onClick={toggleHandler}>로그인 하러가기</Button2>
       </LinkContainer>
     </Container>
   );
-};
+}
 
 export default SignUp;

@@ -81,7 +81,20 @@ export const Button = styled.button`
     box-shadow: 0 0 0 1px var(--saf-0), 0 0 0 5px rgba(29, 155, 209, 0.3);
   }
 `;
-
+export const Button2 = styled.div`
+  margin-bottom: 16px;
+  font-weight: 600;
+  &:hover {
+    display: block;
+    text-align: left;
+    color: #2196f3;
+    padding-bottom: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    line-height: 1.46666667;
+    font-weight: 700;
+  }
+`;
 export const Error = styled.div`
   color: #e01e5a;
   margin: 5px 0 16px;

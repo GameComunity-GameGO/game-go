@@ -12,6 +12,7 @@ import {
   Button,
   Header,
   Container,
+  Button2,
 } from "./styles";
 import { setSignUpToggle } from "../redux/action";
 interface IForm {
@@ -31,7 +32,7 @@ function LogIn() {
     getLogin(id, pw);
   };
 
-  //API 호충
+  //API 호출
   const getLogin = (id: string, pw: string) => {
     setLogInError(false);
     axios
@@ -82,7 +83,7 @@ function LogIn() {
       </Form>
       <LinkContainer>
         아직 회원이 아니신가요?&nbsp;
-        <button onClick={toggleHandler}>회원가입 하러가기</button>
+        <Button2 onClick={toggleHandler}>회원가입 하러가기</Button2>
       </LinkContainer>
     </Container>
   );
