@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+
 import {
   Success,
   Form,
@@ -17,36 +18,44 @@ import {
 import { setSignUpToggle } from "../redux/action";
 
 interface ISignUp {
-  username: String;
+  email: string;
+  nickname: string;
   password: string;
   passwordCheck: string;
-  nickname: string;
 }
+
 function SignUp() {
+  const [signUpError, setSignUpError] = useState("");
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+  } = useForm<ISignUp>();
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
     withCredentials: true,
   };
-  const [mismatchError, setMismatchError] = useState(false);
-  const [signUpError, setSignUpError] = useState("");
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
 
-  const { register, handleSubmit } = useForm<ISignUp>();
-  const onSubmit = ({ username, password, nickname }: ISignUp) => {
-    console.log(username, nickname, password);
+  const onSubmit = ({ email, password, nickname, passwordCheck }: ISignUp) => {
+    console.log(email, nickname, password, passwordCheck);
     console.log("서버로 회원가입하기");
-    getSignUp(username, password, nickname);
+    setSignUpError("");
+    setSignUpSuccess(false);
+    // 요청 보내기 직전 값 초기화 ( 요청 연달아 날릴때 첫번째 요청 때 남아있던 결과가 두 번째에 또 표시될 수 있음)
+    getSignUp(email, password, nickname);
   };
-  const getSignUp = (id: String, pw: String, nickname: String) => {
+  const getSignUp = (email: String, password: String, nickname: String) => {
     axios
       .post(
         "/api/v1/member",
         JSON.stringify({
-          username: id,
-          // nickname:nickname,
-          password: pw,
+          username: email,
+          nickname: nickname,
+          password: password,
         }),
         config
       )
@@ -58,6 +67,7 @@ function SignUp() {
       .catch((error) => {
         // 실패시
         console.log(error.response);
+        setSignUpError(error.response.data);
       });
   };
   const toggleHandler = () => {
@@ -72,28 +82,36 @@ function SignUp() {
         <Label id="email-label">
           <span>이메일 주소</span>
           <div>
-            <Input type="username" id="username" name="username" />
+            <Input {...register("email")} type="email" />
           </div>
         </Label>
         <Label id="nickname-label">
           <span>닉네임</span>
           <div>
-            <Input type="text" id="nickname" name="nickname" />
+            <Input {...register("nickname")} type="nickname" />
           </div>
         </Label>
         <Label id="password-label">
           <span>비밀번호</span>
           <div>
-            <Input type="password" id="password" name="password" />
+            <Input {...register("password")} type="password" />
           </div>
         </Label>
         <Label id="password-check-label">
           <span>비밀번호 확인</span>
           <div>
-            <Input type="password" id="password-check" name="password-check" />
+            <Input
+              {...register("passwordCheck", {
+                required: "비밀번호 재입력은 필수입니다.",
+                validate: (value) =>
+                  value === watch("password") ||
+                  "비밀번호가 일치하지 않습니다.",
+              })}
+              placeholder="비밀번호를 재입력하세요"
+              type="password"
+            />
           </div>
-          {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
-          {/* {!nickname && <Error>닉네임을 입력해주세요.</Error>} */}
+          <Error>{errors?.passwordCheck?.message}</Error>
           {signUpError && <Error>{signUpError}</Error>}
           {signUpSuccess && (
             <Success>회원가입 되었습니다! 로그인 해주세요.</Success>
