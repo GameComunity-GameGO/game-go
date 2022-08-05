@@ -31,6 +31,7 @@ function SignUp() {
     register,
     formState: { errors },
     handleSubmit,
+    setError,
     watch,
   } = useForm<ISignUp>();
   const config = {
@@ -70,11 +71,12 @@ function SignUp() {
         setSignUpError(error.response.data);
       });
   };
+  const dispatch = useDispatch();
   const toggleHandler = () => {
     dispatch(setSignUpToggle(true));
     console.log(1);
   };
-  const dispatch = useDispatch();
+
   return (
     <Container>
       <Header>GG.GG</Header>
