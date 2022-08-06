@@ -59,7 +59,7 @@ function SignUp() {
   ) => {
     axios
       .post(
-        "/api/v1/member",
+        "/api/v1/SignUp",
         JSON.stringify({
           username: email,
           nickname: nickname,
@@ -94,7 +94,7 @@ function SignUp() {
     console.log(val);
     axios
       .post(
-        `/api/v1/existUsername`,
+        `/api/v1/SignUp/existUsername`,
         JSON.stringify({
           username: val,
         }),
@@ -128,7 +128,7 @@ function SignUp() {
     const val2 = watch().passwordCheck;
     axios
       .post(
-        `/api/v1/samePassword`,
+        `/api/v1/SignUp/samePassword`,
         JSON.stringify({
           password: val,
           repassword: val2,
@@ -158,7 +158,7 @@ function SignUp() {
     console.log(val);
     axios
       .post(
-        `/api/v1/existNickname`,
+        `/api/v1/SignUp/existNickname`,
         JSON.stringify({
           nickname: val,
         }),

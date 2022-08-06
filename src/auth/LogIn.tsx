@@ -16,8 +16,8 @@ import {
 } from "./styles";
 import { setSignUpToggle } from "../redux/action";
 interface IForm {
-  id: string;
-  pw: string;
+  email: string;
+  password: string;
 }
 function LogIn() {
   const config = {
@@ -26,21 +26,27 @@ function LogIn() {
     },
     withCredentials: true,
   };
-  const [logInError, setLogInError] = useState(false);
-  const { register, handleSubmit } = useForm<IForm>();
-  const onSubmit = ({ id, pw }: IForm) => {
-    getLogin(id, pw);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setError,
+    watch,
+  } = useForm<IForm>();
+
+  const onSubmit = ({ email, password }: IForm) => {
+    console.log(email, password);
+    getLogin(email, password);
   };
 
   //API 호출
-  const getLogin = (id: string, pw: string) => {
-    setLogInError(false);
+  const getLogin = (email: String, password: String) => {
     axios
       .post(
-        "/api/v1/login",
+        `/api/v1/login`,
         JSON.stringify({
-          username: id,
-          password: pw,
+          username: email,
+          password: password,
         }),
         config
       )
@@ -55,7 +61,11 @@ function LogIn() {
         ] = `Bearer ${authorization_refresh}`;
       })
       .catch((error) => {
-        setLogInError(error);
+        console.log(error);
+        // 임시 에러 처리
+        // setError("password", {
+        //   message: "*로그인이 잘못되었습니다.",
+        // });
       });
   };
   const dispatch = useDispatch();
@@ -69,15 +79,15 @@ function LogIn() {
         <Label id="email-label">
           <span>이메일 주소</span>
           <div>
-            <Input {...register("id")} type="email"></Input>
+            <Input {...register("email")} type="email"></Input>
           </div>
         </Label>
         <Label id="password-label">
           <span>비밀번호</span>
           <div>
-            <Input {...register("pw")} type="password"></Input>
+            <Input {...register("password")} type="password"></Input>
           </div>
-          {logInError && <Error>{logInError}</Error>}
+          <Error>{errors?.password?.message}</Error>
         </Label>
         <Button type="submit">로그인</Button>
       </Form>
