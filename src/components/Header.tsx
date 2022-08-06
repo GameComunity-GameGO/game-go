@@ -43,7 +43,7 @@ function Header({ view }: any) {
     loginToggle: state.loginToggle,
     signupToggle: state.signupToggle,
   }));
-  console.log(signupToggle);
+  //console.log(signupToggle);
   return (
     <Wrap>
       {isOpenModal && (

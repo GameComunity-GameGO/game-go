@@ -95,6 +95,20 @@ export const Button2 = styled.div`
     font-weight: 700;
   }
 `;
+export const Button3 = styled.div`
+  margin-bottom: 1px;
+  font-weight: 600;
+  &:hover {
+    display: block;
+    text-align: left;
+    color: #2196f3;
+    padding-bottom: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    line-height: 1.46666667;
+    font-weight: 700;
+  }
+`;
 export const Error = styled.div`
   color: #e01e5a;
   margin: 5px 0 16px;
