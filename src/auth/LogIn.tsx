@@ -22,7 +22,7 @@ interface IForm {
 function LogIn() {
   const config = {
     headers: {
-      "Content-Type": "/application/json",
+      "Content-Type": "application/json",
     },
     withCredentials: true,
   };
@@ -35,23 +35,22 @@ function LogIn() {
   } = useForm<IForm>();
 
   const onSubmit = ({ email, password }: IForm) => {
-    console.log(email, password);
     getLogin(email, password);
   };
 
   //API 호출
   const getLogin = (email: String, password: String) => {
+    console.log(email, password);
     axios
       .post(
         `/api/v1/login`,
-        // JSON.stringify({
-        //   username: email,
-        //   password: password,
-        // }),
+        JSON.stringify({
+          username: email,
+          password: password,
+        }),
         config
       )
       .then((response) => {
-        console.log(response);
         const { authorization, authorization_refresh } = response.headers;
         axios.defaults.headers.common[
           "Authorization"
@@ -59,6 +58,7 @@ function LogIn() {
         axios.defaults.headers.common[
           "Authorization-refresh"
         ] = `Bearer ${authorization_refresh}`;
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);
