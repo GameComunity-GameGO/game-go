@@ -59,7 +59,7 @@ function SignUp() {
   ) => {
     axios
       .post(
-        "/api/v1/SignUp",
+        "/api/v1/member",
         JSON.stringify({
           username: email,
           nickname: nickname,
@@ -81,7 +81,7 @@ function SignUp() {
   };
   //아이디 중복 여부 !val
   const idMatch = (val: any) => {
-    if (val === 0) {
+    if (val) {
       setError("email", { message: "사용가능한 이메일입니다." });
     } else {
       setError("email", { message: "이메일 중복입니다." });

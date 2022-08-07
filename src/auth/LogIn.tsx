@@ -44,10 +44,10 @@ function LogIn() {
     axios
       .post(
         `/api/v1/login`,
-        JSON.stringify({
-          username: email,
-          password: password,
-        }),
+        // JSON.stringify({
+        //   username: email,
+        //   password: password,
+        // }),
         config
       )
       .then((response) => {
