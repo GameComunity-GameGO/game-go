@@ -2,6 +2,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import jwt_decode from "jwt-decode";
 import {
   Success,
   Form,
@@ -37,10 +38,10 @@ function LogIn() {
   const onSubmit = ({ email, password }: IForm) => {
     getLogin(email, password);
   };
-
   //API 호출
   const getLogin = (email: String, password: String) => {
     console.log(email, password);
+
     axios
       .post(
         `/api/v1/login`,
@@ -59,6 +60,7 @@ function LogIn() {
           "Authorization-refresh"
         ] = `Bearer ${authorization_refresh}`;
         console.log(response);
+        jwtDecode(authorization);
       })
       .catch((error) => {
         console.log(error);
@@ -67,6 +69,10 @@ function LogIn() {
         //   message: "*로그인이 잘못되었습니다.",
         // });
       });
+  };
+  const jwtDecode = (token: any) => {
+    var decoded = jwt_decode(token);
+    console.log(decoded);
   };
   const dispatch = useDispatch();
   const toggleHandler = () => {
