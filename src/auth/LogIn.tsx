@@ -21,6 +21,15 @@ interface IForm {
   email: string;
   password: string;
 }
+export const client = axios.create({});
+export const accessClient = axios.create({
+  timeout: 180000,
+  withCredentials: false,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  },
+});
 function LogIn() {
   const config = {
     headers: {
@@ -64,38 +73,54 @@ function LogIn() {
   //jwt 받아오는 decode
   const jwtDecode = (token: any) => {
     const decoded: any = jwt_decode(token);
-
     console.log(decoded?.exp);
-    var nowTime = Date.now();
-    var reTime = decoded.exp * 1000;
-    console.log(Date.now());
-    console.log(reTime);
-    // setInterval(nowTime,1000)
-    if (Date.now() < reTime) {
-      onSilentRefresh();
-    }
+    // var nowTime = Date.now();
+    // var reTime = decoded.exp * 1000;
+    // console.log(Date.now());
+    // console.log(reTime);
+    // // setInterval(nowTime,1000)
+    // if (Date.now() < reTime) {
+    onSilentRefresh();
+    // }
   };
   async function onSilentRefresh() {
     console.log("엑세스 토큰 시간 만료");
-    const data = await localStorage.getItem("refreshToken");
-    console.log(data);
+    const data = localStorage.getItem("refreshToken");
+    console.log("리프레쉬:" + data);
     axios
-      .post("/api/v1/accessToken", {
-        headers: { Authorization_refresh: `Bearer ${data}` },
-      })
+      .post(
+        "/api/v1/accessToken",
+        (axios.defaults.headers.common[
+          "Authorization_refresh"
+        ] = `Bearer ${data}`)
+      )
+      // , {
+      //   headers: { Authorization_refresh: `Bearer ${data}` },
+      // })
       .then((response) => {
-        // axios.defaults.headers.common[
-        //   //   "Authorization_refresh"
-        //   // ] = `Bearer ${data}`;
-        //   "aaa"
-        // ] = `123`;
+        const { authorization } = response.headers;
+        localStorage.setItem("accessToken", authorization);
         console.log(response);
         // jwtDecode(response.data);
       })
       .catch((error) => {});
   }
+  //유저정보 요청
+  async function onUser() {
+    console.log("유저정보요청 AccessToken");
+    const data = localStorage.getItem("accessToken");
+    console.log(data);
+    axios
+      .get("/api/v1/members", { headers: { Authorization: `Bearer ${data}` } })
+      .then((response) => {
+        // axios.defaults.headers.common["Authorization"] = `Bearer ${data}`;
+        console.log(response);
+      })
+      .catch((error) => {});
+  }
   //로그인 성공 시
   async function loginSuccess(response: any) {
+    console.log("로그인 성공");
     function sleep(ms: any) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
@@ -109,9 +134,9 @@ function LogIn() {
     localStorage.setItem("accessToken", authorization);
     localStorage.setItem("refreshToken", authorization_refresh);
     console.log(response);
-    await sleep(3000);
-    jwtDecode(authorization);
-    // setTimeout(onSilentRefresh);
+    // await sleep(8000);
+    // console.log("8초");
+    // jwtDecode(authorization);
   }
 
   const dispatch = useDispatch();
@@ -140,7 +165,7 @@ function LogIn() {
       <LinkContainer>
         아직 회원이 아니신가요?&nbsp;
         <Button2 onClick={toggleHandler}>회원가입 하러가기</Button2>
-        {/* <Button2 onClick={jwtDecode}>jwtjwt</Button2> */}
+        <Button2 onClick={onUser}>jwtjwt</Button2>
       </LinkContainer>
     </Container>
   );

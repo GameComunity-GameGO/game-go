@@ -111,7 +111,6 @@ function SignUp() {
   const dispatch = useDispatch();
   const toggleHandler = () => {
     dispatch(setSignUpToggle(true));
-    console.log(1);
   };
   //비밀번호 확인
   const pwMatch = (val: any) => {
