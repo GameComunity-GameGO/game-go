@@ -138,7 +138,33 @@ function LogIn() {
     // console.log("8초");
     // jwtDecode(authorization);
   }
-
+  const logoutSuccess = (val: any) => {
+    console.log("로그아웃 성공");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    if (val) {
+      setError("email", { message: "로그아웃에 성공하였습니다." });
+    } else {
+      setError("email", { message: "" });
+    }
+  };
+  const getLogOut = () => {
+    const data = localStorage.getItem("accessToken");
+    console.log(data);
+    axios
+      .post(
+        "/api/v1/logout",
+        (axios.defaults.headers.common["Authorization"] = `Bearer ${data}`)
+      )
+      .then((response) => {
+        // 성공시
+        console.log(response);
+        logoutSuccess(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const dispatch = useDispatch();
   const toggleHandler = () => {
     dispatch(setSignUpToggle(false));
@@ -166,6 +192,7 @@ function LogIn() {
         아직 회원이 아니신가요?&nbsp;
         <Button2 onClick={toggleHandler}>회원가입 하러가기</Button2>
         <Button2 onClick={onUser}>jwtjwt</Button2>
+        <Button2 onClick={getLogOut}>logout</Button2>
       </LinkContainer>
     </Container>
   );

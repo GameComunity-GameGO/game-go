@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../auth/Modal";
 import LogIn from "../auth/LogIn";
 import SignUp from "../auth/SignUp";
+import LogOut from "../auth/LogOut";
 
 const Wrap = styled.div`
   position: sticky;
@@ -53,6 +54,7 @@ function Header({ view }: any) {
         ></Modal>
       )}
       <Button onClick={onClickToggleModal}>SignUp</Button>
+      <Button onClick={LogOut}>Logout</Button>
       <Button onClick={() => navigate(`/mypage/프로필`)}>Mypage</Button>
     </Wrap>
   );
