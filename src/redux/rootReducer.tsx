@@ -1,7 +1,9 @@
 const rootReducer = (state = {}, action: any) => {
   switch (action.type) {
-    case "TEST":
-      return { ...state, action: action.payload };
+    case "SET_LOGINTOGGLE":
+      return { ...state, action: action.data };
+    case "SET_SIGNUPTOGGLE":
+      return { ...state, action: action.data };
     default:
       return state;
   }

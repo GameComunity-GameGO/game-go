@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Board from "../../components/Board";
 import CategoryNav from "../../components/CategoryNav";
 import ChatWrite from "../../components/ChatWrite";
 import GamerWrite from "../../components/GamerWrite";
-import Siderbar from "../../components/Siderbar";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
