@@ -5,7 +5,6 @@ import BoardView from "./Routes/Board/BoardView";
 import BoardWrite from "./Routes/Board/BoardWrite";
 import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
-
 import Main from "./Routes/Main";
 function App() {
   return (

@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CategoryNav from "../../components/CategoryNav";
 import Siderbar from "../../components/Siderbar";
 import "react-quill/dist/quill.snow.css";
+
 const toolbarOptions = [
   ["link", "image", "video"],
   [{ header: [1, 2, 3, false] }],
@@ -185,7 +186,7 @@ function BoardWrite() {
   const handleChange = (value: any) => {
     setValue("contents", value);
   };
-  const [val, setVal] = useState("");
+
   return (
     <Wrap>
       <CategoryNav />
