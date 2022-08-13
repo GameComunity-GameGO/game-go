@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { categorys } from "../utils/gameCategory";
-
+import Header from "../components/Header";
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -51,6 +51,7 @@ function Main() {
   const navigate = useNavigate();
   return (
     <Wrap>
+      <Header></Header>
       <Title>GG.GG</Title>
       <CategoryWrap>
         {categorys.map((data, index) => (

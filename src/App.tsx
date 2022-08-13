@@ -12,6 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Main />}></Route>
+        <Route path="/:type" element={<Main />}></Route>
         <Route path="/gamepage/:game" element={<GamePage />}></Route>
         <Route path="/mypage/:type" element={<MyPage />}></Route>
         <Route path="/gamepage/:game/:type" element={<BoardDetails />}></Route>

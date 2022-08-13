@@ -3,6 +3,14 @@ export const test = (TEST: Object) => ({
   payload: TEST,
 });
 
+export const setLogInToggle = (toggle: boolean) => ({
+  type: "SET_LOGINTOGGLE",
+  data: toggle,
+});
+export const setSignUpToggle = (toggle: boolean) => ({
+  type: "SET_SIGNUPTOGGLE",
+  data: toggle,
+});
 // export function loginUser(dataToSubmit) {
 //   const request = axios
 //     .post("/api/users/login", dataToSubmit)

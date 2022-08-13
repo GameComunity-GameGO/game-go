@@ -1,7 +1,14 @@
+const init = {
+  loginToggle: false,
+  signupToggle: true,
+};
+
 const rootReducer = (state = {}, action: any) => {
   switch (action.type) {
-    case "TEST":
-      return { ...state, action: action.payload };
+    case "SET_LOGINTOGGLE":
+      return { ...state, loginToggle: action.data };
+    case "SET_SIGNUPTOGGLE":
+      return { ...state, signupToggle: action.data };
     default:
       return state;
   }
