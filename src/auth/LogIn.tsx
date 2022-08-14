@@ -78,20 +78,17 @@ function LogIn() {
   //jwt 받아오는 decode
   async function jwtDecode(token: any) {
     const decoded: any = jwt_decode(token);
-    console.log(decoded?.exp);
     var reTime = decoded.exp;
-    console.log("1.만료:", reTime);
 
     async function getTime() {
       return new Promise(function (resolve, reject) {
         const date: number = Date.now();
         var nowTime = Math.floor(date / 1000);
-        console.log(nowTime);
+
         while (nowTime <= reTime) {
           setTimeout(getTime, 1000);
           return nowTime;
         }
-        console.log("2.빠져나옴");
         resolve(nowTime);
         isAccessTokenEnd(nowTime);
       });
@@ -107,7 +104,6 @@ function LogIn() {
   async function onSilentRefresh() {
     console.log("엑세스 토큰 시간 만료");
     const data = localStorage.getItem("refreshToken");
-    console.log("리프레쉬:" + data);
     axios
       .post(
         "/api/v1/accessToken",
@@ -121,16 +117,15 @@ function LogIn() {
       .then((response) => {
         const { authorization } = response.headers;
         localStorage.setItem("accessToken", authorization);
-        console.log(response);
+
         jwtDecode(authorization);
       })
       .catch((error) => {});
   }
   //유저정보 요청
   async function onUser() {
-    console.log("유저정보요청 AccessToken");
     const data = localStorage.getItem("accessToken");
-    console.log(data);
+
     axios
       .get("/api/v1/members", { headers: { Authorization: `Bearer ${data}` } })
       .then((response) => {

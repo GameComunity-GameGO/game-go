@@ -54,10 +54,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://3.39.37.209:8080/",
   "devDependencies": {
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "@types/styled-components": "^5.1.25"
   },
-  "proxy": "http://3.39.37.209:8080/"
+  "proxy": "http://3.37.151.44:8080/"
 }

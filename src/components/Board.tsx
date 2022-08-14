@@ -84,23 +84,23 @@ function Board({
   const navigate = useNavigate();
   return (
     <Content>
-      <TagUl>
-        {tag.tag.map((item: string, index: number) => (
-          <TagLi key={index}>#{item}</TagLi>
-        ))}
-      </TagUl>
-      <ContentHeader>
-        <ContentData>
-          {/* {date} */}
-          {item}일전
-        </ContentData>
-        <span>{subTitle}</span>
-      </ContentHeader>
-      <ContentDetail>
-        <Detail>{subDetail}</Detail>
-        <UserJoin>
-          {type === "게시판" || boardName === "게시판" ? (
-            <>
+      {type === "게시판" || boardName === "게시판" ? (
+        <>
+          <TagUl>
+            {tag.tag.map((item: string, index: number) => (
+              <TagLi key={index}>#{item}</TagLi>
+            ))}
+          </TagUl>
+          <ContentHeader>
+            <ContentData>
+              {/* {date} */}
+              {item}일전
+            </ContentData>
+            <span>{subTitle}</span>
+          </ContentHeader>
+          <ContentDetail>
+            <Detail>{subDetail}</Detail>
+            <UserJoin>
               <div>{userName}</div>
               <div
                 onClick={() =>
@@ -109,23 +109,57 @@ function Board({
               >
                 보러가기
               </div>
-            </>
-          ) : type === "채팅방" || boardName === "채팅방" ? (
-            <>
+            </UserJoin>
+          </ContentDetail>
+        </>
+      ) : type === "채팅방" || boardName === "채팅방" ? (
+        <>
+          <TagUl>
+            {tag.tag.map((item: string, index: number) => (
+              <TagLi key={index}>#{item}</TagLi>
+            ))}
+          </TagUl>
+          <ContentHeader>
+            <ContentData>
+              {/* {date} */}
+              {item}일전
+            </ContentData>
+            <span>{subTitle}</span>
+          </ContentHeader>
+          <ContentDetail>
+            <Detail>{subDetail}</Detail>
+            <UserJoin>
               <div>{userName}</div>
               <div>입장하기</div>
-            </>
-          ) : type === "게이머 구하기" || boardName === "게이머 구하기" ? (
-            <>
+            </UserJoin>
+          </ContentDetail>
+        </>
+      ) : type === "게이머 구하기" || boardName === "게이머 구하기" ? (
+        <>
+          <TagUl>
+            {tag.tag.map((item: string, index: number) => (
+              <TagLi key={index}>#{item}</TagLi>
+            ))}
+          </TagUl>
+          <ContentHeader>
+            <ContentData>
+              {/* {date} */}
+              {item}일전
+            </ContentData>
+            <span>{subTitle}</span>
+          </ContentHeader>
+          <ContentDetail>
+            <Detail>{subDetail}</Detail>
+            <UserJoin>
               <div>
                 <img src={process.env.PUBLIC_URL + `/image/${"top"}.png`} />
                 <span>{userName}</span>
               </div>
               <div>같이하기</div>
-            </>
-          ) : null}
-        </UserJoin>
-      </ContentDetail>
+            </UserJoin>
+          </ContentDetail>
+        </>
+      ) : null}
     </Content>
   );
 }

@@ -7,6 +7,10 @@ import styled from "styled-components";
 import CategoryNav from "../../components/CategoryNav";
 import Siderbar from "../../components/Siderbar";
 import "react-quill/dist/quill.snow.css";
+import BoardView from "./BoardView";
+import { content } from "../../redux/action";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const toolbarOptions = [
   ["link", "image", "video"],
@@ -166,6 +170,13 @@ interface IBoardWrite {
   image: string;
 }
 function BoardWrite() {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    withCredentials: true,
+  };
   const {
     register,
     handleSubmit,
@@ -173,8 +184,11 @@ function BoardWrite() {
     setValue,
     formState: { errors },
   } = useForm<IBoardWrite>();
+  const dispatch = useDispatch();
+  const data = localStorage.getItem("accessToken");
   const onSubmit = ({ select, title, contents }: any) => {
-    console.log(select, title, contents);
+    console.log(type, select, title, contents);
+    Write(type, select, title, contents);
   };
   const { pathname } = useLocation();
   const Type = ["자유", "유머", "유저뉴스", "영상", "팬아트"];
@@ -187,6 +201,24 @@ function BoardWrite() {
     setValue("contents", value);
   };
 
+  const Write = (type: any, select: string, title: string, contents: any) => {
+    axios
+      .post(
+        `/api/board`,
+        JSON.stringify({
+          title: title,
+          contents: contents,
+          category: type,
+        }),
+        config
+      )
+      .then((reponse) => {
+        console.log(reponse);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Wrap>
       <CategoryNav />

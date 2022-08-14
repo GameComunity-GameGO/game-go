@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CategoryNav from "../../components/CategoryNav";
@@ -63,7 +65,27 @@ const PostWrap = styled.div`
   }
 `;
 const ViewWrap = styled.div``;
-const PostTitle = styled.div``;
+const PostTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  button {
+    :first-child {
+      margin-right: 10px;
+    }
+    font-size: 14px;
+    width: 60px;
+    height: 40px;
+    font-weight: 400;
+    background-color: #373e59;
+    border: none;
+    border: 1px solid black;
+    color: whitesmoke;
+    cursor: pointer;
+    :hover {
+      color: #2196f3;
+    }
+  }
+`;
 const ContentWrap = styled.div`
   display: flex;
   height: fit-content;
@@ -90,6 +112,7 @@ function BoardView() {
   }, [pathname]);
   const navigate = useNavigate();
   const { game, type, id } = useParams();
+
   return (
     <Wrap>
       <CategoryNav />
@@ -112,9 +135,16 @@ function BoardView() {
           <ViewWrap>
             <PostWrap>
               <PostTitle>
-                <span>Title {id}</span>
-                <span>UserName</span>
+                <div>
+                  <span>Title {id}</span>
+                  <span>UserName</span>
+                </div>
+                <div>
+                  <button>수정</button>
+                  <button>삭제</button>
+                </div>
               </PostTitle>
+              {/* <div dangerouslySetInnerHTML={{ __html: content }}></div> */}
               <div>Script</div>
             </PostWrap>
             <CommentWrap>
