@@ -21,15 +21,6 @@ interface IForm {
   email: string;
   password: string;
 }
-export const client = axios.create({});
-export const accessClient = axios.create({
-  timeout: 180000,
-  withCredentials: false,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  },
-});
 function LogIn() {
   const config = {
     headers: {
@@ -78,15 +69,15 @@ function LogIn() {
   //jwt 받아오는 decode
   async function jwtDecode(token: any) {
     const decoded: any = jwt_decode(token);
-    console.log(decoded?.exp);
+    // console.log(decoded?.exp);
     var reTime = decoded.exp;
     console.log("1.만료:", reTime);
 
     async function getTime() {
       return new Promise(function (resolve, reject) {
         const date: number = Date.now();
-        var nowTime = Math.floor(date / 1000);
-        console.log(nowTime);
+        const nowTime = Math.floor(date / 1000);
+        // console.log("현재시간:", nowTime);
         while (nowTime <= reTime) {
           setTimeout(getTime, 1000);
           return nowTime;

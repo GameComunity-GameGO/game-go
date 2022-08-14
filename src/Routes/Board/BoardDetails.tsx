@@ -7,6 +7,8 @@ import CategoryNav from "../../components/CategoryNav";
 import ChatWrite from "../../components/ChatWrite";
 import GamerWrite from "../../components/GamerWrite";
 import Siderbar from "../../components/Siderbar";
+import Top from "../../components/Top";
+import axios from "axios";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -144,10 +146,32 @@ function BoardDetails() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  // useEffect(()=>{
+  //   try{
+  //     const res =  axios.get(``)
+  //   }
+  // })
+
   const navigate = useNavigate();
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  };
+  function getGamer() {
+    console.log("게이머정보 요청");
+    axios
+      .get("/api/v1/members")
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {});
+  }
   return (
     <Wrap>
       <CategoryNav />
+      <Top></Top>
       <Header>
         <Banner
           bgphoto={
