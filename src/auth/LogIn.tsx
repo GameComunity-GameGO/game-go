@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
+
 import {
   Success,
   Form,
@@ -21,15 +22,6 @@ interface IForm {
   email: string;
   password: string;
 }
-export const client = axios.create({});
-export const accessClient = axios.create({
-  timeout: 180000,
-  withCredentials: false,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  },
-});
 function LogIn() {
   const config = {
     headers: {
@@ -64,68 +56,44 @@ function LogIn() {
       .then(loginSuccess)
       .catch((error) => {
         console.log(error);
-        // 임시 에러 처리
-        // setError("password", {
-        //   message: "*로그인이 잘못되었습니다.",
-        // });
       });
   };
-  //테스트용
-  const getJwtDecode = () => {
-    const data = localStorage.getItem("accessToken");
-    jwtDecode(data);
-  };
-  //jwt 받아오는 decode
-  async function jwtDecode(token: any) {
-    const decoded: any = jwt_decode(token);
-    console.log(decoded?.exp);
-    var reTime = decoded.exp;
-    console.log("1.만료:", reTime);
-
-    async function getTime() {
-      return new Promise(function (resolve, reject) {
-        const date: number = Date.now();
-        var nowTime = Math.floor(date / 1000);
-        console.log(nowTime);
-        while (nowTime <= reTime) {
-          setTimeout(getTime, 1000);
-          return nowTime;
-        }
-        console.log("2.빠져나옴");
-        resolve(nowTime);
-        isAccessTokenEnd(nowTime);
-      });
-    }
-    function isAccessTokenEnd(t: any) {
-      console.log("3.비교");
-      if (t >= reTime) {
-        onSilentRefresh();
-      }
-    }
-    await getTime();
-  }
-  async function onSilentRefresh() {
+  const requestAccessToken = async (refreshToken: any) => {
     console.log("엑세스 토큰 시간 만료");
     const data = localStorage.getItem("refreshToken");
     console.log("리프레쉬:" + data);
-    axios
+    return await axios
       .post(
         "/api/v1/accessToken",
         (axios.defaults.headers.common[
           "Authorization_refresh"
         ] = `Bearer ${data}`)
       )
-      // , {
-      //   headers: { Authorization_refresh: `Bearer ${data}` },
-      // })
       .then((response) => {
         const { authorization } = response.headers;
         localStorage.setItem("accessToken", authorization);
         console.log(response);
-        jwtDecode(authorization);
+        return response;
       })
-      .catch((error) => {});
-  }
+      .catch((e) => {
+        // console.log(e.response);
+      });
+  };
+  const checkAccessToken = async (refreshToken: any) => {
+    if (axios.defaults.headers.common["Authorization"] === undefined) {
+      return await requestAccessToken(refreshToken).then((response) => {
+        return response;
+      });
+    } else {
+      console.log("아직 엑세스 토큰 만료 안됨");
+      return axios.defaults.headers.common["Authorization"];
+    }
+  };
+  //테스트용
+  const getAccessToken = () => {
+    checkAccessToken(localStorage.getItem("refreshToken"));
+  };
+
   //유저정보 요청
   async function onUser() {
     console.log("유저정보요청 AccessToken");
@@ -142,20 +110,18 @@ function LogIn() {
   //로그인 성공 시
   async function loginSuccess(response: any) {
     console.log("로그인 성공");
-    function sleep(ms: any) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     const { authorization, authorization_refresh } = response.headers;
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${authorization}`;
     // axios.defaults.headers.common[
     //   "Authorization-refresh"
     // ] = `Bearer ${authorization_refresh}`;
     localStorage.setItem("accessToken", authorization);
     localStorage.setItem("refreshToken", authorization_refresh);
     console.log(response);
-    jwtDecode(authorization);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${authorization}`;
+    checkAccessToken(localStorage.getItem("refreshToken"));
+    return response;
   }
 
   const logoutSuccess = (val: any) => {
@@ -211,7 +177,7 @@ function LogIn() {
       <LinkContainer>
         아직 회원이 아니신가요?&nbsp;
         <Button2 onClick={toggleHandler}>회원가입 하러가기</Button2>
-        <Button2 onClick={getJwtDecode}>재발급</Button2>
+        <Button2 onClick={getAccessToken}>재발급</Button2>
         <Button2 onClick={onUser}>jwtjwt</Button2>
         <Button2 onClick={getLogOut}>logout</Button2>
       </LinkContainer>

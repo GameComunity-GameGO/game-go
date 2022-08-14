@@ -7,6 +7,7 @@ import CategoryNav from "../../components/CategoryNav";
 import ChatWrite from "../../components/ChatWrite";
 import GamerWrite from "../../components/GamerWrite";
 import Siderbar from "../../components/Siderbar";
+import Top from "../../components/Header";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -147,6 +148,7 @@ function BoardDetails() {
   const navigate = useNavigate();
   return (
     <Wrap>
+      <Top></Top>
       <CategoryNav />
       <Header>
         <Banner

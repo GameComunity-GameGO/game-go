@@ -98,12 +98,13 @@ export const Button2 = styled.div`
 export const Button3 = styled.div`
   margin-bottom: 1px;
   font-weight: 600;
+  font-size: 11px;
   &:hover {
     display: block;
     text-align: left;
     color: #2196f3;
     padding-bottom: 8px;
-    font-size: 13px;
+    font-size: 10px;
     cursor: pointer;
     line-height: 1.46666667;
     font-weight: 700;
