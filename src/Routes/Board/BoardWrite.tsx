@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
-
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CategoryNav from "../../components/CategoryNav";
 import Siderbar from "../../components/Siderbar";
 import "react-quill/dist/quill.snow.css";
-import BoardView from "./BoardView";
-import { content } from "../../redux/action";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 

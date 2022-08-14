@@ -1,7 +1,7 @@
 const init = {
   loginToggle: false,
   signupToggle: true,
-  content: "",
+  board: [],
 };
 
 const rootReducer = (state = {}, action: any) => {
@@ -12,6 +12,8 @@ const rootReducer = (state = {}, action: any) => {
       return { ...state, signupToggle: action.data };
     case "SET_CONTENT":
       return { ...state, content: action.data };
+    case "SET_BOARDINFO":
+      return { ...state, board: action.data };
     default:
       return state;
   }

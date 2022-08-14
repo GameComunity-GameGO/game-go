@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CategoryNav from "../components/CategoryNav";
 import BoardSlider from "../components/BoardSlider";
 import ImageSlider from "../components/ImageSlider";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { BoardInfo } from "../redux/action";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -33,7 +36,28 @@ function GamePage() {
     tag: ["랭크", "빡겜"],
   });
   const { game } = useParams();
-
+  const dispatch = useDispatch();
+  const { board } = useSelector((state: any) => ({
+    board: state.board,
+  }));
+  // useEffect(() => {
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //     },
+  //     withCredentials: true,
+  //   };
+  //   axios
+  //     .get(`/api/all/board`, config)
+  //     .then((reponse) => {
+  //       console.log(reponse.data.content);
+  //       dispatch(BoardInfo(reponse.data.content));
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
   return (
     <Wrap>
       <ImageSlider />
@@ -46,7 +70,6 @@ function GamePage() {
         <BoardSlider
           game={game}
           boardName={"게시판"}
-          date={"1일 전"}
           tag={dumyTag}
           subTitle={"공룡의 정체"}
           subDetail={"공룡은 사실 닭이다?"}

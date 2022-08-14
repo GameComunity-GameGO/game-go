@@ -11,9 +11,9 @@ export const setSignUpToggle = (toggle: boolean) => ({
   type: "SET_SIGNUPTOGGLE",
   data: toggle,
 });
-export const content = (contents: any) => ({
-  type: "SET_CONTENT",
-  data: contents,
+export const BoardInfo = (boardInfo: any) => ({
+  type: "SET_BOARDINFO",
+  data: boardInfo,
 });
 // export function loginUser(dataToSubmit) {
 //   const request = axios

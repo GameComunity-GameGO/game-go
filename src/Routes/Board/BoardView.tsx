@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { MotionConfigContext } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -105,58 +106,107 @@ const CommentTitle = styled.div`
 `;
 
 function BoardView() {
+  const [data, setData] = useState<any>({});
   const { pathname } = useLocation();
-  const Type = ["자유", "유머", "유저뉴스", "영상", "팬아트"];
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   const navigate = useNavigate();
   const { game, type, id } = useParams();
-
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    withCredentials: true,
+  };
+  useEffect(() => {
+    axios
+      .get(`api/board/${id}`, config)
+      .then((reponse) => {
+        console.log(reponse);
+        setData(reponse.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  const onDelBtn = () => {
+    axios.delete(`/api/board/${id}`, config).then((reponse) => {
+      console.log(reponse);
+      navigate(`/gamepage/${game}/${type}`);
+    });
+  };
+  const onLike = () => {
+    if (data.checkLikes === 0) {
+      axios
+        .post(`/api/board/${id}/like`, config)
+        .then((reponse) => console.log(reponse));
+    } else {
+      axios
+        .delete(`/api/board/${id}/like`, config)
+        .then((reponse) => console.log(reponse));
+    }
+  };
+  console.log(data.checkLikes);
   return (
     <Wrap>
-      <CategoryNav />
-      <Header>
-        <Banner
-          bgphoto={
-            "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt728b7e80503d4a3b/60b813c6a8cd6a0a26e29220/Patch_11_12_Notes_Banner.jpg"
-          }
-        ></Banner>
-      </Header>
-      <ContentsWrap>
-        <GameTitle>
-          <span>{type}</span>
-          <span>{game} </span>
-          <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
-        </GameTitle>
+      {data && (
+        <>
+          <CategoryNav />
+          <Header>
+            <Banner
+              bgphoto={
+                "https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt728b7e80503d4a3b/60b813c6a8cd6a0a26e29220/Patch_11_12_Notes_Banner.jpg"
+              }
+            ></Banner>
+          </Header>
+          <ContentsWrap>
+            <GameTitle>
+              <span>{type}</span>
+              <span>{game} </span>
+              <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
+            </GameTitle>
 
-        <ContentWrap>
-          <Siderbar />
-          <ViewWrap>
-            <PostWrap>
-              <PostTitle>
-                <div>
-                  <span>Title {id}</span>
-                  <span>UserName</span>
-                </div>
-                <div>
-                  <button>수정</button>
-                  <button>삭제</button>
-                </div>
-              </PostTitle>
-              {/* <div dangerouslySetInnerHTML={{ __html: content }}></div> */}
-              <div>Script</div>
-            </PostWrap>
-            <CommentWrap>
-              <CommentTitle>
-                <span>댓글</span> 총 0개
-              </CommentTitle>
-              <CommentWrite />
-              <CommentView />
-            </CommentWrap>
-          </ViewWrap>
-        </ContentWrap>
-      </ContentsWrap>
+            <ContentWrap>
+              <Siderbar />
+              <ViewWrap>
+                <PostWrap>
+                  <PostTitle>
+                    <div>
+                      <span>{data.title} </span>
+                      <span>{data.memberDTO?.nickname}</span>
+                    </div>
+                    <div onClick={onLike}>좋아요</div>
+                    <div>
+                      <button
+                        onClick={() =>
+                          navigate(
+                            `/gamepage/${game}/${type}/boardupdate/${id}`
+                          )
+                        }
+                      >
+                        수정
+                      </button>
+                      <button onClick={onDelBtn}>삭제</button>
+                    </div>
+                  </PostTitle>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: data.contents }}
+                  ></div>
+                </PostWrap>
+                <CommentWrap>
+                  <CommentTitle>
+                    <span>댓글</span> 총 0개
+                  </CommentTitle>
+                  <CommentWrite />
+                  <CommentView />
+                </CommentWrap>
+              </ViewWrap>
+            </ContentWrap>
+          </ContentsWrap>
+        </>
+      )}
     </Wrap>
   );
 }

@@ -72,6 +72,7 @@ const TagLi = styled.li`
 `;
 function Board({
   date,
+  id,
   item,
   tag,
   subTitle,
@@ -82,29 +83,27 @@ function Board({
   boardName,
 }: any) {
   const navigate = useNavigate();
+
   return (
     <Content>
       {type === "게시판" || boardName === "게시판" ? (
         <>
-          <TagUl>
+          {/* <TagUl>
             {tag.tag.map((item: string, index: number) => (
               <TagLi key={index}>#{item}</TagLi>
             ))}
-          </TagUl>
+          </TagUl> */}
           <ContentHeader>
-            <ContentData>
-              {/* {date} */}
-              {item}일전
-            </ContentData>
+            <ContentData></ContentData>
             <span>{subTitle}</span>
           </ContentHeader>
           <ContentDetail>
-            <Detail>{subDetail}</Detail>
+            <Detail></Detail>
             <UserJoin>
               <div>{userName}</div>
               <div
                 onClick={() =>
-                  navigate(`/gamepage/${game}/게시판/boardview/${item}`)
+                  navigate(`/gamepage/${game}/게시판/boardview/${id}`)
                 }
               >
                 보러가기

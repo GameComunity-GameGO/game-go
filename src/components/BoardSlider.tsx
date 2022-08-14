@@ -1,6 +1,9 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { BoardInfo } from "../redux/action";
 import Board from "./Board";
 
 const Wrap = styled.div`
@@ -59,6 +62,7 @@ function BoardView({
   userName,
   tag,
   boardName,
+  data,
 }: any) {
   const navigate = useNavigate();
   const offset = 3;
@@ -87,6 +91,7 @@ function BoardView({
       setIndex((prev) => (prev === 0 ? 0 : prev - 1));
     }
   };
+
   return (
     <Wrap>
       <Title>{boardName}</Title>

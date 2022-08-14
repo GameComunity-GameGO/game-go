@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Board from "../../components/Board";
 import CategoryNav from "../../components/CategoryNav";
 import ChatWrite from "../../components/ChatWrite";
 import GamerWrite from "../../components/GamerWrite";
+import { BoardInfo } from "../../redux/action";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -103,7 +105,6 @@ function BoardDetails() {
   const { pathname } = useLocation();
   const { game, type } = useParams();
   const [createView, setCreateView] = useState(false);
-  const [dumy, setDumy] = useState<any>([]);
   const [dumyTag, setDumyTag] = useState({
     tag: ["랭크", "빡겜"],
   });
@@ -124,9 +125,13 @@ function BoardDetails() {
   const Voice = ["보이스 OFF", "보이스 ON"];
   const Tag = ["자유", "빡겜", "친목"];
   const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  const { board } = useSelector((state: any) => ({
+    board: state.board,
+  }));
   useEffect(() => {
     const config = {
       headers: {
@@ -138,8 +143,8 @@ function BoardDetails() {
     axios
       .get(`/api/all/board`, config)
       .then((reponse) => {
-        setDumy(reponse.data.content);
-        console.log(dumy);
+        console.log(reponse.data.content);
+        dispatch(BoardInfo(reponse.data.content));
       })
       .catch((error) => {
         console.log(error);
@@ -183,18 +188,18 @@ function BoardDetails() {
             </HeaderFormWrap>
             <ContentWrap>
               <Contents>
-                {dumy &&
-                  dumy.map((item: any) => (
+                {board &&
+                  board.map((item: any) => (
                     <Board
                       game={game}
                       type={type}
-                      key={item.id}
-                      date={"일전"}
+                      key={item.boardId}
+                      id={item.boardId}
+                      date={item.createdDate}
                       item={item}
                       tag={dumyTag}
                       subTitle={item.title}
-                      subDetail={"subDetail"}
-                      userName={"userName"}
+                      userName={item.memberDTO.nickname}
                     />
                   ))}
               </Contents>

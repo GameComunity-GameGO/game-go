@@ -125,7 +125,6 @@ function LogIn() {
   //유저정보 요청
   async function onUser() {
     const data = localStorage.getItem("accessToken");
-
     axios
       .get("/api/v1/members", { headers: { Authorization: `Bearer ${data}` } })
       .then((response) => {
