@@ -15,7 +15,7 @@ import {
   Container,
   Button2,
 } from "./styles";
-import { setSignUpToggle } from "../redux/action";
+import { setSignUpToggle, setUserName } from "../redux/action";
 import { access } from "fs";
 interface IForm {
   email: string;
@@ -31,6 +31,7 @@ export const accessClient = axios.create({
   },
 });
 function LogIn() {
+  const dispatch = useDispatch();
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -79,7 +80,7 @@ function LogIn() {
   async function jwtDecode(token: any) {
     const decoded: any = jwt_decode(token);
     var reTime = decoded.exp;
-
+    dispatch(setUserName(decoded.username));
     async function getTime() {
       return new Promise(function (resolve, reject) {
         const date: number = Date.now();
@@ -111,9 +112,6 @@ function LogIn() {
           "Authorization_refresh"
         ] = `Bearer ${data}`)
       )
-      // , {
-      //   headers: { Authorization_refresh: `Bearer ${data}` },
-      // })
       .then((response) => {
         const { authorization } = response.headers;
         localStorage.setItem("accessToken", authorization);
@@ -128,10 +126,11 @@ function LogIn() {
     axios
       .get("/api/v1/members", { headers: { Authorization: `Bearer ${data}` } })
       .then((response) => {
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${data}`;
         console.log(response);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   }
   //로그인 성공 시
   async function loginSuccess(response: any) {
@@ -179,7 +178,7 @@ function LogIn() {
         console.log(error);
       });
   };
-  const dispatch = useDispatch();
+
   const toggleHandler = () => {
     dispatch(setSignUpToggle(false));
   };

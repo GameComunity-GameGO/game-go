@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Search from "../components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { BoardInfo } from "../redux/action";
+import { setBoardInfo } from "../redux/action";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -52,7 +52,7 @@ function GamePage() {
   //     .get(`/api/all/board`, config)
   //     .then((reponse) => {
   //       console.log(reponse.data.content);
-  //       dispatch(BoardInfo(reponse.data.content));
+  //       dispatch(setBoardInfo(reponse.data.content));
   //     })
   //     .catch((error) => {
   //       console.log(error);

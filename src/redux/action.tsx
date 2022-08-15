@@ -1,8 +1,3 @@
-export const test = (TEST: Object) => ({
-  type: "TEST",
-  payload: TEST,
-});
-
 export const setLogInToggle = (toggle: boolean) => ({
   type: "SET_LOGINTOGGLE",
   data: toggle,
@@ -11,11 +6,15 @@ export const setSignUpToggle = (toggle: boolean) => ({
   type: "SET_SIGNUPTOGGLE",
   data: toggle,
 });
-export const BoardInfo = (boardInfo: any) => ({
+export const setBoardInfo = (boardInfo: any) => ({
   type: "SET_BOARDINFO",
   data: boardInfo,
 });
-// export function loginUser(dataToSubmit) {
+export const setUserName = (username: any) => ({
+  type: "SET_USERNAME",
+  data: username,
+});
+// export function onUser(dataToSubmit) {
 //   const request = axios
 //     .post("/api/users/login", dataToSubmit)
 //     .then((response) => response.data);

@@ -1,9 +1,6 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { BoardInfo } from "../redux/action";
 import Board from "./Board";
 
 const Wrap = styled.div`

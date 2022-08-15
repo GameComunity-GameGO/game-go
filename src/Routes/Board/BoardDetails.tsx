@@ -7,7 +7,7 @@ import Board from "../../components/Board";
 import CategoryNav from "../../components/CategoryNav";
 import ChatWrite from "../../components/ChatWrite";
 import GamerWrite from "../../components/GamerWrite";
-import { BoardInfo } from "../../redux/action";
+import { setBoardInfo } from "../../redux/action";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -144,7 +144,7 @@ function BoardDetails() {
       .get(`/api/all/board`, config)
       .then((reponse) => {
         console.log(reponse.data.content);
-        dispatch(BoardInfo(reponse.data.content));
+        dispatch(setBoardInfo(reponse.data.content));
       })
       .catch((error) => {
         console.log(error);

@@ -107,6 +107,12 @@ const CommentTitle = styled.div`
 
 function BoardView() {
   const [data, setData] = useState<any>({});
+  const [userNick, setUserNick] = useState("");
+  const [onUD, setOnUD] = useState(false);
+  const { username } = useSelector((state: any) => ({
+    username: state.username,
+  }));
+
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -121,11 +127,20 @@ function BoardView() {
     withCredentials: true,
   };
   useEffect(() => {
+    console.log(username);
     axios
       .get(`api/board/${id}`, config)
       .then((reponse) => {
-        console.log(reponse);
         setData(reponse.data);
+        console.log(data);
+        axios
+          .get(`/api/v1/member/${username}`)
+          .then((reponse) => {
+            setUserNick(reponse.data.nickname);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -148,7 +163,6 @@ function BoardView() {
         .then((reponse) => console.log(reponse));
     }
   };
-  console.log(data.checkLikes);
   return (
     <Wrap>
       {data && (
@@ -179,16 +193,20 @@ function BoardView() {
                     </div>
                     <div onClick={onLike}>좋아요</div>
                     <div>
-                      <button
-                        onClick={() =>
-                          navigate(
-                            `/gamepage/${game}/${type}/boardupdate/${id}`
-                          )
-                        }
-                      >
-                        수정
-                      </button>
-                      <button onClick={onDelBtn}>삭제</button>
+                      {data.memberDTO?.nickname === userNick && (
+                        <>
+                          <button
+                            onClick={() =>
+                              navigate(
+                                `/gamepage/${game}/${type}/boardupdate/${id}`
+                              )
+                            }
+                          >
+                            수정
+                          </button>
+                          <button onClick={onDelBtn}>삭제</button>
+                        </>
+                      )}
                     </div>
                   </PostTitle>
                   <div
