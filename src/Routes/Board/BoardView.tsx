@@ -1,13 +1,14 @@
 import axios from "axios";
 import { MotionConfigContext } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CategoryNav from "../../components/CategoryNav";
-import CommentView from "../../components/CommentView";
-import CommentWrite from "../../components/CommentWrite";
+import CommentView from "../../components/Board/CommentView";
+import CommentWrite from "../../components/Board/CommentWrite";
 import Siderbar from "../../components/Siderbar";
+import { setComment } from "../../redux/action";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 120vh;
@@ -109,10 +110,11 @@ function BoardView() {
   const [data, setData] = useState<any>({});
   const [userNick, setUserNick] = useState("");
   const [onUD, setOnUD] = useState(false);
-  const { username } = useSelector((state: any) => ({
+  const { username, comment } = useSelector((state: any) => ({
     username: state.username,
+    comment: state.comment,
   }));
-
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -127,20 +129,19 @@ function BoardView() {
     withCredentials: true,
   };
   useEffect(() => {
-    console.log(username);
     axios
       .get(`api/board/${id}`, config)
       .then((reponse) => {
         setData(reponse.data);
-        console.log(data);
-        axios
-          .get(`/api/v1/member/${username}`)
-          .then((reponse) => {
-            setUserNick(reponse.data.nickname);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        dispatch(setComment(reponse.data.replyList));
+        // axios
+        //   .get(`/api/v1/member/${username}`)
+        //   .then((reponse) => {
+        //     setUserNick(reponse.data.nickname);
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
       })
       .catch((error) => {
         console.log(error);
@@ -163,6 +164,7 @@ function BoardView() {
         .then((reponse) => console.log(reponse));
     }
   };
+
   return (
     <Wrap>
       {data && (
@@ -191,7 +193,8 @@ function BoardView() {
                       <span>{data.title} </span>
                       <span>{data.memberDTO?.nickname}</span>
                     </div>
-                    <div onClick={onLike}>좋아요</div>
+                    <div onClick={onLike}>좋아요{data.likes?.length}</div>
+
                     <div>
                       {data.memberDTO?.nickname === userNick && (
                         <>
@@ -215,7 +218,7 @@ function BoardView() {
                 </PostWrap>
                 <CommentWrap>
                   <CommentTitle>
-                    <span>댓글</span> 총 0개
+                    <span>댓글</span> 총 {comment.length}개
                   </CommentTitle>
                   <CommentWrite />
                   <CommentView />

@@ -3,6 +3,7 @@ const init = {
   signupToggle: true,
   board: [],
   username: "",
+  comment: [],
 };
 
 const rootReducer = (state = init, action: any) => {
@@ -17,6 +18,8 @@ const rootReducer = (state = init, action: any) => {
       return { ...state, board: action.data };
     case "SET_USERNAME":
       return { ...state, username: action.data };
+    case "SET_COMMENT":
+      return { ...state, comment: action.data };
 
     default:
       return state;

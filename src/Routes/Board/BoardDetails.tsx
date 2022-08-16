@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Board from "../../components/Board";
+import Board from "../../components/Board/Board";
 import CategoryNav from "../../components/CategoryNav";
 import ChatWrite from "../../components/ChatWrite";
 import GamerWrite from "../../components/GamerWrite";
@@ -143,7 +143,6 @@ function BoardDetails() {
     axios
       .get(`/api/all/board`, config)
       .then((reponse) => {
-        console.log(reponse.data.content);
         dispatch(setBoardInfo(reponse.data.content));
       })
       .catch((error) => {

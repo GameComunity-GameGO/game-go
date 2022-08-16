@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CategoryNav from "../components/CategoryNav";
-import BoardSlider from "../components/BoardSlider";
+import BoardSlider from "../components/Board/BoardSlider";
 import ImageSlider from "../components/ImageSlider";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
