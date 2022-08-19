@@ -32,7 +32,7 @@ const Comment = styled.div`
     font-size: 13px;
     width: 120px;
     height: 40px;
-    background-color: #373e59;
+    background-color: #282e40;
     border: none;
     border: 1px solid black;
     color: whitesmoke;
@@ -57,18 +57,12 @@ const UserName = styled.div`
 interface ICommentWrite {
   content: string;
 }
-function CommentUpdate() {
-  let data = null;
-  const [nick, setNick] = useState("");
-  const { game, type, id, reply } = useParams();
-  const { comment } = useSelector((state: any) => ({
-    comment: state.comment,
-  }));
-  useEffect(() => {
-    data = comment.filter((ele: any) => ele.id === Number(reply));
-    setValue("content", data[0].content);
-    setNick(data[0].memberDTO.nickname);
-  }, []);
+function CommentUpdate(props: any) {
+  // let data = null;
+  // const { comment } = useSelector((state: any) => ({
+  //   comment: state.comment,
+  // }));
+
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -86,11 +80,14 @@ function CommentUpdate() {
   const onSubmit = ({ content }: any) => {
     Update(content);
   };
-
+  useEffect(() => {
+    // data = comment.filter((ele: any) => ele.id === Number(reply));
+    setValue("content", props.value);
+  }, []);
   const Update = (content: any) => {
     axios
       .put(
-        `/api/reply/${reply}`,
+        `/api/reply/${props.reply}`,
         JSON.stringify({
           content: content,
         }),
@@ -109,10 +106,6 @@ function CommentUpdate() {
   return (
     <CommentBox>
       <Comment>
-        <UserName>
-          <div>{nick}</div>
-          <div>2022년 2월 2일</div>
-        </UserName>
         <form onSubmit={handleSubmit(onSubmit)}>
           <textarea
             onChange={handleChange}

@@ -125,6 +125,23 @@ function BoardDetails() {
   const Voice = ["보이스 OFF", "보이스 ON"];
   const Tag = ["자유", "빡겜", "친목"];
   const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
+  const [dumy, setDumy] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+  ]);
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -201,6 +218,19 @@ function BoardDetails() {
                       userName={item.memberDTO.nickname}
                     />
                   ))}
+                {/* {dumy.map((item, index) => (
+                  <Board
+                    game={game}
+                    type={type}
+                    key={index}
+                    date={"일전"}
+                    item={item}
+                    tag={dumyTag}
+                    subTitle={"subTitle"}
+                    subDetail={"subDetail"}
+                    userName={"userName"}
+                  />
+                ))} */}
               </Contents>
             </ContentWrap>
           </>

@@ -7,7 +7,7 @@ import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
 import Main from "./Routes/Main";
 import BoardUpdate from "./Routes/Board/BoardUpdate";
-import CommentUpdate from "./components/Board/CommentUpdate";
+
 function App() {
   return (
     <Router>
@@ -25,10 +25,7 @@ function App() {
           path="/gamepage/:game/:type/boardupdate/:id"
           element={<BoardUpdate />}
         ></Route>
-        <Route
-          path="/gamepage/:game/:type/commentupdate/:id/:reply"
-          element={<CommentUpdate />}
-        ></Route>
+
         <Route
           path="/gamepage/:game/:type/boardview/:id"
           element={<BoardView />}
