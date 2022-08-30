@@ -125,7 +125,6 @@ function GamerWrite() {
         JSON.stringify({
           gameUsername: username,
           introdution: content,
-          game: "리그오브레전드",
         }),
         config
       )
@@ -140,12 +139,12 @@ function GamerWrite() {
       console.log("게이머등록 성공");
     };
   };
-  async function gamerList() {
+  function gamerList() {
     console.log("게이머정보요청");
     axios
       .get("/api/v1/GamerList", config)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       })
       .catch((error) => {});
   }
