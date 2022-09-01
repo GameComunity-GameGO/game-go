@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import BoardDetails from "./Routes/Board/BoardDetails";
+import BoardDetails from "./Routes/Details";
 import BoardView from "./Routes/Board/BoardView";
 import BoardWrite from "./Routes/Board/BoardWrite";
 import GamePage from "./Routes/GamePage";

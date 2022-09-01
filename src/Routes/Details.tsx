@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Board from "../../components/Board/Board";
-import CategoryNav from "../../components/CategoryNav";
-import ChatWrite from "../../components/ChatWrite";
-import GamerWrite from "../../components/GamerWrite";
-import { setBoardInfo } from "../../redux/action";
+import Board from "../components/Board/Board";
+import CategoryNav from "../components/CategoryNav";
+import ChatWrite from "../components/ChatWrite";
+import GamerWrite from "../components/GamerWrite";
+import { setBoardInfo } from "../redux/action";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
