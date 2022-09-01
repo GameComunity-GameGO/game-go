@@ -1,14 +1,26 @@
 const init = {
   loginToggle: false,
   signupToggle: true,
+  board: [],
+  username: "",
+  comment: [],
 };
 
-const rootReducer = (state = {}, action: any) => {
+const rootReducer = (state = init, action: any) => {
   switch (action.type) {
     case "SET_LOGINTOGGLE":
       return { ...state, loginToggle: action.data };
     case "SET_SIGNUPTOGGLE":
       return { ...state, signupToggle: action.data };
+    case "SET_CONTENT":
+      return { ...state, content: action.data };
+    case "SET_BOARDINFO":
+      return { ...state, board: action.data };
+    case "SET_USERNAME":
+      return { ...state, username: action.data };
+    case "SET_COMMENT":
+      return { ...state, comment: action.data };
+
     default:
       return state;
   }

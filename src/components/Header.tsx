@@ -40,8 +40,7 @@ function Header({ view }: any) {
   }, [isOpenModal]);
   const { type: type } = useParams();
   const navigate = useNavigate();
-  const { loginToggle, signupToggle } = useSelector((state: any) => ({
-    loginToggle: state.loginToggle,
+  const { signupToggle } = useSelector((state: any) => ({
     signupToggle: state.signupToggle,
   }));
   //console.log(signupToggle);

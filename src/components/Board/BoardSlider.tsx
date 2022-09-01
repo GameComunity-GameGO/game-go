@@ -59,6 +59,7 @@ function BoardView({
   userName,
   tag,
   boardName,
+  data,
 }: any) {
   const navigate = useNavigate();
   const offset = 3;
@@ -87,6 +88,7 @@ function BoardView({
       setIndex((prev) => (prev === 0 ? 0 : prev - 1));
     }
   };
+
   return (
     <Wrap>
       <Title>{boardName}</Title>
