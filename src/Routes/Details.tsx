@@ -8,15 +8,6 @@ import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
 import { setBoardInfo } from "../redux/action";
-
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import Board from "../components/Board";
-import CategoryNav from "../components/CategoryNav";
-import ChatWrite from "../components/ChatWrite";
-import GamerWrite from "../components/GamerWrite";
-
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -49,7 +40,6 @@ const GameTitle = styled.div`
     font-size: 38px;
     font-weight: 600;
   }
-
   span:nth-child(2) {
     font-size: 16px;
     font-weight: 600;
@@ -114,24 +104,6 @@ function BoardDetails() {
   const { pathname } = useLocation();
   const { game, type } = useParams();
   const [createView, setCreateView] = useState(false);
-
-  const [dumy, setDumy] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-  ]);
   const [dumyTag, setDumyTag] = useState({
     tag: ["랭크", "빡겜"],
   });
@@ -152,6 +124,23 @@ function BoardDetails() {
   const Voice = ["보이스 OFF", "보이스 ON"];
   const Tag = ["자유", "빡겜", "친목"];
   const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
+  const [dumy, setDumy] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+  ]);
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -176,9 +165,6 @@ function BoardDetails() {
         console.log(error);
       });
   }, []);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
   const navigate = useNavigate();
   return (
     <Wrap>
@@ -197,9 +183,9 @@ function BoardDetails() {
           <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
         </GameTitle>
 
-        <HeaderFormWrap>
-          {type === "게시판" ? (
-            <>
+        {type === "게시판" ? (
+          <>
+            <HeaderFormWrap>
               <div>
                 <Select>
                   {Type.map((item) => (
@@ -250,7 +236,6 @@ function BoardDetails() {
         ) : type === "채팅방" ? (
           <>
             <HeaderFormWrap>
-
               <div>
                 <Select>
                   {Tag.map((item) => (
@@ -270,9 +255,8 @@ function BoardDetails() {
               <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
                 {createView ? "닫기" : "채팅방 생성"}
               </CreateBtn>
-
             </HeaderFormWrap>
-            {/* <ContentWrap>
+            <ContentWrap>
               <Contents>
                 {dumy.map((item, index) => (
                   <Board
@@ -288,7 +272,7 @@ function BoardDetails() {
                   />
                 ))}
               </Contents>
-            </ContentWrap> */}
+            </ContentWrap>
             {createView && <ChatWrite />}
           </>
         ) : type === "게이머 구하기" ? (
@@ -341,30 +325,6 @@ function BoardDetails() {
             {createView && <GamerWrite />}
           </>
         ) : null}
-        </HeaderFormWrap>
-        {createView && type === "채팅방" ? (
-          <ChatWrite />
-        ) : createView && type === "게이머 구하기" ? (
-          <GamerWrite />
-        ) : null}
-        <ContentWrap>
-          {/* <Siderbar /> */}
-          <Contents>
-            {dumy.map((item, index) => (
-              <Board
-                game={game}
-                type={type}
-                key={index}
-                date={"일전"}
-                item={item}
-                tag={dumyTag}
-                subTitle={"subTitle"}
-                subDetail={"subDetail"}
-                userName={"userName"}
-              />
-            ))}
-          </Contents>
-        </ContentWrap>
       </HeaderContents>
     </Wrap>
   );
