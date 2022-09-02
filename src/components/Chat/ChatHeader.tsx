@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 const Wrap = styled.div`
   width: 100%;
-  height: 55px;
-  min-height: 55px;
-  background-color: #363d51;
-  border-bottom: 1px solid #282e40;
-  box-shadow: 1px 1px 3px 1px #282e40;
+  height: 50px;
+  min-height: 50px;
+  background-color: #36393f;
+  border-bottom: 1px solid #2f3136;
+  box-shadow: 1px 1px 3px -10px #2f3136;
   display: flex;
   align-items: center;
   span {
@@ -19,6 +19,7 @@ const Logo = styled.div`
     height: 25px;
     fill: #8e9297;
     margin-right: 10px;
+    margin-top: 3px;
   }
 `;
 function ChatHeader() {

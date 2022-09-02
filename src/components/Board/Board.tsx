@@ -131,7 +131,7 @@ function Board({
               <div>{userName}</div>
               <div
                 onClick={() =>
-                  navigate(`/gamepage/${game}/게시판/chatview/${1}`)
+                  navigate(`/gamepage/${game}/채팅방/chatview/${1}`)
                 }
               >
                 입장하기

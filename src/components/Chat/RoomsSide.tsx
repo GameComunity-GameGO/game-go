@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const Wrap = styled.div`
-  width: 90px;
-  height: 100vh;
-  background-color: #282e40;
+  width: 80px;
+  height: 85vh;
+  background-color: #202225;
   padding: 15px;
 `;
 const Contents = styled.div`
@@ -12,9 +12,9 @@ const Contents = styled.div`
   align-items: center;
 `;
 const Img = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
   margin-bottom: 15px;
 `;
 function RoomsSide() {

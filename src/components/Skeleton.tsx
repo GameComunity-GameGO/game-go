@@ -20,7 +20,7 @@ const Skeletons = styled.div`
     background-image: linear-gradient(
       to left,
       transparent,
-      rgba(40, 46, 64, 0.4),
+      rgba(47, 49, 54, 0.4),
       transparent
     );
     @keyframes sweep {
@@ -40,10 +40,10 @@ const Avatar = styled.div`
   height: 55px;
   width: 55px;
   border-radius: 3px;
-  background-color: #282e40;
+  background-color: #40444b;
 `;
 const Author = styled.div`
-  background-color: #282e40;
+  background-color: #40444b;
   width: 110px;
   height: 15px;
   border-radius: 3px;
@@ -53,7 +53,7 @@ const Author = styled.div`
   right: 0;
 `;
 const Description = styled.div`
-  background-color: #282e40;
+  background-color: #40444b;
   height: 30px;
   border-radius: 3px;
   position: absolute;

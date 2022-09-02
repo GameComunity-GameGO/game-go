@@ -8,6 +8,7 @@ import Search from "../components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setBoardInfo } from "../redux/action";
+import ChatView from "./Chat/ChatView";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -94,6 +95,8 @@ function GamePage() {
           userName={"귀살대 이성호"}
         />
       </BoardWrap>
+
+      <ChatView />
     </Wrap>
   );
 }

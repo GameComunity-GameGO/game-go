@@ -7,7 +7,8 @@ import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
 import Main from "./Routes/Main";
 import BoardUpdate from "./Routes/Board/BoardUpdate";
-import ChatView from "./components/Chat/ChatView";
+import ChatView from "./Routes/Chat/ChatView";
+import Nav from "./components/Chat/ChatPhone/\bNav";
 
 function App() {
   return (
@@ -32,9 +33,10 @@ function App() {
         ></Route>
         <Route
           path="/gamepage/:game/:type/chatview/:id"
-          element={<ChatView />}
+          element={<GamePage />}
         ></Route>
       </Routes>
+      <Nav />
     </Router>
   );
 }

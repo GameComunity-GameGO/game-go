@@ -8,9 +8,12 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 10px 20px;
+  margin-bottom: 5px;
+  position: absolute;
+  bottom: 0;
 `;
 const Input = styled.input`
-  background-color: #282e40;
+  background-color: #40444b;
   border: none;
   width: 100%;
   height: 50px;

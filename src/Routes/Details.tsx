@@ -8,6 +8,7 @@ import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
 import { setBoardInfo } from "../redux/action";
+import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -236,6 +237,7 @@ function BoardDetails() {
         ) : type === "채팅방" ? (
           <>
             <HeaderFormWrap>
+              <ChatView />
               <div>
                 <Select>
                   {Tag.map((item) => (

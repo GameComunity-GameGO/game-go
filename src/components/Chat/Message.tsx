@@ -1,22 +1,21 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Skeleton from "../Skeleton";
-import ChatFrom from "./ChatForm";
+import ChatForm from "./ChatForm";
 
 const Wrap = styled.div`
   margin-top: 15px;
-  height: 82vh;
+  height: 67vh;
   padding: 10px;
   margin-left: 10px;
   padding-bottom: 0px;
   margin-right: 5px;
   overflow-y: scroll;
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #282e40;
+    background: #40444b;
     border-radius: 5px;
   }
 `;
@@ -55,12 +54,13 @@ function Message() {
     scrollToBottom();
   }, []);
   return (
-    <Wrap ref={messageBoxRef}>
-      <Contents>
-        {[...new Array(12)].map((_data, index) => (
-          <Skeleton key={index} />
-        ))}
-        {/* <Content>
+    <>
+      <Wrap ref={messageBoxRef}>
+        <Contents>
+          {[...new Array(12)].map((_data, index) => (
+            <Skeleton key={index} />
+          ))}
+          {/* <Content>
           <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
           <Msg>
             <div>
@@ -70,8 +70,10 @@ function Message() {
             <p>메시지 내용입니다.</p>
           </Msg>
         </Content> */}
-      </Contents>
-    </Wrap>
+        </Contents>
+      </Wrap>
+      {/* <ChatForm /> */}
+    </>
   );
 }
 
