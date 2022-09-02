@@ -129,7 +129,13 @@ function Board({
             <Detail>{subDetail}</Detail>
             <UserJoin>
               <div>{userName}</div>
-              <div>입장하기</div>
+              <div
+                onClick={() =>
+                  navigate(`/gamepage/${game}/게시판/chatview/${1}`)
+                }
+              >
+                입장하기
+              </div>
             </UserJoin>
           </ContentDetail>
         </>

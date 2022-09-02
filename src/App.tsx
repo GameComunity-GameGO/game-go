@@ -7,6 +7,7 @@ import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
 import Main from "./Routes/Main";
 import BoardUpdate from "./Routes/Board/BoardUpdate";
+import ChatView from "./components/Chat/ChatView";
 
 function App() {
   return (
@@ -25,10 +26,13 @@ function App() {
           path="/gamepage/:game/:type/boardupdate/:id"
           element={<BoardUpdate />}
         ></Route>
-
         <Route
           path="/gamepage/:game/:type/boardview/:id"
           element={<BoardView />}
+        ></Route>
+        <Route
+          path="/gamepage/:game/:type/chatview/:id"
+          element={<ChatView />}
         ></Route>
       </Routes>
     </Router>
