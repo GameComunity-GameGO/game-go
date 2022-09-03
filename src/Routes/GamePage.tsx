@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Search from "../components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setBoardInfo } from "../redux/action";
+import { setBoardInfo, setGmae } from "../redux/action";
 import ChatView from "./Chat/ChatView";
 
 const Wrap = styled.div`
@@ -38,6 +38,9 @@ function GamePage() {
   });
   const { game } = useParams();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setGmae(game));
+  }, []);
   const { board } = useSelector((state: any) => ({
     board: state.board,
   }));

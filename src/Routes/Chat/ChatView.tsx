@@ -25,7 +25,7 @@ const Contents = styled.div`
   width: 100%;
   position: relative;
 `;
-const ModalWrap = styled.div`
+const ModalWrap = styled(motion.div)`
   width: 80vw;
   position: absolute;
   top: 0;
@@ -41,7 +41,7 @@ function ChatView() {
   const chatMatch: PathMatch<string> | null = useMatch(
     "/gamepage/:game/:type/chatview/:id"
   );
-  console.log(chatMatch);
+  console.log(chatMatch?.params.id);
   if (chatMatch) {
     document.body.style.overflow = "hidden";
   }
@@ -59,11 +59,13 @@ function ChatView() {
             key={1}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ type: "tween", duration: 1 }}
           />
           <AnimatePresence>
             <Wrap>
-              <ModalWrap style={{ top: scrollY.get() + 60 }}>
+              <ModalWrap
+                layoutId={chatMatch?.params.id}
+                style={{ top: scrollY.get() + 60 }}
+              >
                 <Side>
                   <RoomsSide />
                 </Side>
