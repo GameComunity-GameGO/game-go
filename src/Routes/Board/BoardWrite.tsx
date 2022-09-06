@@ -131,15 +131,7 @@ interface IBoardWrite {
   image: string;
 }
 function BoardWrite() {
-  const toolbarOptions = [
-    ["link", "image", "video"],
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-  ];
-
+  const quillRef = useRef<any>();
   const imageHandler = () => {
     console.log("에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!");
 
@@ -153,17 +145,21 @@ function BoardWrite() {
 
     // input에 변화가 생긴다면 = 이미지를 선택
     input.addEventListener("change", async () => {
-      console.log("사진 첨부");
+      console.log("온체인지");
       const file = input.files[0];
       // multer에 맞는 형식으로 데이터 만들어준다.
       const formData = new FormData();
-
       formData.append("img", file); // formData는 키-밸류 구조
       // 백엔드 multer라우터에 이미지를 보낸다.
-      console.log(file);
       try {
-        // const result = await axios.post("http://localhost:4050/img", formData);
-        const result = await axios.post(`/api/`, formData, config);
+        const result = await axios.post("/s3/images", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          withCredentials: true,
+        });
+
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const IMG_URL = result.data.url;
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
@@ -181,17 +177,25 @@ function BoardWrite() {
         // 2. 현재 에디터 커서 위치값을 가져온다
         const range = editor.getSelection();
         // 가져온 위치에 이미지를 삽입한다
-        editor.insertEmbed(range.index, "image", IMG_URL);
+        editor.insertEmbed(range, "image", IMG_URL);
       } catch (error) {
-        console.log("실패했어요ㅠ");
+        console.log(error);
       }
     });
   };
-  // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
+
+  // Quill 에디터에서 사용하고싶은 모듈들을 설정한다.
+  // useMemo를 사용해 modules를 만들지 않는다면 매 렌더링 마다 modules가 다시 생성된다.
+  // 그렇게 되면 addrange() the given range isn't in document 에러가 발생한다.
+  // -> 에디터 내에 글이 쓰여지는 위치를 찾지 못하는듯
   const modules = useMemo(() => {
     return {
       toolbar: {
-        container: toolbarOptions,
+        container: [
+          ["image"],
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike", "blockquote"],
+        ],
         handlers: {
           // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
           image: imageHandler,
@@ -199,25 +203,15 @@ function BoardWrite() {
       },
     };
   }, []);
+  // 위에서 설정한 모듈들 foramts을 설정한다
   const formats = [
     "header",
-    "font",
-    "size",
     "bold",
     "italic",
     "underline",
     "strike",
-    "align",
     "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "background",
-    "color",
-    "link",
     "image",
-    "video",
-    "width",
   ];
   const config = {
     headers: {
@@ -226,7 +220,6 @@ function BoardWrite() {
     },
     withCredentials: true,
   };
-  const quillRef = useRef<any>();
 
   const {
     register,
@@ -236,7 +229,6 @@ function BoardWrite() {
     formState: { errors },
   } = useForm<IBoardWrite>();
   const dispatch = useDispatch();
-  const data = localStorage.getItem("accessToken");
   const onSubmit = ({ select, title, contents }: any) => {
     console.log(type, select, title, contents);
     Write(type, select, title, contents);
@@ -253,6 +245,7 @@ function BoardWrite() {
   };
 
   const Write = (type: any, select: string, title: string, contents: any) => {
+    console.log(type);
     axios
       .post(
         `/api/board`,
@@ -291,7 +284,10 @@ function BoardWrite() {
         <ContentWrap>
           <Siderbar />
           <Contents>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form
+              encType="multipart/form-data"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <BoardTitle>글쓰기</BoardTitle>
               <SelectWrap>
                 <Select {...register("select")}>
@@ -317,6 +313,7 @@ function BoardWrite() {
                   onChange={handleChange}
                   value={watch("contents")}
                 />
+
                 <ButtonWrap>
                   <button
                     type="button"
