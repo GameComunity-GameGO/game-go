@@ -18,6 +18,10 @@ export const setComment = (comment: any) => ({
   type: "SET_COMMENT",
   data: comment,
 });
+export const setGmae = (game: string | undefined) => ({
+  type: "SET_GAME",
+  data: game,
+});
 // export function onUser(dataToSubmit) {
 //   const request = axios
 //     .post("/api/users/login", dataToSubmit)

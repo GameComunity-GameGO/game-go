@@ -4,6 +4,7 @@ const init = {
   board: [],
   username: "",
   comment: [],
+  game: "",
 };
 
 const rootReducer = (state = init, action: any) => {
@@ -20,7 +21,8 @@ const rootReducer = (state = init, action: any) => {
       return { ...state, username: action.data };
     case "SET_COMMENT":
       return { ...state, comment: action.data };
-
+    case "SET_GAME":
+      return { ...state, game: action.data };
     default:
       return state;
   }
