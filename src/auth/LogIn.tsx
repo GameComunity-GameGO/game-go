@@ -17,7 +17,7 @@ import {
   Button2,
 } from "./styles";
 import { setSignUpToggle } from "../redux/action";
-import { access } from "fs";
+
 interface IForm {
   email: string;
   password: string;
@@ -178,7 +178,7 @@ function LogIn() {
         아직 회원이 아니신가요?&nbsp;
         <Button2 onClick={toggleHandler}>회원가입 하러가기</Button2>
         <Button2 onClick={getAccessToken}>재발급</Button2>
-        <Button2 onClick={onUser}>jwtjwt</Button2>
+        <Button2 onClick={onUser}>유저정보테스트</Button2>
         <Button2 onClick={getLogOut}>logout</Button2>
       </LinkContainer>
     </Container>
