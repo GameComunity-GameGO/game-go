@@ -54,7 +54,7 @@ function CommentView() {
   const [onUpdate, setOnUpdate] = useState(false);
   const [reply, setReply] = useState<any>();
   const { comment } = useSelector((state: any) => ({
-    comment: state.comment,
+    comment: state.Board.comment,
   }));
   const { game, type, id } = useParams();
   const config = {

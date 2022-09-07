@@ -7,7 +7,7 @@ import Board from "../components/Board/Board";
 import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
-import { setBoardInfo } from "../redux/action";
+import { setBoardInfo } from "../redux/actions/BoardAction";
 import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
   min-width: 1000px;
@@ -147,7 +147,7 @@ function BoardDetails() {
     window.scrollTo(0, 0);
   }, [pathname]);
   const { board } = useSelector((state: any) => ({
-    board: state.board,
+    board: state.Board.board,
   }));
   useEffect(() => {
     const config = {

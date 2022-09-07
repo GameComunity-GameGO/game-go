@@ -6,8 +6,8 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSignUpToggle } from "../redux/action";
 import styled from "styled-components";
+import { setSignUpToggle } from "../redux/actions/TriggerAction";
 const Wrap = styled.div`
   width: 96.5vw;
   height: 100vh;

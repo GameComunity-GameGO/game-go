@@ -258,7 +258,7 @@ function BoardWrite() {
         config
       )
       .then((reponse) => {
-        console.log(reponse);
+        navigate(-1);
       })
       .catch((error) => {
         console.log(error);

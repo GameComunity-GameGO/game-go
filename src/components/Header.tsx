@@ -41,7 +41,7 @@ function Header({ view }: any) {
   const { type: type } = useParams();
   const navigate = useNavigate();
   const { signupToggle } = useSelector((state: any) => ({
-    signupToggle: state.signupToggle,
+    signupToggle: state.Trigger.signupToggle,
   }));
   //console.log(signupToggle);
   return (

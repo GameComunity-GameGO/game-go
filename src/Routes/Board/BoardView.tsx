@@ -8,7 +8,7 @@ import CategoryNav from "../../components/CategoryNav";
 import CommentView from "../../components/Board/CommentView";
 import CommentWrite from "../../components/Board/CommentWrite";
 import Siderbar from "../../components/Siderbar";
-import { setComment } from "../../redux/action";
+import { setComment } from "../../redux/actions/BoardAction";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 120vh;
@@ -56,15 +56,13 @@ const ContentsWrap = styled.div`
 
 const PostWrap = styled.div`
   width: 690px;
-  height: 900px;
+  height: fit-content;
   background-color: #282e40;
   padding: 20px;
-  /* span:first-child {
-    display: block;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 5px;
-  } */
+  overflow: hidden;
+  img {
+    width: 100%;
+  }
 `;
 const ViewWrap = styled.div``;
 const PostTitle = styled.div`
@@ -138,9 +136,10 @@ function BoardView() {
   const [userNick, setUserNick] = useState("");
   const [onUD, setOnUD] = useState(false);
   const { username, comment } = useSelector((state: any) => ({
-    username: state.username,
-    comment: state.comment,
+    username: state.User.username,
+    comment: state.Board.comment,
   }));
+  console.log(username);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   useEffect(() => {
@@ -161,14 +160,14 @@ function BoardView() {
       .then((reponse) => {
         setData(reponse.data);
         dispatch(setComment(reponse.data.replyList));
-        // axios
-        //   .get(`/api/v1/member/${username}`)
-        //   .then((reponse) => {
-        //     setUserNick(reponse.data.nickname);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+        axios
+          .get(`/api/v1/member/${username}`, config)
+          .then((reponse) => {
+            setUserNick(reponse.data.nickname);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -217,8 +216,8 @@ function BoardView() {
                 <PostWrap>
                   <PostTitle>
                     <div>
-                      <span>{data.title} </span>
                       <span>{data.memberDTO?.nickname}</span>
+                      <div>{data.title} </div>
                     </div>
 
                     <div>
