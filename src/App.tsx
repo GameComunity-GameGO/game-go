@@ -7,7 +7,6 @@ import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
 import Main from "./Routes/Main";
 import BoardUpdate from "./Routes/Board/BoardUpdate";
-import QuilTest from "./Routes/QuilTest";
 
 function App() {
   return (
@@ -31,7 +30,6 @@ function App() {
           path="/gamepage/:game/:type/boardview/:id"
           element={<BoardView />}
         ></Route>
-        <Route path="/test" element={<QuilTest />}></Route>
       </Routes>
     </Router>
   );
