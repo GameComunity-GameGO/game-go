@@ -101,37 +101,7 @@ const ContentWrap = styled.div`
   height: fit-content;
 `;
 // const BoardDetails = ({ gamers }: any) => {
-function BoardDetails({ gamers }: any) {
-  // function getGamerList() {
-  //   console.log("게이머리스트 가져오기");
-  //   const [data, setData] = useState([]);
-  //   useEffect(() => {
-  //     axios
-  //       .get("/api/v1/GamerList", config)
-  //       .then((response) => {
-  //         console.log(response);
-  //         setData(response.data);
-  //         console.log("제발", data);
-  //       })
-  //       .catch((error) => {});
-  //   }, []);
-  // }
-  // const [gamers, setGamers] = useState([]);
-  // async function getGamerList() {
-  //   console.log("게이머정보요청");
-  //   await axios
-  //     .get("/api/v1/GamerList", config)
-  //     .then((response) => {
-  //       console.log(response);
-  //       console.log(response.data);
-  //       // setGamers(response.data);
-  //       //여기 배열 받아오는 테스트
-  //       const {
-  //         data: { gamers },
-  //       } = response.data;
-  //     })
-  //     .catch((error) => {});
-  // }
+function BoardDetails() {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -184,35 +154,38 @@ function BoardDetails({ gamers }: any) {
     window.scrollTo(0, 0);
   }, [pathname]);
   const navigate = useNavigate();
-  async function getGamerList() {
-    axios
-      .get("/api/v1/GamerList", config)
-      .then((response) => {
-        console.log(response);
-        const gamers: any[] = response.data;
+  // async function getGamerList() {
+  //   axios
+  //     .get("/api/v1/GamerList", config)
+  //     .then((response) => {
+  //       console.log(response);
+  //       const gamers: any[] = response.data;
 
-        console.log("게이머:", gamers);
-        console.log("머:", gamers[1]);
-      })
-      .catch((error) => {});
-  }
+  //       console.log("게이머:", gamers);
+  //       console.log("머:", gamers[1]);
+  //     })
+  //     .catch((error) => {});
+  // }
+  const [datas, setDatas] = useState([]);
   useEffect(() => {
+    getGamerList();
     console.log("게이머리스트");
-    // async function getGamerList() {
-    // axios
-    //   .get("/api/v1/GamerList", config)
-    //   .then((response) => {
-    //     console.log(response);
-    //     const gamers: any[] = response.data;
-
-    //     console.log("게이머:", gamers);
-    //     console.log("머:", gamers[1]);
-    //   })
-    //   .catch((error) => {});
-    // }
+    async function getGamerList() {
+      axios
+        .get("/api/v1/GamerList", config)
+        .then((response) => {
+          console.log(response);
+          setDatas(response.data);
+          console.log("데이터", datas);
+          // const gamers: any[] = response.data;
+          // console.log("게이머:", gamers);
+          // console.log("머:", gamers[1]);
+        })
+        .catch((error) => {});
+    }
     // getGamerList();
-  }, [gamers]);
-  console.log("배열확인:", gamers);
+  }, []);
+  console.log("데이터밖", datas);
   return (
     <Wrap>
       <CategoryNav />
@@ -343,35 +316,23 @@ function BoardDetails({ gamers }: any) {
             <ContentWrap>
               <Contents>
                 {/* <button onClick={getGamerList}>list</button> */}
-                {gamers &&
-                  gamers.map((gamer: any) => {
+                {datas &&
+                  datas?.map((gamer: any) => {
+                    console.log("야", gamer.gameUsername);
                     <Board
-                      game={game}
-                      type={type}
+                      game={"롤"}
+                      type={"타입"}
                       key={gamer.id}
                       id={gamer.id}
                       date={"일전"}
-                      item={gamer}
-                      tag={dumyTag}
+                      item={gamer.id}
+                      tag={"더미태그"}
                       subTitle={gamer.gameUsername}
                       subDetail={gamer.introdution}
                       userName={gamer.gameUsername}
                     />;
                   })}
-                <div>배열: {gamers}</div>
-                {/* {dumy.map((item, index) => (
-                  <Board
-                    game={game}
-                    type={type}
-                    key={index}
-                    date={"일전"}
-                    item={item}
-                    tag={dumyTag}
-                    subTitle={"subTitle"}
-                    subDetail={"subDetail"}
-                    userName={"userName"}
-                  />
-                ))} */}
+                {/* <a>열: {datas[0].introdution}</a> */}
               </Contents>
             </ContentWrap>
           </>
