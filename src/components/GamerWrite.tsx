@@ -139,15 +139,7 @@ function GamerWrite() {
       console.log("게이머등록 성공");
     };
   };
-  function gamerList() {
-    console.log("게이머정보요청");
-    axios
-      .get("/api/v1/GamerList", config)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {});
-  }
+
   return (
     <CreateWrap>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -202,7 +194,6 @@ function GamerWrite() {
           </div>
         </RightContents>
       </Form>
-      <button onClick={gamerList}>list</button>
     </CreateWrap>
   );
 }

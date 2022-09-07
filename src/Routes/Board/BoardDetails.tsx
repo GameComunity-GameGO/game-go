@@ -8,6 +8,7 @@ import GamerWrite from "../../components/GamerWrite";
 import GamerList from "../Gamer";
 import Top from "../../components/Top";
 import axios from "axios";
+import { isTemplateExpression } from "typescript";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -154,18 +155,6 @@ function BoardDetails() {
     window.scrollTo(0, 0);
   }, [pathname]);
   const navigate = useNavigate();
-  // async function getGamerList() {
-  //   axios
-  //     .get("/api/v1/GamerList", config)
-  //     .then((response) => {
-  //       console.log(response);
-  //       const gamers: any[] = response.data;
-
-  //       console.log("게이머:", gamers);
-  //       console.log("머:", gamers[1]);
-  //     })
-  //     .catch((error) => {});
-  // }
   const [datas, setDatas] = useState([]);
   useEffect(() => {
     getGamerList();
@@ -177,13 +166,9 @@ function BoardDetails() {
           console.log(response);
           setDatas(response.data);
           console.log("데이터", datas);
-          // const gamers: any[] = response.data;
-          // console.log("게이머:", gamers);
-          // console.log("머:", gamers[1]);
         })
         .catch((error) => {});
     }
-    // getGamerList();
   }, []);
   console.log("데이터밖", datas);
   return (
@@ -315,24 +300,21 @@ function BoardDetails() {
             {createView && <GamerWrite />}
             <ContentWrap>
               <Contents>
-                {/* <button onClick={getGamerList}>list</button> */}
                 {datas &&
-                  datas?.map((gamer: any) => {
-                    console.log("야", gamer.gameUsername);
+                  datas?.map((item: any) => (
                     <Board
-                      game={"롤"}
-                      type={"타입"}
-                      key={gamer.id}
-                      id={gamer.id}
-                      date={"일전"}
-                      item={gamer.id}
-                      tag={"더미태그"}
-                      subTitle={gamer.gameUsername}
-                      subDetail={gamer.introdution}
-                      userName={gamer.gameUsername}
-                    />;
-                  })}
-                {/* <a>열: {datas[0].introdution}</a> */}
+                      game={game}
+                      type={type}
+                      key={item.id}
+                      id={item.id}
+                      date={item.createdDate}
+                      item={item.id}
+                      tag={dumyTag}
+                      subTitle={item.gameUsername}
+                      subDetail={item.introdution}
+                      userName={item.gameUsername}
+                    />
+                  ))}
               </Contents>
             </ContentWrap>
           </>
