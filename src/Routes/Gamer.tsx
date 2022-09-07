@@ -10,7 +10,7 @@ import PropTypes, { string } from "prop-types";
 //   },
 //   withCredentials: true,
 // };
-// const [gamers, setGamers] = useState([]);
+const [gamers, setGamers] = useState([]);
 
 // async function getGamerList() {
 //   console.log("게이머정보요청");
