@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -132,6 +132,7 @@ interface IBoardWrite {
 }
 function BoardWrite() {
   const quillRef = useRef<any>();
+  const [imgURL, setImgURL] = useState<any>([]);
   const imageHandler = () => {
     console.log("에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!");
 
@@ -162,6 +163,8 @@ function BoardWrite() {
 
         console.log("성공 시, 백엔드가 보내주는 데이터", result);
         const IMG_URL = result.data;
+        setImgURL((imgURL: any) => [...imgURL, IMG_URL]);
+
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
         // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
         // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
@@ -183,7 +186,6 @@ function BoardWrite() {
       }
     });
   };
-
   // Quill 에디터에서 사용하고싶은 모듈들을 설정한다.
   // useMemo를 사용해 modules를 만들지 않는다면 매 렌더링 마다 modules가 다시 생성된다.
   // 그렇게 되면 addrange() the given range isn't in document 에러가 발생한다.
@@ -230,7 +232,6 @@ function BoardWrite() {
   } = useForm<IBoardWrite>();
   const dispatch = useDispatch();
   const onSubmit = ({ select, title, contents }: any) => {
-    console.log(type, select, title, contents);
     Write(type, select, title, contents);
   };
   const { pathname } = useLocation();
@@ -245,7 +246,6 @@ function BoardWrite() {
   };
 
   const Write = (type: any, select: string, title: string, contents: any) => {
-    console.log(type);
     axios
       .post(
         `/api/board`,
@@ -254,10 +254,12 @@ function BoardWrite() {
           contents: contents,
           category: type,
           type: select,
+          imgArray: imgURL,
         }),
         config
       )
       .then((reponse) => {
+        setImgURL([]);
         navigate(-1);
       })
       .catch((error) => {

@@ -41,7 +41,6 @@ function ChatView() {
   const chatMatch: PathMatch<string> | null = useMatch(
     "/gamepage/:game/:type/chatview/:id"
   );
-  console.log(chatMatch?.params.id);
   if (chatMatch) {
     document.body.style.overflow = "hidden";
   }

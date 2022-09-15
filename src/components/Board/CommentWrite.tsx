@@ -63,7 +63,6 @@ function CommentWrite() {
     Write(content);
   };
   const Write = (content: string) => {
-    console.log(content);
     axios
       .post(
         `/api/board/${id}/reply`,
