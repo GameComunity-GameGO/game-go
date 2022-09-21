@@ -40,7 +40,7 @@ function LogIn() {
   const onSubmit = ({ email, password }: IForm) => {
     getLogin(email, password);
   };
-  //API 호출
+  //로그인 API 호출
   const getLogin = (email: String, password: String) => {
     console.log(email, password);
 
@@ -58,43 +58,8 @@ function LogIn() {
         console.log(error);
       });
   };
-  const requestAccessToken = async (refreshToken: any) => {
-    console.log("엑세스 토큰 시간 만료");
-    const data = localStorage.getItem("refreshToken");
-    console.log("리프레쉬:" + data);
-    return await axios
-      .post(
-        "/api/v1/accessToken",
-        (axios.defaults.headers.common[
-          "Authorization_refresh"
-        ] = `Bearer ${data}`)
-      )
-      .then((response) => {
-        const { authorization } = response.headers;
-        localStorage.setItem("accessToken", authorization);
-        console.log(response);
-        return response;
-      })
-      .catch((e) => {
-        // console.log(e.response);
-      });
-  };
-  const checkAccessToken = async (refreshToken: any) => {
-    if (axios.defaults.headers.common["Authorization"] === undefined) {
-      return await requestAccessToken(refreshToken).then((response) => {
-        return response;
-      });
-    } else {
-      console.log("아직 엑세스 토큰 만료 안됨");
-      return axios.defaults.headers.common["Authorization"];
-    }
-  };
-  //테스트용
-  const getAccessToken = () => {
-    checkAccessToken(localStorage.getItem("refreshToken"));
-  };
 
-  //유저정보 요청
+  //유저정보 요청 테스트
   async function onUser() {
     console.log("유저정보요청 AccessToken");
     const data = localStorage.getItem("accessToken");
@@ -110,20 +75,69 @@ function LogIn() {
   //로그인 성공 시
   async function loginSuccess(response: any) {
     console.log("로그인 성공");
+    //이전에 남아있는 토큰이 있을 경우 지우기
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     const { authorization, authorization_refresh } = response.headers;
-    // axios.defaults.headers.common[
-    //   "Authorization-refresh"
-    // ] = `Bearer ${authorization_refresh}`;
+    //localStorage에 토큰 저장
     localStorage.setItem("accessToken", authorization);
     localStorage.setItem("refreshToken", authorization_refresh);
     console.log(response);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${authorization}`;
-    checkAccessToken(localStorage.getItem("refreshToken"));
-    return response;
+    jwtDecode(authorization);
   }
+  //테스트용
+  const getJwtDecode = () => {
+    const data = localStorage.getItem("accessToken");
+    jwtDecode(data);
+  };
+  //jwt 받아오는 decode
+  async function jwtDecode(token: any) {
+    const decoded: any = jwt_decode(token);
+    // console.log(decoded?.exp);
+    var reTime = decoded.exp;
+    console.log("1.만료:", reTime);
 
+    async function getTime() {
+      return new Promise(function (resolve, reject) {
+        const date: number = Date.now();
+        const nowTime = Math.floor(date / 1000);
+        // console.log("현재시간:", nowTime);
+        while (nowTime <= reTime) {
+          setTimeout(getTime, 1000);
+          return nowTime;
+        }
+        console.log("2.빠져나옴");
+        resolve(nowTime);
+        isAccessTokenEnd(nowTime);
+      });
+    }
+    function isAccessTokenEnd(t: any) {
+      console.log("3.비교");
+      if (t >= reTime) {
+        onSilentRefresh();
+      }
+    }
+    await getTime();
+  }
+  async function onSilentRefresh() {
+    console.log("엑세스 토큰 시간 만료");
+    const data = localStorage.getItem("refreshToken");
+    console.log("리프레쉬:" + data);
+    axios
+      .post(
+        "/api/v1/accessToken",
+        (axios.defaults.headers.common[
+          "Authorization_refresh"
+        ] = `Bearer ${data}`)
+      )
+      .then((response) => {
+        const { authorization } = response.headers;
+        localStorage.setItem("accessToken", authorization);
+        console.log(response);
+        jwtDecode(authorization);
+      })
+      .catch((error) => {});
+  }
   const logoutSuccess = (val: any) => {
     console.log("로그아웃 성공");
     localStorage.removeItem("accessToken");
@@ -177,12 +191,11 @@ function LogIn() {
       <LinkContainer>
         아직 회원이 아니신가요?&nbsp;
         <Button2 onClick={toggleHandler}>회원가입 하러가기</Button2>
-        <Button2 onClick={getAccessToken}>재발급</Button2>
+        {/* <Button2 onClick={getJwtDecode}>재발급</Button2> */}
         <Button2 onClick={onUser}>유저정보테스트</Button2>
         <Button2 onClick={getLogOut}>logout</Button2>
       </LinkContainer>
     </Container>
   );
 }
-
 export default LogIn;
