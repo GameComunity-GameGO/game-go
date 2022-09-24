@@ -7,7 +7,6 @@ import Board from "../components/Board/Board";
 import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
-import { setBoardInfo } from "../redux/action";
 import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
   min-width: 1000px;
@@ -108,6 +107,7 @@ function BoardDetails() {
   const [dumyTag, setDumyTag] = useState({
     tag: ["랭크", "빡겜"],
   });
+  const [boardData, setBoardData] = useState([]);
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const LevelList = [
     "모든 티어",
@@ -125,30 +125,11 @@ function BoardDetails() {
   const Voice = ["보이스 OFF", "보이스 ON"];
   const Tag = ["자유", "빡겜", "친목"];
   const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
-  const [dumy, setDumy] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-  ]);
+
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  const { board } = useSelector((state: any) => ({
-    board: state.board,
-  }));
   useEffect(() => {
     const config = {
       headers: {
@@ -160,7 +141,7 @@ function BoardDetails() {
     axios
       .get(`/api/all/board`, config)
       .then((reponse) => {
-        dispatch(setBoardInfo(reponse.data.content));
+        setBoardData(reponse.data.content);
       })
       .catch((error) => {
         console.log(error);
@@ -204,33 +185,12 @@ function BoardDetails() {
             </HeaderFormWrap>
             <ContentWrap>
               <Contents>
-                {board &&
-                  board.map((item: any) => (
-                    <Board
-                      game={game}
-                      type={type}
-                      key={item.boardId}
-                      id={item.boardId}
-                      date={item.createdDate}
-                      item={item}
-                      tag={dumyTag}
-                      subTitle={item.title}
-                      userName={item.memberDTO.nickname}
-                    />
+                {boardData &&
+                  boardData.map((item: any, index: any) => (
+                    <div key={index}>
+                      <Board game={game} type={type} data={item} />
+                    </div>
                   ))}
-                {/* {dumy.map((item, index) => (
-                  <Board
-                    game={game}
-                    type={type}
-                    key={index}
-                    date={"일전"}
-                    item={item}
-                    tag={dumyTag}
-                    subTitle={"subTitle"}
-                    subDetail={"subDetail"}
-                    userName={"userName"}
-                  />
-                ))} */}
               </Contents>
             </ContentWrap>
           </>
@@ -260,7 +220,7 @@ function BoardDetails() {
             </HeaderFormWrap>
             <ContentWrap>
               <Contents>
-                {dumy.map((item, index) => (
+                {/* {dumy.map((item, index) => (
                   <Board
                     game={game}
                     type={type}
@@ -272,7 +232,7 @@ function BoardDetails() {
                     subDetail={"subDetail"}
                     userName={"userName"}
                   />
-                ))}
+                ))} */}
               </Contents>
             </ContentWrap>
             {createView && <ChatWrite />}

@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Board from "./Board";
+import Board from "../Board/Board";
 
 const Wrap = styled.div`
   width: 100%;
@@ -51,44 +53,44 @@ const Svg = styled.svg`
     fill: #2196f3;
   }
 `;
-function BoardView({
-  game,
-  date,
-  subTitle,
-  subDetail,
-  userName,
-  tag,
-  boardName,
-  data,
-}: any) {
+function BoardView({ game, boardName }: any) {
   const navigate = useNavigate();
   const offset = 3;
-  const [dumy, setDumy] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-  ]);
+  const { type, id } = useParams();
   const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
   const incraseIndex = (val: string) => {
     if (val === "add") {
-      setBack(false);
-      const totalAnimes = dumy.length - 1;
-      const maxIndex = Math.floor(totalAnimes / offset);
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      // setBack(false);
+      // const totalAnimes = dumy.length - 1;
+      // const maxIndex = Math.floor(totalAnimes / offset);
+      // setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
     if (val === "min") {
       setBack(true);
       setIndex((prev) => (prev === 0 ? 0 : prev - 1));
     }
   };
-
+  const [boardData, setBoardData] = useState([]);
+  useEffect(() => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      withCredentials: true,
+    };
+    if (boardName === "게시판") {
+      axios
+        .get(`/api/board/popular`, config)
+        .then((reponse) => {
+          setBoardData(reponse.data.content);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
   return (
     <Wrap>
       <Title>{boardName}</Title>
@@ -112,21 +114,19 @@ function BoardView({
             />
           </Svg>
         </SlideBtn>
-        {dumy
-          .slice(offset * index, offset * index + offset)
-          .map((item, index) => (
-            <Board
-              key={index}
-              date={date}
-              item={item}
-              tag={tag}
-              subTitle={subTitle}
-              subDetail={subDetail}
-              userName={userName}
-              boardName={boardName}
-              game={game}
-            />
-          ))}
+        {boardData &&
+          boardData
+            .slice(offset * index, offset * index + offset)
+            .map((item: any, index: any) => (
+              <div key={index}>
+                <Board
+                  game={game}
+                  type={type}
+                  data={item}
+                  boardName={boardName}
+                />
+              </div>
+            ))}
         <SlideBtn>
           <Svg
             onClick={() => incraseIndex("add")}

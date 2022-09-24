@@ -15,8 +15,10 @@ import {
   Container,
   Button2,
 } from "./styles";
-import { setSignUpToggle, setUserName } from "../redux/action";
+
 import { access } from "fs";
+import { setUserName } from "../redux/actions/UserAction";
+import { setSignUpToggle } from "../redux/actions/TriggerAction";
 interface IForm {
   email: string;
   password: string;

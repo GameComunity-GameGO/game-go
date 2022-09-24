@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 import Search from "../components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setBoardInfo, setGmae } from "../redux/action";
 import ChatView from "./Chat/ChatView";
+import { setGmae } from "../redux/actions/TriggerAction";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -41,27 +41,7 @@ function GamePage() {
   useEffect(() => {
     dispatch(setGmae(game));
   }, []);
-  const { board } = useSelector((state: any) => ({
-    board: state.board,
-  }));
-  // useEffect(() => {
-  //   const config = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //     },
-  //     withCredentials: true,
-  //   };
-  //   axios
-  //     .get(`/api/all/board`, config)
-  //     .then((reponse) => {
-  //       console.log(reponse.data.content);
-  //       dispatch(setBoardInfo(reponse.data.content));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+
   return (
     <Wrap>
       <ImageSlider />
@@ -70,15 +50,9 @@ function GamePage() {
         <GameTitle>{game}</GameTitle>
         <Search />
       </SearchWrap>
+      <BoardSlider boardName={"게시판"} />
+
       <BoardWrap>
-        <BoardSlider
-          game={game}
-          boardName={"게시판"}
-          tag={dumyTag}
-          subTitle={"공룡의 정체"}
-          subDetail={"공룡은 사실 닭이다?"}
-          userName={"마자파자브라자"}
-        />
         <BoardSlider
           game={game}
           boardName={"채팅방"}

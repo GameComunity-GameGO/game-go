@@ -53,57 +53,44 @@ const UserJoin = styled.div`
     margin-right: 5px;
   }
 `;
-const TagUl = styled.ul`
+const PostType = styled.ul`
   display: flex;
   position: absolute;
   right: 0;
   top: 0;
   margin-top: 12px;
   margin-right: 12px;
+  div {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px;
+    border-radius: 10px;
+    background-color: #373e59;
+    cursor: pointer;
+    margin-right: 5px;
+  }
 `;
-const TagLi = styled.li`
-  font-size: 12px;
-  font-weight: 600;
-  padding: 7px;
-  border-radius: 10px;
-  background-color: #373e59;
-  cursor: pointer;
-  margin-right: 5px;
-`;
-function Board({
-  date,
-  id,
-  item,
-  tag,
-  subTitle,
-  subDetail,
-  userName,
-  game,
-  type,
-  boardName,
-}: any) {
+function Board({ data, game, type, boardName }: any) {
   const navigate = useNavigate();
 
   return (
     <Content>
       {type === "게시판" || boardName === "게시판" ? (
         <>
-          {/* <TagUl>
-            {tag.tag.map((item: string, index: number) => (
-              <TagLi key={index}>#{item}</TagLi>
-            ))}
-          </TagUl> */}
+          <PostType>
+            <div>{data.type}</div>
+          </PostType>
           <ContentHeader>
-            <ContentData></ContentData>
-            <span>{subTitle}</span>
+            <ContentData>{data.createdDate}</ContentData>
+            <span>{data.title}</span>
           </ContentHeader>
           <ContentDetail>
             <Detail></Detail>
             <UserJoin>
-              <div>{userName}</div>
+              <div>{data.memberDTO.nickname}</div>
               <div
                 onClick={() =>
-                  navigate(`/gamepage/${game}/게시판/boardview/${id}`)
+                  navigate(`/gamepage/${game}/게시판/boardview/${data.boardId}`)
                 }
               >
                 보러가기
@@ -113,22 +100,14 @@ function Board({
         </>
       ) : type === "채팅방" || boardName === "채팅방" ? (
         <>
-          <TagUl>
-            {tag.tag.map((item: string, index: number) => (
-              <TagLi key={index}>#{item}</TagLi>
-            ))}
-          </TagUl>
           <ContentHeader>
-            <ContentData>
-              {/* {date} */}
-              {item}일전
-            </ContentData>
-            <span>{subTitle}</span>
+            <ContentData></ContentData>
+            <span></span>
           </ContentHeader>
           <ContentDetail>
-            <Detail>{subDetail}</Detail>
+            <Detail></Detail>
             <UserJoin>
-              <div>{userName}</div>
+              <div></div>
               <div
                 onClick={() =>
                   navigate(`/gamepage/${game}/채팅방/chatview/${1}`)
@@ -141,24 +120,16 @@ function Board({
         </>
       ) : type === "게이머 구하기" || boardName === "게이머 구하기" ? (
         <>
-          <TagUl>
-            {tag.tag.map((item: string, index: number) => (
-              <TagLi key={index}>#{item}</TagLi>
-            ))}
-          </TagUl>
           <ContentHeader>
-            <ContentData>
-              {/* {date} */}
-              {item}일전
-            </ContentData>
-            <span>{subTitle}</span>
+            <ContentData></ContentData>
+            <span></span>
           </ContentHeader>
           <ContentDetail>
-            <Detail>{subDetail}</Detail>
+            <Detail></Detail>
             <UserJoin>
               <div>
                 <img src={process.env.PUBLIC_URL + `/image/${"top"}.png`} />
-                <span>{userName}</span>
+                <span></span>
               </div>
               <div>같이하기</div>
             </UserJoin>

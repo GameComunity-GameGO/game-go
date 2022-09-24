@@ -16,9 +16,10 @@ const CommentBox = styled.div`
 const UserName = styled.div`
   display: flex;
   margin-bottom: 15px;
-  display: flex;
   justify-content: space-between;
   div:first-child {
+    display: flex;
+    align-items: center;
     span:first-child {
       font-weight: 400;
       margin-right: 15px;
@@ -50,11 +51,11 @@ const UserName = styled.div`
 const Comment = styled.div``;
 
 function CommentView() {
-  let data = null;
+  const [commentIndex, setCommentIndex] = useState<Number>();
   const [onUpdate, setOnUpdate] = useState(false);
   const [reply, setReply] = useState<any>();
   const { comment } = useSelector((state: any) => ({
-    comment: state.comment,
+    comment: state.Board.comment,
   }));
   const { game, type, id } = useParams();
   const config = {
@@ -92,6 +93,7 @@ function CommentView() {
                     <>
                       <button
                         onClick={() => {
+                          setCommentIndex(index);
                           setOnUpdate((prev) => !prev);
                         }}
                       >
@@ -102,7 +104,9 @@ function CommentView() {
                   )}
                 </div>
               </UserName>
-              {onUpdate && item.id === index + 1 ? (
+
+              {/* && item.id === index + 1  */}
+              {onUpdate && commentIndex === index ? (
                 <CommentUpdate value={item.content} reply={item.id} />
               ) : (
                 <Comment>{item.content}</Comment>
