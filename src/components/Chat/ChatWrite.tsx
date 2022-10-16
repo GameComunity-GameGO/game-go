@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 const CreateWrap = styled.div`
@@ -29,6 +30,7 @@ const Form = styled.form`
   }
   input {
     background-color: #373e59;
+    color: white;
     border: none;
     width: 300px;
     height: 50px;
@@ -36,7 +38,7 @@ const Form = styled.form`
     border: 1px solid black;
   }
 
-  div:nth-child(3) > input {
+  div:last-child > input {
     height: 100px;
     margin-right: 5px;
   }
@@ -70,22 +72,44 @@ const LeftContents = styled.div`
 `;
 const RightContents = styled.div``;
 interface ICreate {
-  username: string;
+  chatname: string;
   content: string;
+  capacity: string;
 }
 function ChatWrite() {
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const Line = ["모든 포지션", "탑", "정글", "미드", "원딜", "서포터"];
-
   const Tag = ["자유", "빡겜", "친목"];
   const Voice = ["보이스 OFF", "보이스 ON"];
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    withCredentials: true,
+  };
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<ICreate>();
-  const onSubmit = ({ username, content }: any) => {};
+  const onSubmit = (data: any) => {
+    chatCreateRoom(data);
+  };
+  const chatCreateRoom = async (data: any) => {
+    await axios
+      .post(
+        `/api/chat/room`,
+        JSON.stringify({
+          roomName: data.chatname,
+          capacity: data.capacity,
+        }),
+        config
+      )
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+  };
   return (
     <CreateWrap>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -117,8 +141,15 @@ function ChatWrite() {
           </div>
           <div>
             <input
-              {...register("username")}
+              {...register("chatname")}
               placeholder="채팅방 이름"
+              type="text"
+            />
+          </div>
+          <div>
+            <input
+              {...register("capacity")}
+              placeholder="최대 인원수"
               type="text"
             />
           </div>

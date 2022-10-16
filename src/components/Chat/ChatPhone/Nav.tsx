@@ -1,9 +1,11 @@
+import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+import useOutSideRef from "../../../hooks/useOutSideRef";
 import styled from "styled-components";
+import { setIsoutClick } from "../../../redux/actions/TriggerAction";
 
 const Wrap = styled.div``;
 const NavBox = styled.div`
@@ -39,7 +41,12 @@ const NavList = styled(motion.div)`
   margin: 30px;
   border-radius: 10px;
   z-index: 1;
-  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2); ;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 `;
 const ListWrap = styled(motion.div)`
   position: relative;
@@ -80,6 +87,7 @@ const ContentHeader = styled.div`
   }
 `;
 const ChatBox = styled(motion.div)`
+  position: relative;
   width: 300px;
   height: 100px;
   background-color: #363e59;
@@ -107,26 +115,83 @@ const ChatBoxHeader = styled.div`
     font-weight: 400;
   }
 `;
+const MsgTotalCount = styled.div`
+  position: absolute;
+  background-color: tomato;
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  right: 0;
+  top: 0;
+  margin-top: 10px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const MsgCount = styled.div`
+  position: absolute;
+  background-color: tomato;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  right: -10px;
+  top: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const Count = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+`;
 const ChatDescription = styled.div``;
+
 function Nav() {
   const [id, setId] = useState<null | string>(null);
   const navigate = useNavigate();
-  const game = useSelector((state: any) => state.game);
+  const dispatch = useDispatch();
+  const game = useSelector((state: any) => state.Trigger.game);
+  const [listUpdate, setListUpdate] = useState(false);
+  const [chatList, setChatList] = useState<any>([]);
+  const isOutClick = useSelector((state: any) => state.Trigger.isOutClick);
+  const outsideRef = useOutSideRef();
+  useEffect(() => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      withCredentials: true,
+    };
+    axios.get(`/api/chat/room/list`, config).then((response) => {
+      setChatList(response.data);
+    });
+  }, [isOutClick]);
   return (
-    <Wrap>
-      <NavBox>
+    <Wrap ref={outsideRef}>
+      <NavBox
+        onClick={() =>
+          isOutClick
+            ? dispatch(setIsoutClick(false))
+            : dispatch(setIsoutClick(true))
+        }
+      >
         <ViewLogo
           layoutId={"a"}
-          onClick={() => setId("1")}
+          onClick={() => dispatch(setIsoutClick(false))}
           fill="white"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
         >
           <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
         </ViewLogo>
+        <MsgTotalCount>
+          <Count>3</Count>
+        </MsgTotalCount>
       </NavBox>
       <AnimatePresence>
-        {id ? (
+        {isOutClick ? (
           <NavList layoutId={"a"}>
             <ListWrap>
               <SetBtn>
@@ -141,7 +206,7 @@ function Nav() {
 
               <ExitBtn>
                 <svg
-                  onClick={() => setId(null)}
+                  onClick={() => dispatch(setIsoutClick(false))}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
                   fill="white"
@@ -164,25 +229,32 @@ function Nav() {
                 <span>닉네임님의 채팅목록입니다.</span>
               </ContentHeader>
               <Contents>
-                {[...new Array(3)].map((_data, index) => (
-                  <ChatBox
-                    layoutId={String(index)}
-                    key={index}
-                    onClick={() =>
-                      navigate(`/gamepage/${game}/채팅방/chatview/${index}`)
-                    }
-                  >
-                    <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
-                    <ChatBoxContents>
-                      <ChatBoxHeader>
-                        <h1>채팅방명</h1>
-                      </ChatBoxHeader>
-                      <ChatDescription>
-                        채팅방 설명입니다. 채팅방 설명입니다. 채팅방 설명입니다.
-                      </ChatDescription>
-                    </ChatBoxContents>
-                  </ChatBox>
-                ))}
+                {chatList &&
+                  chatList.map((data: any, index: any) => (
+                    <ChatBox
+                      layoutId={String(data.roomId)}
+                      key={index}
+                      onClick={() =>
+                        navigate(
+                          `/gamepage/${game}/채팅방/chatview/${data.roomId}`
+                        )
+                      }
+                    >
+                      <MsgCount>
+                        <Count>1</Count>
+                      </MsgCount>
+                      <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
+                      <ChatBoxContents>
+                        <ChatBoxHeader>
+                          <h1>{data.roomName}</h1>
+                        </ChatBoxHeader>
+                        <ChatDescription>
+                          채팅방 설명입니다. 채팅방 설명입니다. 채팅방
+                          설명입니다.
+                        </ChatDescription>
+                      </ChatBoxContents>
+                    </ChatBox>
+                  ))}
               </Contents>
             </ListWrap>
           </NavList>

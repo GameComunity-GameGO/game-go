@@ -179,14 +179,14 @@ function BoardView() {
       .then((reponse) => {
         setData(reponse.data);
         dispatch(setComment(reponse.data.replyList));
-        // axios
-        //   .get(`/api/v1/member/${username}`, config)
-        //   .then((reponse) => {
-        //     setUserNick(reponse.data.nickname);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+        axios
+          .get(`/api/v1/member/${username}`, config)
+          .then((reponse) => {
+            setUserNick(reponse.data.nickname);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);

@@ -5,7 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Board from "../components/Board/Board";
 import CategoryNav from "../components/CategoryNav";
-import ChatWrite from "../components/ChatWrite";
+import ChatWrite from "../components/Chat/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
 import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`

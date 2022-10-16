@@ -84,6 +84,7 @@ function BoardView({ game, boardName }: any) {
       axios
         .get(`/api/board/popular`, config)
         .then((reponse) => {
+          console.log(reponse);
           setBoardData(reponse.data.content);
         })
         .catch((error) => {

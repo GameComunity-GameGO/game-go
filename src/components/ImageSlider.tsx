@@ -45,16 +45,20 @@ const SlideBtn = styled.div`
   }
 `;
 function ImageSlider() {
-  const [activeIndex, setactiveIndex] = useState(0);
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  // 다음 버튼시 index 1 증가
+  // index가 이미지 배열의 크기보다 커지면 첫번째 이미지로 초기화
   const nextSlide = () => {
-    if (activeIndex < 2) setactiveIndex(activeIndex + 1);
-    else setactiveIndex(0);
+    if (activeIndex < images.length - 1) setActiveIndex(activeIndex + 1);
+    else setActiveIndex(0);
   };
+  // 이전 버튼시 index 1 감소
+  // index가 0보다 작거나 같으면 이미지의 마지막 index로 초기화
   const prevSlide = () => {
-    if (activeIndex > 0) setactiveIndex(activeIndex - 1);
-    else setactiveIndex(2);
+    if (activeIndex > 0) setActiveIndex(activeIndex - 1);
+    else setActiveIndex(images.length - 1);
   };
+  // 자동으로 슬라이드 되기 위한 useInterval()
   useInterval(() => {
     nextSlide();
   }, 8000);
@@ -90,7 +94,7 @@ function ImageSlider() {
           {images.map((_data, index) => (
             <Li
               key={index}
-              onClick={() => setactiveIndex(index)}
+              onClick={() => setActiveIndex(index)}
               match={Number(index) === activeIndex ? "#F7F7F7" : "#6B645D"}
             ></Li>
           ))}

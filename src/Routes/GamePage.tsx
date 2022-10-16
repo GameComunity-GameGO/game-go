@@ -50,9 +50,8 @@ function GamePage() {
         <GameTitle>{game}</GameTitle>
         <Search />
       </SearchWrap>
-      <BoardSlider boardName={"게시판"} />
-
       <BoardWrap>
+        <BoardSlider game={game} boardName={"게시판"} />
         <BoardSlider
           game={game}
           boardName={"채팅방"}
@@ -72,7 +71,6 @@ function GamePage() {
           userName={"귀살대 이성호"}
         />
       </BoardWrap>
-
       <ChatView />
     </Wrap>
   );

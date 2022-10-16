@@ -2,6 +2,7 @@ const init = {
   loginToggle: false,
   signupToggle: true,
   game: "",
+  isOutClick: false,
 };
 export default function (state = init, action: any) {
   switch (action.type) {
@@ -11,6 +12,8 @@ export default function (state = init, action: any) {
       return { ...state, loginToggle: action.data };
     case "SET_SIGNUPTOGGLE":
       return { ...state, signupToggle: action.data };
+    case "SET_ISOUTCLICK":
+      return { ...state, isOutClick: action.data };
     default:
       return state;
   }

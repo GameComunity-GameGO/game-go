@@ -5,7 +5,11 @@ import styled from "styled-components";
 import Message from "../../components/Chat/Message";
 import RoomsSide from "../../components/Chat/RoomsSide";
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { PathMatch, useMatch, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import SockJS from "sockjs-client";
+import axios from "axios";
+const Stomp = require("stompjs");
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -36,19 +40,76 @@ const ModalWrap = styled(motion.div)`
 `;
 
 function ChatView() {
+  // 소켓 설정
+  let sock = new SockJS("http://3.39.37.209:8080/ws/chat");
+  let stomp = Stomp.over(sock);
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    withCredentials: true,
+  };
+
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const chatMatch: PathMatch<string> | null = useMatch(
     "/gamepage/:game/:type/chatview/:id"
   );
+  const { game, type, id } = useParams();
+  const clicked = chatMatch?.pathname && `${id}` === chatMatch?.params.id;
+
   if (chatMatch) {
     document.body.style.overflow = "hidden";
   }
-  const clicked = chatMatch?.pathname && "/trailer" === chatMatch?.pathname;
+  const wsConnectSubscribe = () => {
+    try {
+      stomp.connect(
+        { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+        () => {
+          stomp.subscribe(
+            `/topic/chat/room/${id}`,
+            (data: any) => {
+              // const newMessage = JSON.parse(data.body);
+              console.log(data);
+            },
+            { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+          );
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const chatEntarance = async () => {
+    // 1. 채팅방 입장 할 때
+    await axios.get(`/api/chat/room/${id}`, config).then((response) => {
+      if (response) {
+        wsConnectSubscribe();
+      }
+    });
+    // 2. 위의 유저정보에 현재유저가 없어서 새로운 채팅방 입장할 때
+    // await axios.post(`/api/chat/room/${id}/join`, config).then((response) => {
+    //   if (response) {
+    //     stomp.debug = null;
+    //     stomp.connect({}, () => {
+    //       stomp.subscribe(`/topic/chat/room/${id}`, config, (data: any) => {
+    //         console.log(data);
+    //       });
+    //     });
+    //   }
+    // });
+    // 리턴에다 서브스크라이브 해야함
+  };
+  if (clicked) {
+    chatEntarance();
+  }
+
   const onOverlayClick = () => {
     navigate(-1);
     document.body.style.overflow = "unset";
   };
+
   return (
     <>
       {chatMatch && (

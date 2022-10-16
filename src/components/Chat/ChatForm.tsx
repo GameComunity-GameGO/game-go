@@ -1,7 +1,10 @@
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-
+import SockJS from "sockjs-client";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+const Stomp = require("stompjs");
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -45,6 +48,7 @@ interface IChat {
   content: string;
 }
 function ChatForm() {
+  const { game, type, id } = useParams();
   const inputOpenImageRef = useRef<any>();
   const handleOpenImageRef = () => {
     inputOpenImageRef.current.click();
@@ -57,8 +61,17 @@ function ChatForm() {
     formState: { errors },
   } = useForm<IChat>();
   const onSubmit = ({ content }: any) => {
+    let sock = new SockJS("http://3.39.37.209:8080/ws/chat");
+    let stomp = Stomp.over(sock);
+    if (content === "") return;
+    stomp.send(
+      `/api/chat/room/${id}/enter`,
+      { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+      JSON.stringify({
+        content: content,
+      })
+    );
     setValue("content", "");
-    console.log(content);
   };
   return (
     <Wrap>

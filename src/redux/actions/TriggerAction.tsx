@@ -10,3 +10,7 @@ export const setSignUpToggle = (toggle: boolean) => ({
   type: "SET_SIGNUPTOGGLE",
   data: toggle,
 });
+export const setIsoutClick = (data: boolean) => ({
+  type: "SET_ISOUTCLICK",
+  data: data,
+});
