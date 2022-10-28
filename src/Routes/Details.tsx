@@ -1,13 +1,13 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Board from "../../components/Board";
-import CategoryNav from "../../components/CategoryNav";
-import ChatWrite from "../../components/ChatWrite";
-import GamerWrite from "../../components/GamerWrite";
-import Siderbar from "../../components/Siderbar";
-import Top from "../../components/Header";
+import Board from "../components/Board/Board";
+import CategoryNav from "../components/CategoryNav";
+import ChatWrite from "../components/ChatWrite";
+import GamerWrite from "../components/GamerWrite";
+import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -40,7 +40,6 @@ const GameTitle = styled.div`
     font-size: 38px;
     font-weight: 600;
   }
-
   span:nth-child(2) {
     font-size: 16px;
     font-weight: 600;
@@ -105,26 +104,10 @@ function BoardDetails() {
   const { pathname } = useLocation();
   const { game, type } = useParams();
   const [createView, setCreateView] = useState(false);
-  const [dumy, setDumy] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-  ]);
   const [dumyTag, setDumyTag] = useState({
     tag: ["랭크", "빡겜"],
   });
+  const [boardData, setBoardData] = useState([]);
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const LevelList = [
     "모든 티어",
@@ -142,13 +125,31 @@ function BoardDetails() {
   const Voice = ["보이스 OFF", "보이스 ON"];
   const Tag = ["자유", "빡겜", "친목"];
   const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
+
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  useEffect(() => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      withCredentials: true,
+    };
+    axios
+      .get(`/api/all/board`, config)
+      .then((reponse) => {
+        setBoardData(reponse.data.content);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const navigate = useNavigate();
   return (
     <Wrap>
-      <Top></Top>
       <CategoryNav />
       <Header>
         <Banner
@@ -163,9 +164,10 @@ function BoardDetails() {
           <span>{game} </span>
           <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
         </GameTitle>
-        <HeaderFormWrap>
-          {type === "게시판" ? (
-            <>
+
+        {type === "게시판" ? (
+          <>
+            <HeaderFormWrap>
               <div>
                 <Select>
                   {Type.map((item) => (
@@ -180,9 +182,22 @@ function BoardDetails() {
               >
                 글쓰기
               </CreateBtn>
-            </>
-          ) : type === "채팅방" ? (
-            <>
+            </HeaderFormWrap>
+            <ContentWrap>
+              <Contents>
+                {boardData &&
+                  boardData.map((item: any, index: any) => (
+                    <div key={index}>
+                      <Board game={game} type={type} data={item} />
+                    </div>
+                  ))}
+              </Contents>
+            </ContentWrap>
+          </>
+        ) : type === "채팅방" ? (
+          <>
+            <HeaderFormWrap>
+              <ChatView />
               <div>
                 <Select>
                   {Tag.map((item) => (
@@ -202,9 +217,29 @@ function BoardDetails() {
               <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
                 {createView ? "닫기" : "채팅방 생성"}
               </CreateBtn>
-            </>
-          ) : type === "게이머 구하기" ? (
-            <>
+            </HeaderFormWrap>
+            <ContentWrap>
+              <Contents>
+                {/* {dumy.map((item, index) => (
+                  <Board
+                    game={game}
+                    type={type}
+                    key={index}
+                    date={"일전"}
+                    item={item}
+                    tag={dumyTag}
+                    subTitle={"채팅방"}
+                    subDetail={"subDetail"}
+                    userName={"userName"}
+                  />
+                ))} */}
+              </Contents>
+            </ContentWrap>
+            {createView && <ChatWrite />}
+          </>
+        ) : type === "게이머 구하기" ? (
+          <>
+            <HeaderFormWrap>
               <div>
                 <Select>
                   {GameList.map((item) => (
@@ -231,33 +266,27 @@ function BoardDetails() {
               <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
                 {createView ? "닫기" : "구하기"}
               </CreateBtn>
-            </>
-          ) : null}
-        </HeaderFormWrap>
-
-        {createView && type === "채팅방" ? (
-          <ChatWrite />
-        ) : createView && type === "게이머 구하기" ? (
-          <GamerWrite />
+            </HeaderFormWrap>
+            {/* <ContentWrap>
+              <Contents>
+                {dumy.map((item, index) => (
+                  <Board
+                    game={game}
+                    type={type}
+                    key={index}
+                    date={"일전"}
+                    item={item}
+                    tag={dumyTag}
+                    subTitle={"게이머 구하기"}
+                    subDetail={"subDetail"}
+                    userName={"userName"}
+                  />
+                ))}
+              </Contents>
+            </ContentWrap> */}
+            {createView && <GamerWrite />}
+          </>
         ) : null}
-        <ContentWrap>
-          {/* <Siderbar /> */}
-          <Contents>
-            {dumy.map((item, index) => (
-              <Board
-                game={game}
-                type={type}
-                key={index}
-                date={"일전"}
-                item={item}
-                tag={dumyTag}
-                subTitle={"subTitle"}
-                subDetail={"subDetail"}
-                userName={"userName"}
-              />
-            ))}
-          </Contents>
-        </ContentWrap>
       </HeaderContents>
     </Wrap>
   );

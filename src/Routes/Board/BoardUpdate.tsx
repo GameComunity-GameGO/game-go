@@ -9,6 +9,42 @@ import "react-quill/dist/quill.snow.css";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 
+const toolbarOptions = [
+  ["link", "image", "video"],
+  [{ header: [1, 2, 3, false] }],
+  ["bold", "italic", "underline", "strike"],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ color: [] }, { background: [] }],
+  [{ align: [] }],
+];
+
+// 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
+export const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "align",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "background",
+  "color",
+  "link",
+  "image",
+  "video",
+  "width",
+];
+
+const modules = {
+  toolbar: {
+    container: toolbarOptions,
+  },
+};
 const Wrap = styled.div`
   min-width: 1000px;
   display: flex;
@@ -130,7 +166,7 @@ interface IBoardWrite {
   select: string;
   image: string;
 }
-function BoardWrite() {
+function BoardUpdate() {
   const quillRef = useRef<any>();
   const [imgURL, setImgURL] = useState<any>([]);
   const imageHandler = () => {
@@ -163,8 +199,8 @@ function BoardWrite() {
 
         console.log("성공 시, 백엔드가 보내주는 데이터", result);
         const IMG_URL = result.data;
-        setImgURL((imgURL: any) => [...imgURL, IMG_URL]);
-
+        setImgURL((prev: any) => [...prev, IMG_URL]);
+        console.log(imgURL);
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
         // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
         // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
@@ -186,6 +222,7 @@ function BoardWrite() {
       }
     });
   };
+
   // Quill 에디터에서 사용하고싶은 모듈들을 설정한다.
   // useMemo를 사용해 modules를 만들지 않는다면 매 렌더링 마다 modules가 다시 생성된다.
   // 그렇게 되면 addrange() the given range isn't in document 에러가 발생한다.
@@ -222,7 +259,6 @@ function BoardWrite() {
     },
     withCredentials: true,
   };
-
   const {
     register,
     handleSubmit,
@@ -232,7 +268,8 @@ function BoardWrite() {
   } = useForm<IBoardWrite>();
   const dispatch = useDispatch();
   const onSubmit = ({ select, title, contents }: any) => {
-    Write(type, select, title, contents);
+    console.log(type, select, title, contents);
+    Update(type, select, title, contents);
   };
   const { pathname } = useLocation();
   const Type = ["자유", "유머", "유저뉴스", "영상", "팬아트"];
@@ -240,15 +277,31 @@ function BoardWrite() {
     window.scrollTo(0, 0);
   }, [pathname]);
   const navigate = useNavigate();
-  const { game, type } = useParams();
+  const { game, type, id } = useParams();
   const handleChange = (value: any) => {
     setValue("contents", value);
   };
-
-  const Write = (type: any, select: string, title: string, contents: any) => {
+  useEffect(() => {
     axios
-      .post(
-        `/api/board`,
+      .get(`api/board/${id}`, config)
+      .then((reponse) => {
+        setValue("title", reponse.data.title);
+        setValue("contents", reponse.data.contents);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  const Update = async (
+    type: any,
+    select: string,
+    title: string,
+    contents: any
+  ) => {
+    console.log(1);
+    await axios
+      .put(
+        `/api/board/${id}`,
         JSON.stringify({
           title: title,
           contents: contents,
@@ -259,14 +312,14 @@ function BoardWrite() {
         config
       )
       .then((reponse) => {
+        console.log(reponse);
         setImgURL([]);
-        navigate(-1);
+        navigate(`/gamepage/${game}/게시판/boardview/${id}`);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
   return (
     <Wrap>
       <CategoryNav />
@@ -286,11 +339,8 @@ function BoardWrite() {
         <ContentWrap>
           <Siderbar />
           <Contents>
-            <Form
-              encType="multipart/form-data"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <BoardTitle>글쓰기</BoardTitle>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <BoardTitle>게시글 수정</BoardTitle>
               <SelectWrap>
                 <Select {...register("select")}>
                   {Type.map((item) => (
@@ -315,15 +365,14 @@ function BoardWrite() {
                   onChange={handleChange}
                   value={watch("contents")}
                 />
-
                 <ButtonWrap>
                   <button
                     type="button"
                     onClick={() => navigate(`/gamepage/${game}/게시판`)}
                   >
-                    취소
+                    수정취소
                   </button>
-                  <button type="submit">작성</button>
+                  <button type="submit">수정완료</button>
                 </ButtonWrap>
               </TitleWrap>
             </Form>
@@ -334,4 +383,4 @@ function BoardWrite() {
   );
 }
 
-export default BoardWrite;
+export default BoardUpdate;

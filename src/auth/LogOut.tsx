@@ -15,7 +15,6 @@ import {
   Container,
   Button2,
 } from "./styles";
-import { setSignUpToggle } from "../redux/action";
 interface IForm {
   email: string;
 }

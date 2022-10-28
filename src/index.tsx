@@ -6,9 +6,14 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
-import store from "./redux/store";
-
-// axios.defaults.baseURL = "";
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  compose,
+} from "redux";
+import promiseMiddleware from "redux-promise";
+import ReduxThunk from "redux-thunk";
+import rootReducer from "./redux/reducer";
 axios.defaults.withCredentials = true;
 
 const GlobalStyle = createGlobalStyle`
@@ -70,6 +75,7 @@ body {
   color: whitesmoke;
   line-height: 1.2;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+ 
 }
 a {
   text-decoration:none;
@@ -108,9 +114,12 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 const client = new QueryClient();
+const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+const devTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
+
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={store(rootReducer, devTools && devTools())}>
       <QueryClientProvider client={client}>
         {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <GlobalStyle />

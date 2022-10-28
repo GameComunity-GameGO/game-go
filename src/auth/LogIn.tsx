@@ -16,13 +16,16 @@ import {
   Container,
   Button2,
 } from "./styles";
-import { setSignUpToggle } from "../redux/action";
 
+import { access } from "fs";
+import { setUserName } from "../redux/actions/UserAction";
+import { setSignUpToggle } from "../redux/actions/TriggerAction";
 interface IForm {
   email: string;
   password: string;
 }
 function LogIn() {
+  const dispatch = useDispatch();
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -93,20 +96,17 @@ function LogIn() {
   //jwt 받아오는 decode
   async function jwtDecode(token: any) {
     const decoded: any = jwt_decode(token);
-    // console.log(decoded?.exp);
     var reTime = decoded.exp;
-    console.log("1.만료:", reTime);
-
+    dispatch(setUserName(decoded.username));
     async function getTime() {
       return new Promise(function (resolve, reject) {
         const date: number = Date.now();
-        const nowTime = Math.floor(date / 1000);
-        // console.log("현재시간:", nowTime);
+        var nowTime = Math.floor(date / 1000);
+
         while (nowTime <= reTime) {
           setTimeout(getTime, 1000);
           return nowTime;
         }
-        console.log("2.빠져나옴");
         resolve(nowTime);
         isAccessTokenEnd(nowTime);
       });
@@ -122,7 +122,6 @@ function LogIn() {
   async function onSilentRefresh() {
     console.log("엑세스 토큰 시간 만료");
     const data = localStorage.getItem("refreshToken");
-    console.log("리프레쉬:" + data);
     axios
       .post(
         "/api/v1/accessToken",
@@ -133,7 +132,7 @@ function LogIn() {
       .then((response) => {
         const { authorization } = response.headers;
         localStorage.setItem("accessToken", authorization);
-        console.log(response);
+
         jwtDecode(authorization);
       })
       .catch((error) => {});
@@ -165,7 +164,7 @@ function LogIn() {
         console.log(error);
       });
   };
-  const dispatch = useDispatch();
+
   const toggleHandler = () => {
     dispatch(setSignUpToggle(false));
   };
