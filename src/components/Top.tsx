@@ -32,7 +32,7 @@ const Button = styled.button`
   }
 `;
 
-function Header({ view }: any) {
+function Top({ view }: any) {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
@@ -58,4 +58,4 @@ function Header({ view }: any) {
     </Wrap>
   );
 }
-export default Header;
+export default Top;

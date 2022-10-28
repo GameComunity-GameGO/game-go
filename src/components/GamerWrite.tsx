@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 const CreateWrap = styled.div`
@@ -72,8 +73,19 @@ const RightContents = styled.div``;
 interface ICreate {
   username: string;
   content: string;
+  queue: string;
+  tier: string;
+  position: string;
 }
+
 function GamerWrite() {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    withCredentials: true,
+  };
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const Line = ["모든 포지션", "탑", "정글", "미드", "원딜", "서포터"];
 
@@ -93,9 +105,41 @@ function GamerWrite() {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm<ICreate>();
-  const onSubmit = ({ username, content }: any) => {};
+  const onSubmit = ({ username, content, queue, tier, position }: ICreate) => {
+    setGamer(username, content, queue, tier, position);
+  };
+  const setGamer = (
+    username: String,
+    content: String,
+    queue: string,
+    tier: string,
+    position: string
+  ) => {
+    console.log(username, content, queue, tier, position);
+    axios
+      .post(
+        `/api/v1/gamer`,
+        JSON.stringify({
+          gameUsername: username,
+          introdution: content,
+        }),
+        config
+      )
+      .then((response) => {
+        console.log("게이머등록 성공");
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    const gamerSuccess = (val: any) => {
+      console.log("게이머등록 성공");
+    };
+  };
+
   return (
     <CreateWrap>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -110,21 +154,21 @@ function GamerWrite() {
         </LeftContents>
         <RightContents>
           <div>
-            <Select style={{ borderColor: "black" }}>
+            <Select {...register("queue")} style={{ borderColor: "black" }}>
               {GameList.map((item) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
               ))}
             </Select>
-            <Select style={{ borderColor: "black" }}>
+            <Select {...register("tier")} style={{ borderColor: "black" }}>
               {LevelList.map((item) => (
                 <option value={item} key={item}>
                   {item}
                 </option>
               ))}
             </Select>
-            <Select style={{ borderColor: "black" }}>
+            <Select {...register("position")} style={{ borderColor: "black" }}>
               {Line.map((item) => (
                 <option value={item} key={item}>
                   {item}
@@ -133,7 +177,11 @@ function GamerWrite() {
             </Select>
           </div>
           <div>
-            <input {...register("username")} placeholder="유저명" type="text" />
+            <input
+              {...register("username")}
+              placeholder="게임 유저명"
+              type="text"
+            />
           </div>
           <div>
             <input
