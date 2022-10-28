@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -52,6 +51,7 @@ const Info = styled.div`
     font-size: 18px;
     font-weight: 400;
     color: white;
+  }
 `;
 const InfoItem = styled.div`
   margin: 2px 10px;

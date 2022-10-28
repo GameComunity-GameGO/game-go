@@ -1,14 +1,13 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Board from "../../components/Board";
-import CategoryNav from "../../components/CategoryNav";
-import ChatWrite from "../../components/ChatWrite";
-import GamerWrite from "../../components/GamerWrite";
-import GamerList from "../Gamer";
-import Top from "../../components/Top";
-import axios from "axios";
-import { isTemplateExpression } from "typescript";
+import Board from "../components/Board/Board";
+import CategoryNav from "../components/CategoryNav";
+import ChatWrite from "../components/ChatWrite";
+import GamerWrite from "../components/GamerWrite";
+import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
@@ -41,7 +40,6 @@ const GameTitle = styled.div`
     font-size: 38px;
     font-weight: 600;
   }
-
   span:nth-child(2) {
     font-size: 16px;
     font-weight: 600;
@@ -114,26 +112,10 @@ function BoardDetails() {
   const { pathname } = useLocation();
   const { game, type } = useParams();
   const [createView, setCreateView] = useState(false);
-  const [dumy, setDumy] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-  ]);
   const [dumyTag, setDumyTag] = useState({
     tag: ["랭크", "빡겜"],
   });
+  const [boardData, setBoardData] = useState([]);
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const LevelList = [
     "모든 티어",
@@ -151,9 +133,28 @@ function BoardDetails() {
   const Voice = ["보이스 OFF", "보이스 ON"];
   const Tag = ["자유", "빡겜", "친목"];
   const Type = ["유머", "자유", "유저뉴스", "영상", "팬아트"];
+
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  useEffect(() => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      withCredentials: true,
+    };
+    axios
+      .get(`/api/all/board`, config)
+      .then((reponse) => {
+        setBoardData(reponse.data.content);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const navigate = useNavigate();
   const [datas, setDatas] = useState([]);
   useEffect(() => {
@@ -174,7 +175,6 @@ function BoardDetails() {
   return (
     <Wrap>
       <CategoryNav />
-      <Top></Top>
       <Header>
         <Banner
           bgphoto={
@@ -208,25 +208,19 @@ function BoardDetails() {
             </HeaderFormWrap>
             <ContentWrap>
               <Contents>
-                {dumy.map((item, index) => (
-                  <Board
-                    game={game}
-                    type={type}
-                    key={index}
-                    date={"일전"}
-                    item={item}
-                    tag={dumyTag}
-                    subTitle={"게시판"}
-                    subDetail={"subDetail"}
-                    userName={"userName"}
-                  />
-                ))}
+                {boardData &&
+                  boardData.map((item: any, index: any) => (
+                    <div key={index}>
+                      <Board game={game} type={type} data={item} />
+                    </div>
+                  ))}
               </Contents>
             </ContentWrap>
           </>
         ) : type === "채팅방" ? (
           <>
             <HeaderFormWrap>
+              <ChatView />
               <div>
                 <Select>
                   {Tag.map((item) => (
@@ -249,7 +243,7 @@ function BoardDetails() {
             </HeaderFormWrap>
             <ContentWrap>
               <Contents>
-                {dumy.map((item, index) => (
+                {/* {dumy.map((item, index) => (
                   <Board
                     game={game}
                     type={type}
@@ -261,7 +255,7 @@ function BoardDetails() {
                     subDetail={"subDetail"}
                     userName={"userName"}
                   />
-                ))}
+                ))} */}
               </Contents>
             </ContentWrap>
             {createView && <ChatWrite />}

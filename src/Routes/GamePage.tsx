@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CategoryNav from "../components/CategoryNav";
-import BoardSlider from "../components/BoardSlider";
+import BoardSlider from "../components/Board/BoardSlider";
 import ImageSlider from "../components/ImageSlider";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import ChatView from "./Chat/ChatView";
+import { setGmae } from "../redux/actions/TriggerAction";
 
 const Wrap = styled.div`
   min-width: 1000px;
@@ -33,6 +37,10 @@ function GamePage() {
     tag: ["랭크", "빡겜"],
   });
   const { game } = useParams();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setGmae(game));
+  }, []);
 
   return (
     <Wrap>
@@ -42,16 +50,9 @@ function GamePage() {
         <GameTitle>{game}</GameTitle>
         <Search />
       </SearchWrap>
+      <BoardSlider boardName={"게시판"} />
+
       <BoardWrap>
-        <BoardSlider
-          game={game}
-          boardName={"게시판"}
-          date={"1일 전"}
-          tag={dumyTag}
-          subTitle={"공룡의 정체"}
-          subDetail={"공룡은 사실 닭이다?"}
-          userName={"마자파자브라자"}
-        />
         <BoardSlider
           game={game}
           boardName={"채팅방"}
@@ -71,6 +72,8 @@ function GamePage() {
           userName={"귀살대 이성호"}
         />
       </BoardWrap>
+
+      <ChatView />
     </Wrap>
   );
 }

@@ -16,7 +16,7 @@ import {
   Button2,
   Button3,
 } from "./styles";
-import { setSignUpToggle } from "../redux/action";
+import { setSignUpToggle } from "../redux/actions/TriggerAction";
 
 interface ISignUp {
   email: string;

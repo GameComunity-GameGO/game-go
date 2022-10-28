@@ -1,10 +1,12 @@
 const init = {
   loginToggle: false,
   signupToggle: true,
+  game: "",
 };
-
-const rootReducer = (state = {}, action: any) => {
+export default function (state = init, action: any) {
   switch (action.type) {
+    case "SET_GAME":
+      return { ...state, game: action.data };
     case "SET_LOGINTOGGLE":
       return { ...state, loginToggle: action.data };
     case "SET_SIGNUPTOGGLE":
@@ -12,6 +14,4 @@ const rootReducer = (state = {}, action: any) => {
     default:
       return state;
   }
-};
-
-export default rootReducer;
+}

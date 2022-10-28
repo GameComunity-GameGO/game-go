@@ -1,12 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import BoardDetails from "./Routes/Board/BoardDetails";
+import BoardDetails from "./Routes/Details";
 import BoardView from "./Routes/Board/BoardView";
 import BoardWrite from "./Routes/Board/BoardWrite";
 import GamePage from "./Routes/GamePage";
 import MyPage from "./Routes/MyPage";
-
 import Main from "./Routes/Main";
+import BoardUpdate from "./Routes/Board/BoardUpdate";
+import ChatView from "./Routes/Chat/ChatView";
+import Nav from "./components/Chat/ChatPhone/\bNav";
+
 function App() {
   return (
     <Router>
@@ -21,10 +24,19 @@ function App() {
           element={<BoardWrite />}
         ></Route>
         <Route
+          path="/gamepage/:game/:type/boardupdate/:id"
+          element={<BoardUpdate />}
+        ></Route>
+        <Route
           path="/gamepage/:game/:type/boardview/:id"
           element={<BoardView />}
         ></Route>
+        <Route
+          path="/gamepage/:game/:type/chatview/:id"
+          element={<GamePage />}
+        ></Route>
       </Routes>
+      <Nav />
     </Router>
   );
 }
