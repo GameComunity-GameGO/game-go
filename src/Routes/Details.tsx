@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Board from "../components/Board/Board";
 import CategoryNav from "../components/CategoryNav";
 import ChatWrite from "../components/ChatWrite";
-import GamerWrite from "../components/GamerWrite";
+import GamerWrite from "../components/Gamer/GamerWrite";
 import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
   min-width: 1000px;

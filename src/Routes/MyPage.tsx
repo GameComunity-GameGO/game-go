@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import CategoryNav from "../components/CategoryNav";
 import ProfileBox from "../components/ProfileBox";
-import GamerBox from "../components/GamerBox";
-
+import GamerBox from "../components/Gamer/GamerBox";
 const Wrap = styled.div`
   min-width: 1000px;
   height: 100%;
