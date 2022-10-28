@@ -76,6 +76,7 @@ const CreateBtn = styled.div`
   }
   font-weight: 400;
 `;
+
 const HeaderFormWrap = styled.div`
   width: 1000px;
   margin-top: 30px;
@@ -99,16 +100,7 @@ const ContentWrap = styled.div`
   display: flex;
   height: fit-content;
 `;
-// const BoardDetails = ({ gamers }: any) => {
 function BoardDetails() {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-    withCredentials: true,
-  };
-
   const { pathname } = useLocation();
   const { game, type } = useParams();
   const [createView, setCreateView] = useState(false);
@@ -156,22 +148,6 @@ function BoardDetails() {
       });
   }, []);
   const navigate = useNavigate();
-  const [datas, setDatas] = useState([]);
-  useEffect(() => {
-    getGamerList();
-    console.log("게이머리스트");
-    async function getGamerList() {
-      axios
-        .get("/api/v1/GamerList", config)
-        .then((response) => {
-          console.log(response);
-          setDatas(response.data);
-          console.log("데이터", datas);
-        })
-        .catch((error) => {});
-    }
-  }, []);
-  console.log("데이터밖", datas);
   return (
     <Wrap>
       <CategoryNav />
@@ -188,6 +164,7 @@ function BoardDetails() {
           <span>{game} </span>
           <span>{type}입니다. 커뮤니티 매너를 준수합시다!</span>
         </GameTitle>
+
         {type === "게시판" ? (
           <>
             <HeaderFormWrap>
@@ -286,31 +263,28 @@ function BoardDetails() {
                   ))}
                 </Select>
               </div>
-
               <CreateBtn onClick={() => setCreateView((prev) => !prev)}>
                 {createView ? "닫기" : "구하기"}
               </CreateBtn>
             </HeaderFormWrap>
-            {createView && <GamerWrite />}
-            <ContentWrap>
+            {/* <ContentWrap>
               <Contents>
-                {datas &&
-                  datas?.map((item: any) => (
-                    <Board
-                      game={game}
-                      type={type}
-                      key={item.id}
-                      id={item.id}
-                      date={item.createdDate}
-                      item={item.id}
-                      tag={dumyTag}
-                      subTitle={item.gameUsername}
-                      subDetail={item.introdution}
-                      userName={item.gameUsername}
-                    />
-                  ))}
+                {dumy.map((item, index) => (
+                  <Board
+                    game={game}
+                    type={type}
+                    key={index}
+                    date={"일전"}
+                    item={item}
+                    tag={dumyTag}
+                    subTitle={"게이머 구하기"}
+                    subDetail={"subDetail"}
+                    userName={"userName"}
+                  />
+                ))}
               </Contents>
-            </ContentWrap>
+            </ContentWrap> */}
+            {createView && <GamerWrite />}
           </>
         ) : null}
       </HeaderContents>

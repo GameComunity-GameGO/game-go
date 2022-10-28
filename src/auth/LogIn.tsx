@@ -23,6 +23,15 @@ interface IForm {
   email: string;
   password: string;
 }
+export const client = axios.create({});
+export const accessClient = axios.create({
+  timeout: 180000,
+  withCredentials: false,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  },
+});
 function LogIn() {
   const dispatch = useDispatch();
   const config = {
