@@ -117,14 +117,15 @@ const client = new QueryClient();
 const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 const devTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
+{
+  /* <React.StrictMode> */
+}
 root.render(
-  <React.StrictMode>
-    <Provider store={store(rootReducer, devTools && devTools())}>
-      <QueryClientProvider client={client}>
-        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-        <GlobalStyle />
-        <App />
-      </QueryClientProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store(rootReducer, devTools && devTools())}>
+    <QueryClientProvider client={client}>
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <GlobalStyle />
+      <App />
+    </QueryClientProvider>
+  </Provider>
 );

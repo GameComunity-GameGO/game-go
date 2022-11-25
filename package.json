@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",
+    "@stomp/stompjs": "^6.1.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -64,7 +65,7 @@
     "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "@types/redux-promise": "^0.5.29",
     "@types/sockjs-client": "^1.5.1",
+    "@types/stompjs": "^2.3.5",
     "@types/styled-components": "^5.1.25"
-  },
-  "proxy": "http://3.39.37.209:8080/"
+  }
 }

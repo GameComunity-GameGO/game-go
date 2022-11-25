@@ -8,8 +8,10 @@ import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { PathMatch, useMatch, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 import axios from "axios";
-const Stomp = require("stompjs");
+import useInterval from "../../hooks/useInterval";
+
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -41,7 +43,7 @@ const ModalWrap = styled(motion.div)`
 
 function ChatView() {
   // 소켓 설정
-  let sock = new SockJS("http://3.39.37.209:8080/ws/chat");
+  let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
   let stomp = Stomp.over(sock);
   const config = {
     headers: {
@@ -62,8 +64,28 @@ function ChatView() {
   if (chatMatch) {
     document.body.style.overflow = "hidden";
   }
+  const connectUser = () => {
+    stomp.send(
+      `/app/chat/room/${id}/enter`,
+      { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+      JSON.stringify({
+        message: "데이터 전송",
+      })
+    );
+  };
+
+  // const sendMessage = () => {
+  //   stomp.send(
+  //     `/app/chatting/room/${id}`,
+  //     { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+  //     JSON.stringify({
+  //       message: "데이터 전송",
+  //     })
+  //   );
+  // };
   const wsConnectSubscribe = () => {
     try {
+      // stomp.debug = null;
       stomp.connect(
         { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
         () => {
@@ -73,18 +95,22 @@ function ChatView() {
               // const newMessage = JSON.parse(data.body);
               console.log(data);
             },
-            { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+            {}
           );
         }
       );
     } catch (error) {
       console.log(error);
     }
+    setTimeout(() => {
+      connectUser();
+    }, 2000);
   };
   const chatEntarance = async () => {
     // 1. 채팅방 입장 할 때
     await axios.get(`/api/chat/room/${id}`, config).then((response) => {
-      if (response) {
+      console.log(response);
+      if (response.status === 200) {
         wsConnectSubscribe();
       }
     });
@@ -105,8 +131,21 @@ function ChatView() {
     chatEntarance();
   }
 
+  const stompDisConnect = () => {
+    try {
+      stomp.disconnect(
+        () => {
+          stomp.unsubscribe(`/ws/topic/chat/room/${id}`);
+        },
+        { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const onOverlayClick = () => {
     navigate(-1);
+    stompDisConnect();
     document.body.style.overflow = "unset";
   };
 
@@ -130,6 +169,7 @@ function ChatView() {
                   <RoomsSide />
                 </Side>
                 <Contents>
+                  {/* <div onClick={sendMessage}>메시지 전송</div> */}
                   <ChatHeader />
                   <Message />
                   <ChatForm />

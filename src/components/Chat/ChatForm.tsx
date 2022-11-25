@@ -48,6 +48,9 @@ interface IChat {
   content: string;
 }
 function ChatForm() {
+  // 소켓 설정
+  let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
+  let stomp = Stomp.over(sock);
   const { game, type, id } = useParams();
   const inputOpenImageRef = useRef<any>();
   const handleOpenImageRef = () => {
@@ -61,14 +64,12 @@ function ChatForm() {
     formState: { errors },
   } = useForm<IChat>();
   const onSubmit = ({ content }: any) => {
-    let sock = new SockJS("http://3.39.37.209:8080/ws/chat");
-    let stomp = Stomp.over(sock);
     if (content === "") return;
     stomp.send(
-      `/api/chat/room/${id}/enter`,
+      `/app/chatting/room/${id}`,
       { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       JSON.stringify({
-        content: content,
+        message: content,
       })
     );
     setValue("content", "");
