@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Skeleton from "../Skeleton";
 import ChatForm from "./ChatForm";
@@ -42,9 +43,17 @@ const Msg = styled.div`
 const Content = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
+  :last-child {
+    margin-bottom: 45px;
+  }
 `;
 function Message() {
   const messageBoxRef = useRef<any>();
+  const { messageData, currentMessageData } = useSelector((state: any) => ({
+    messageData: state.Chat.messageData,
+    currentMessageData: state.Chat.setCurrentMessageData,
+  }));
   const scrollToBottom = () => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
@@ -52,27 +61,47 @@ function Message() {
   };
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [messageData, currentMessageData]);
+  console.log();
   return (
     <>
       <Wrap ref={messageBoxRef}>
         <Contents>
-          {[...new Array(12)].map((_data, index) => (
-            <Skeleton key={index} />
-          ))}
-          {/* <Content>
-          <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
-          <Msg>
-            <div>
-              <span>닉네임</span>
-              <span>2022.09.01</span>
-            </div>
-            <p>메시지 내용입니다.</p>
-          </Msg>
-        </Content> */}
+          {messageData.length > 0 ? (
+            messageData.map((data: any, index: number) => (
+              <Content key={index}>
+                <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
+                <Msg>
+                  <div>
+                    <span>{data.member.nickname}</span>
+                    <span>2022.00.00</span>
+                  </div>
+                  <p>{data.content}</p>
+                </Msg>
+              </Content>
+            ))
+          ) : (
+            <>
+              {[...new Array(12)].map((_data, index) => (
+                <Skeleton key={index} />
+              ))}
+            </>
+          )}
+          {currentMessageData &&
+            currentMessageData.map((data: any, index: number) => (
+              <Content key={index}>
+                <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
+                <Msg>
+                  <div>
+                    <span>{data.member.nickname}</span>
+                    <span>2022.00.00</span>
+                  </div>
+                  <p>{data.content}</p>
+                </Msg>
+              </Content>
+            ))}
         </Contents>
       </Wrap>
-      {/* <ChatForm /> */}
     </>
   );
 }

@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import useOutSideRef from "../../../hooks/useOutSideRef";
 import styled from "styled-components";
 import { setIsoutClick } from "../../../redux/actions/TriggerAction";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 const Wrap = styled.div``;
 const NavBox = styled.div`
@@ -148,6 +150,10 @@ const Count = styled.div`
 const ChatDescription = styled.div``;
 
 function Nav() {
+  // 소켓 설정
+  let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
+  let stomp = Stomp.over(sock);
+
   const [id, setId] = useState<null | string>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -156,6 +162,28 @@ function Nav() {
   const [chatList, setChatList] = useState<any>([]);
   const isOutClick = useSelector((state: any) => state.Trigger.isOutClick);
   const outsideRef = useOutSideRef();
+  const wsConnectSubscribe = (data: any) => {
+    console.log(1);
+    try {
+      for (let i = 0; i < data.length; i++) {
+        stomp.connect(
+          { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+          () => {
+            stomp.subscribe(
+              `/topic/alarm/room/${data[i].roomId}`,
+              (data: any) => {
+                // const newMessage = JSON.parse(data.body);
+                console.log(data);
+              },
+              {}
+            );
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const config = {
       headers: {
@@ -165,10 +193,11 @@ function Nav() {
       withCredentials: true,
     };
     axios.get(`/api/chat/room/list`, config).then((response) => {
+      // wsConnectSubscribe(response.data);
       console.log(response);
       setChatList(response.data);
     });
-  }, [isOutClick]);
+  }, []);
   return (
     <Wrap ref={outsideRef}>
       <NavBox

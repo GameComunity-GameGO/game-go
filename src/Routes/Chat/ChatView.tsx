@@ -6,11 +6,16 @@ import Message from "../../components/Chat/Message";
 import RoomsSide from "../../components/Chat/RoomsSide";
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { PathMatch, useMatch, useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import axios from "axios";
 import useInterval from "../../hooks/useInterval";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCurrentMessageData,
+  setMessageData,
+} from "../../redux/actions/ChatAction";
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -45,6 +50,7 @@ function ChatView() {
   // 소켓 설정
   let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
   let stomp = Stomp.over(sock);
+  const dispatch = useDispatch();
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -92,8 +98,10 @@ function ChatView() {
           stomp.subscribe(
             `/topic/chat/room/${id}`,
             (data: any) => {
-              // const newMessage = JSON.parse(data.body);
-              console.log(data);
+              if (JSON.parse(data.body).data.content !== undefined) {
+                console.log(JSON.parse(data.body).data);
+                dispatch(setCurrentMessageData(JSON.parse(data.body).data));
+              }
             },
             {}
           );
@@ -106,11 +114,12 @@ function ChatView() {
       connectUser();
     }, 2000);
   };
-  const chatEntarance = async () => {
+  const chatEntarance = () => {
     // 1. 채팅방 입장 할 때
-    await axios.get(`/api/chat/room/${id}`, config).then((response) => {
-      console.log(response);
+    axios.get(`/api/chat/room/${id}`, config).then((response) => {
       if (response.status === 200) {
+        console.log(response.data.chatMessageList);
+        dispatch(setMessageData(response.data.chatMessageList));
         wsConnectSubscribe();
       }
     });
@@ -169,7 +178,6 @@ function ChatView() {
                   <RoomsSide />
                 </Side>
                 <Contents>
-                  {/* <div onClick={sendMessage}>메시지 전송</div> */}
                   <ChatHeader />
                   <Message />
                   <ChatForm />
