@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 import Search from "../components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import ChatView from "./Chat/ChatView";
 import { setGmae } from "../redux/actions/TriggerAction";
+import ChatView from "./Chat/ChatView";
 
 const Wrap = styled.div`
   min-width: 1000px;

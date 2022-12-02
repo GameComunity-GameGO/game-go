@@ -3,6 +3,7 @@ const init = {
   signupToggle: true,
   game: "",
   isOutClick: false,
+  skeletonToggle: false,
 };
 export default function (state = init, action: any) {
   switch (action.type) {
@@ -14,6 +15,8 @@ export default function (state = init, action: any) {
       return { ...state, signupToggle: action.data };
     case "SET_ISOUTCLICK":
       return { ...state, isOutClick: action.data };
+    case "SET_SKELETONTOGGLE":
+      return { ...state, skeletonToggle: action.data };
     default:
       return state;
   }

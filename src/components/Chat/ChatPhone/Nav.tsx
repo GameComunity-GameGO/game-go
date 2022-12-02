@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { setIsoutClick } from "../../../redux/actions/TriggerAction";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { setNotificationCount } from "../../../redux/actions/ChatAction";
 
 const Wrap = styled.div``;
 const NavBox = styled.div`
@@ -152,39 +153,26 @@ const ChatDescription = styled.div``;
 function Nav() {
   // 소켓 설정
   let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
-  let stomp = Stomp.over(sock);
+  let stomp: any = Stomp.over(sock);
 
   const [id, setId] = useState<null | string>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const game = useSelector((state: any) => state.Trigger.game);
-  const [listUpdate, setListUpdate] = useState(false);
   const [chatList, setChatList] = useState<any>([]);
-  const isOutClick = useSelector((state: any) => state.Trigger.isOutClick);
   const outsideRef = useOutSideRef();
-  const wsConnectSubscribe = (data: any) => {
-    console.log(1);
+  const { notificationCount, isOutClick } = useSelector((state: any) => ({
+    notificationCount: state.Chat.notificationCount,
+    isOutClick: state.Trigger.isOutClick,
+  }));
+  const wsConnectSubscribe = () => {
     try {
-      for (let i = 0; i < data.length; i++) {
-        stomp.connect(
-          { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-          () => {
-            stomp.subscribe(
-              `/topic/alarm/room/${data[i].roomId}`,
-              (data: any) => {
-                // const newMessage = JSON.parse(data.body);
-                console.log(data);
-              },
-              {}
-            );
-          }
-        );
-      }
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
+    let noticeCount = [];
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -193,11 +181,41 @@ function Nav() {
       withCredentials: true,
     };
     axios.get(`/api/chat/room/list`, config).then((response) => {
-      // wsConnectSubscribe(response.data);
-      console.log(response);
       setChatList(response.data);
+      noticeCount = chatList.map((data: any) => {
+        return data.noticeCount;
+      });
+      const result = noticeCount.reduce(function add(sum: any, currValue: any) {
+        return sum + currValue;
+      }, 0);
+      dispatch(setNotificationCount(result));
     });
   }, []);
+
+  const newMsgCount = (roomId: Number) => {
+    let count = 0;
+    try {
+      stomp.debug = null;
+      stomp.connect(
+        { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
+        () => {
+          stomp.subscribe(
+            `/topic/alarm/room/${roomId}`,
+            (data: any) => {
+              if (JSON.parse(data.body).data !== undefined) {
+                count++;
+              }
+            },
+            {}
+          );
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    return count;
+  };
+
   return (
     <Wrap ref={outsideRef}>
       <NavBox
@@ -217,7 +235,7 @@ function Nav() {
           <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
         </ViewLogo>
         <MsgTotalCount>
-          <Count>0</Count>
+          <Count>{notificationCount}</Count>
         </MsgTotalCount>
       </NavBox>
       <AnimatePresence>
@@ -271,7 +289,8 @@ function Nav() {
                       }
                     >
                       <MsgCount>
-                        <Count>0</Count>
+                        <Count>{chatList.noticeCount}</Count>
+                        {/* <Count>{newMsgCount(data.roomId)}</Count> */}
                       </MsgCount>
                       <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
                       <ChatBoxContents>

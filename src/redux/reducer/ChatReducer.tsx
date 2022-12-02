@@ -1,6 +1,7 @@
 const init = {
   messageData: [],
   currentMessageData: [],
+  notificationCount: 0,
 };
 export default function (state = init, action: any) {
   switch (action.type) {
@@ -10,6 +11,11 @@ export default function (state = init, action: any) {
       return {
         ...state,
         currentMessageData: state.currentMessageData.concat(action.data),
+      };
+    case "SET_NOTIFICATION_COUNT":
+      return {
+        ...state,
+        notificationCount: action.data,
       };
     default:
       return state;

@@ -50,10 +50,13 @@ const Content = styled.div`
 `;
 function Message() {
   const messageBoxRef = useRef<any>();
-  const { messageData, currentMessageData } = useSelector((state: any) => ({
-    messageData: state.Chat.messageData,
-    currentMessageData: state.Chat.setCurrentMessageData,
-  }));
+  const { messageData, currentMessageData, skeletonToggle } = useSelector(
+    (state: any) => ({
+      messageData: state.Chat.messageData,
+      currentMessageData: state.Chat.currentMessageData,
+      skeletonToggle: state.Trigger.skeletonToggle,
+    })
+  );
   const scrollToBottom = () => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
@@ -62,12 +65,11 @@ function Message() {
   useEffect(() => {
     scrollToBottom();
   }, [messageData, currentMessageData]);
-  console.log();
   return (
     <>
       <Wrap ref={messageBoxRef}>
         <Contents>
-          {messageData.length > 0 ? (
+          {messageData.length > 0 && skeletonToggle ? (
             messageData.map((data: any, index: number) => (
               <Content key={index}>
                 <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />

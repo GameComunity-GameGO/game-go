@@ -14,3 +14,7 @@ export const setIsoutClick = (data: boolean) => ({
   type: "SET_ISOUTCLICK",
   data: data,
 });
+export const setSkeletonToggle = (data: boolean) => ({
+  type: "SET_SKELETONTOGGLE",
+  data: data,
+});
