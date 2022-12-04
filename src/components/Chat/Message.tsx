@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { setCurrentMessageData } from "../../redux/actions/ChatAction";
 import Skeleton from "../Skeleton";
 import ChatForm from "./ChatForm";
 
@@ -69,7 +70,7 @@ function Message() {
     <>
       <Wrap ref={messageBoxRef}>
         <Contents>
-          {messageData.length > 0 && skeletonToggle ? (
+          {(messageData.length > 0 && skeletonToggle) || currentMessageData ? (
             messageData.map((data: any, index: number) => (
               <Content key={index}>
                 <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
@@ -89,7 +90,7 @@ function Message() {
               ))}
             </>
           )}
-          {currentMessageData &&
+          {currentMessageData.length > 0 &&
             currentMessageData.map((data: any, index: number) => (
               <Content key={index}>
                 <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />

@@ -11,3 +11,8 @@ export const setNotificationCount = (setNotificationCount: any) => ({
   type: "SET_NOTIFICATION_COUNT",
   data: setNotificationCount,
 });
+
+export const setCurrentMessageClear = (setCurrentMessageClear: any) => ({
+  type: "SET_CURRENT_MESSAGE_CLEAR",
+  data: setCurrentMessageClear,
+});

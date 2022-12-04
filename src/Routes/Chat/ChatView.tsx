@@ -13,6 +13,7 @@ import axios from "axios";
 import useInterval from "../../hooks/useInterval";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setCurrentMessageClear,
   setCurrentMessageData,
   setMessageData,
   setNotificationCount,
@@ -53,7 +54,7 @@ function ChatView() {
   let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
   let stomp: any = Stomp.over(sock);
   const dispatch = useDispatch();
-  const [currentMessage, setCurrentMessage] = useState([]);
+  const [on, setOn] = useState("");
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +68,7 @@ function ChatView() {
   const chatMatch: PathMatch<string> | null = useMatch(
     "/gamepage/:game/:type/chatview/:id"
   );
-  const { game, type, id } = useParams();
+  const { game, type, id, match } = useParams();
   const clicked = chatMatch?.pathname && `${id}` === chatMatch?.params.id;
 
   if (chatMatch) {
@@ -83,15 +84,6 @@ function ChatView() {
     );
   };
 
-  // const sendMessage = () => {
-  //   stomp.send(
-  //     `/app/chatting/room/${id}`,
-  //     { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-  //     JSON.stringify({
-  //       message: "데이터 전송",
-  //     })
-  //   );
-  // };
   const wsConnectSubscribe = () => {
     try {
       stomp.debug = null;
@@ -105,7 +97,6 @@ function ChatView() {
                 dispatch(setSkeletonToggle(true));
               }
               if (JSON.parse(data.body).data.content !== undefined) {
-                // setCurrentMessage(JSON.parse(data.body).data);
                 dispatch(setCurrentMessageData(JSON.parse(data.body).data));
                 dispatch(setSkeletonToggle(false));
               }
@@ -122,26 +113,18 @@ function ChatView() {
     }, 1000);
   };
   const chatEntarance = async () => {
-    // 1. 채팅방 입장 할 때
-    await axios.get(`/api/chat/room/${id}`, config).then((response) => {
+    await axios.post(`/api/chat/room/${id}/join`, config).then((response) => {
+      console.log(response);
       if (response.status === 200) {
-        console.log("재입장");
-        dispatch(setCurrentMessageData([]));
-        dispatch(setMessageData(response.data.chatMessageList));
-        wsConnectSubscribe();
+        axios.get(`/api/chat/room/${id}`, config).then((response) => {
+          if (response.status === 200) {
+            dispatch(setCurrentMessageClear([]));
+            dispatch(setMessageData(response.data.chatMessageList));
+            wsConnectSubscribe();
+          }
+        });
       }
     });
-    // 2. 위의 유저정보에 현재유저가 없어서 새로운 채팅방 입장할 때
-    // await axios.post(`/api/chat/room/${id}/join`, config).then((response) => {
-    //   if (response.status === 200) {
-    //     stomp.debug = null;
-    //     stomp.connect({}, () => {
-    //       stomp.subscribe(`app/chat/room/${id}/enter`, config, (data: any) => {
-    //         console.log(data);
-    //       });
-    //     });
-    //   }
-    // });
     // 리턴에다 서브스크라이브 해야함
   };
   if (clicked) {

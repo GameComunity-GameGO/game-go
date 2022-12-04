@@ -17,6 +17,11 @@ export default function (state = init, action: any) {
         ...state,
         notificationCount: action.data,
       };
+    case "SET_CURRENT_MESSAGE_CLEAR":
+      return {
+        ...state,
+        currentMessageData: action.data,
+      };
     default:
       return state;
   }

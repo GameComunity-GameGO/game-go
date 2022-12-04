@@ -190,7 +190,7 @@ function Nav() {
       }, 0);
       dispatch(setNotificationCount(result));
     });
-  }, []);
+  }, [isOutClick]);
 
   const newMsgCount = (roomId: Number) => {
     let count = 0;

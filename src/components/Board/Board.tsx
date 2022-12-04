@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -72,6 +73,7 @@ const PostType = styled.ul`
 `;
 function Board({ data, game, type, boardName }: any) {
   const navigate = useNavigate();
+  const username = useSelector((state: any) => state.User.username);
 
   return (
     <Content>
@@ -101,16 +103,16 @@ function Board({ data, game, type, boardName }: any) {
       ) : type === "채팅방" || boardName === "채팅방" ? (
         <>
           <ContentHeader>
-            <ContentData></ContentData>
-            <span></span>
+            <ContentData>{data.roomId}</ContentData>
+            <span>{data.roomName}</span>
           </ContentHeader>
           <ContentDetail>
-            <Detail></Detail>
+            <Detail>{}</Detail>
             <UserJoin>
               <div></div>
               <div
                 onClick={() =>
-                  navigate(`/gamepage/${game}/채팅방/chatview/${1}`)
+                  navigate(`/gamepage/${game}/채팅방/chatview/${data.roomId}`)
                 }
               >
                 입장하기

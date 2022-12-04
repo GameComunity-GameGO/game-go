@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Board from "../Board/Board";
@@ -61,10 +61,10 @@ function BoardView({ game, boardName }: any) {
   const [index, setIndex] = useState(0);
   const incraseIndex = (val: string) => {
     if (val === "add") {
-      // setBack(false);
-      // const totalAnimes = dumy.length - 1;
-      // const maxIndex = Math.floor(totalAnimes / offset);
-      // setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      setBack(false);
+      const totalAnimes = 8 - 1;
+      const maxIndex = Math.floor(totalAnimes / offset);
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
     if (val === "min") {
       setBack(true);
@@ -72,6 +72,8 @@ function BoardView({ game, boardName }: any) {
     }
   };
   const [boardData, setBoardData] = useState([]);
+  const [chatData, setChatData] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     const config = {
       headers: {
@@ -84,8 +86,19 @@ function BoardView({ game, boardName }: any) {
       axios
         .get(`/api/board/popular`, config)
         .then((reponse) => {
-          console.log(reponse);
           setBoardData(reponse.data.content);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    if (boardName === "채팅방") {
+      axios
+        .get(`/api/chat/all/room/list `, config)
+        .then((reponse) => {
+          console.log(reponse);
+          // dispatch(setChatMemberList(reponse.data.memberList));
+          setChatData(reponse.data);
         })
         .catch((error) => {
           console.log(error);
@@ -117,6 +130,19 @@ function BoardView({ game, boardName }: any) {
         </SlideBtn>
         {boardData &&
           boardData
+            .slice(offset * index, offset * index + offset)
+            .map((item: any, index: any) => (
+              <div key={index}>
+                <Board
+                  game={game}
+                  type={type}
+                  data={item}
+                  boardName={boardName}
+                />
+              </div>
+            ))}
+        {chatData &&
+          chatData
             .slice(offset * index, offset * index + offset)
             .map((item: any, index: any) => (
               <div key={index}>

@@ -52,15 +52,7 @@ function GamePage() {
       </SearchWrap>
       <BoardWrap>
         <BoardSlider game={game} boardName={"게시판"} />
-        <BoardSlider
-          game={game}
-          boardName={"채팅방"}
-          date={"1일 전"}
-          tag={dumyTag}
-          subTitle={"빡겜방"}
-          subDetail={"빡겜 하는 분만 원해요 티어는 다이아 이상만"}
-          userName={"호카손자"}
-        />
+        <BoardSlider game={game} boardName={"채팅방"} />
         <BoardSlider
           game={game}
           boardName={"게이머 구하기"}
