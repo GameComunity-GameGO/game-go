@@ -54,7 +54,6 @@ function ChatView() {
   let sock = new SockJS("http://15.164.200.86:8080/ws/chat");
   let stomp: any = Stomp.over(sock);
   const dispatch = useDispatch();
-  const [on, setOn] = useState("");
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -62,7 +61,7 @@ function ChatView() {
     },
     withCredentials: true,
   };
-
+  let msgId = 0;
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const chatMatch: PathMatch<string> | null = useMatch(
@@ -74,6 +73,7 @@ function ChatView() {
   if (chatMatch) {
     document.body.style.overflow = "hidden";
   }
+
   const connectUser = () => {
     stomp.send(
       `/app/chat/room/${id}/enter`,
@@ -98,6 +98,7 @@ function ChatView() {
               }
               if (JSON.parse(data.body).data.content !== undefined) {
                 dispatch(setCurrentMessageData(JSON.parse(data.body).data));
+                msgId = JSON.parse(data.body).data.id;
                 dispatch(setSkeletonToggle(false));
               }
             },
@@ -112,26 +113,29 @@ function ChatView() {
       connectUser();
     }, 1000);
   };
+
   const chatEntarance = async () => {
     await axios.post(`/api/chat/room/${id}/join`, config).then((response) => {
-      console.log(response);
       if (response.status === 200) {
         axios.get(`/api/chat/room/${id}`, config).then((response) => {
           if (response.status === 200) {
-            dispatch(setCurrentMessageClear([]));
+            msgId =
+              response.data.chatMessageList[
+                response.data.chatMessageList.length - 1
+              ].id;
             dispatch(setMessageData(response.data.chatMessageList));
-            wsConnectSubscribe();
           }
         });
       }
     });
-    // 리턴에다 서브스크라이브 해야함
   };
   if (clicked) {
+    wsConnectSubscribe();
     chatEntarance();
   }
 
   const stompDisConnect = () => {
+    dispatch(setCurrentMessageClear([]));
     try {
       stomp.disconnect(
         () => {
@@ -143,8 +147,20 @@ function ChatView() {
       console.log(err);
     }
   };
+
+  const apiCheckDisConnet = async () => {
+    if (msgId) {
+      await axios
+        .post(` /api/chat/room/${id}/msg/${msgId}/checkPoint`, config)
+        .then((response) => {
+          console.log(response);
+        });
+    }
+  };
+
   const onOverlayClick = () => {
     navigate(-1);
+    apiCheckDisConnet();
     stompDisConnect();
     document.body.style.overflow = "unset";
   };

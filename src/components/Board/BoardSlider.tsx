@@ -96,8 +96,6 @@ function BoardView({ game, boardName }: any) {
       axios
         .get(`/api/chat/all/room/list `, config)
         .then((reponse) => {
-          console.log(reponse);
-          // dispatch(setChatMemberList(reponse.data.memberList));
           setChatData(reponse.data);
         })
         .catch((error) => {

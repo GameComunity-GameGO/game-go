@@ -165,12 +165,7 @@ function Nav() {
     notificationCount: state.Chat.notificationCount,
     isOutClick: state.Trigger.isOutClick,
   }));
-  const wsConnectSubscribe = () => {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   useEffect(() => {
     let noticeCount = [];
     const config = {
@@ -180,7 +175,9 @@ function Nav() {
       },
       withCredentials: true,
     };
-    axios.get(`/api/chat/room/list`, config).then((response) => {
+
+    axios.get(`/api/notice/chat/room/list`, config).then((response) => {
+      console.log(response.data);
       setChatList(response.data);
       noticeCount = chatList.map((data: any) => {
         return data.noticeCount;
@@ -202,6 +199,7 @@ function Nav() {
           stomp.subscribe(
             `/topic/alarm/room/${roomId}`,
             (data: any) => {
+              console.log(JSON.parse(data.body).data);
               if (JSON.parse(data.body).data !== undefined) {
                 count++;
               }
@@ -213,6 +211,7 @@ function Nav() {
     } catch (error) {
       console.log(error);
     }
+    // console.log(count);
     return count;
   };
 
@@ -289,7 +288,8 @@ function Nav() {
                       }
                     >
                       <MsgCount>
-                        <Count>{chatList.noticeCount}</Count>
+                        <Count>{data.noticeCount}</Count>
+                        {/* 채팅알림개수 */}
                         {/* <Count>{newMsgCount(data.roomId)}</Count> */}
                       </MsgCount>
                       <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
