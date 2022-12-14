@@ -9,6 +9,7 @@ import ChatWrite from "../components/Chat/ChatWrite";
 import GamerWrite from "../components/GamerWrite";
 import ChatView from "./Chat/ChatView";
 const Wrap = styled.div`
+  z-index: 0;
   min-width: 1000px;
   height: 100%;
   display: flex;
@@ -108,6 +109,7 @@ function BoardDetails() {
     tag: ["랭크", "빡겜"],
   });
   const [boardData, setBoardData] = useState([]);
+  const [chatData, setChatData] = useState([]);
   const GameList = ["모든 큐", "솔로랭크", "자유랭크", "일반", "칼바람"];
   const LevelList = [
     "모든 티어",
@@ -142,6 +144,14 @@ function BoardDetails() {
       .get(`/api/all/board`, config)
       .then((reponse) => {
         setBoardData(reponse.data.content);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    axios
+      .get(`/api/chat/all/room/list `, config)
+      .then((reponse) => {
+        setChatData(reponse.data);
       })
       .catch((error) => {
         console.log(error);
@@ -220,19 +230,12 @@ function BoardDetails() {
             </HeaderFormWrap>
             <ContentWrap>
               <Contents>
-                {/* {dumy.map((item, index) => (
-                  <Board
-                    game={game}
-                    type={type}
-                    key={index}
-                    date={"일전"}
-                    item={item}
-                    tag={dumyTag}
-                    subTitle={"채팅방"}
-                    subDetail={"subDetail"}
-                    userName={"userName"}
-                  />
-                ))} */}
+                {chatData &&
+                  chatData.map((item: any, index: any) => (
+                    <div key={index}>
+                      <Board game={game} type={type} data={item} />
+                    </div>
+                  ))}
               </Contents>
             </ContentWrap>
             {createView && <ChatWrite />}

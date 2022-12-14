@@ -4,6 +4,10 @@ import styled from "styled-components";
 const CreateWrap = styled.div`
   width: 1000px;
   background-color: #282e40;
+  /* position: absolute;
+  top: 0;
+  margin-top: 170px; */
+  z-index: 1;
   border-radius: 10px;
   height: 260px;
   display: flex;

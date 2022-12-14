@@ -45,12 +45,12 @@ function UserSide() {
       <Contents>
         <div>온라인 2명</div>
         <Content>
-          <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
-          <span>닉네임</span>
+          <Img src={process.env.PUBLIC_URL + "/image/profile.png"} />
+          <span>subin</span>
         </Content>
         <Content>
           <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
-          <span>닉네임</span>
+          <span>subin2</span>
         </Content>
       </Contents>
     </Wrap>

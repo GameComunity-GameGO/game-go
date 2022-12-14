@@ -25,7 +25,7 @@ function RoomsSide() {
         {[...new Array(3)].map((data, index) => (
           <Img
             key={index}
-            src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg"
+            src={process.env.PUBLIC_URL + "/image/profile.png"}
           />
         ))}
       </Contents>

@@ -7,7 +7,7 @@ import ChatForm from "./ChatForm";
 
 const Wrap = styled.div`
   margin-top: 15px;
-  height: 67vh;
+  height: 71vh;
   padding: 10px;
   margin-left: 10px;
   padding-bottom: 0px;
@@ -21,7 +21,9 @@ const Wrap = styled.div`
     border-radius: 5px;
   }
 `;
-const Contents = styled.div``;
+const Contents = styled.div`
+  margin-top: 500px;
+`;
 const Img = styled.img`
   width: 50px;
   height: 50px;
@@ -73,7 +75,7 @@ function Message() {
           {(messageData.length > 0 && skeletonToggle) || currentMessageData ? (
             messageData.map((data: any, index: number) => (
               <Content key={index}>
-                <Img src="https://image.bugsm.co.kr/artist/images/1000/800491/80049126.jpg" />
+                <Img src={process.env.PUBLIC_URL + "/image/profile.png"} />
                 <Msg>
                   <div>
                     <span>{data.member.nickname}</span>

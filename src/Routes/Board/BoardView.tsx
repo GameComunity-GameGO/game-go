@@ -247,20 +247,20 @@ function BoardView() {
                     </div>
 
                     <div>
-                      {/* {data.memberDTO?.nickname === userNick && ( */}
-                      <>
-                        <button
-                          onClick={() =>
-                            navigate(
-                              `/gamepage/${game}/${type}/boardupdate/${id}`
-                            )
-                          }
-                        >
-                          수정
-                        </button>
-                        <button onClick={onDelBtn}>삭제</button>
-                      </>
-                      {/* )} */}
+                      {data.memberDTO?.nickname === userNick && (
+                        <>
+                          <button
+                            onClick={() =>
+                              navigate(
+                                `/gamepage/${game}/${type}/boardupdate/${id}`
+                              )
+                            }
+                          >
+                            수정
+                          </button>
+                          <button onClick={onDelBtn}>삭제</button>
+                        </>
+                      )}
                     </div>
                   </PostTitle>
                   <PostContent

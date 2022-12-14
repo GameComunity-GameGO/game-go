@@ -246,6 +246,7 @@ function BoardWrite() {
   };
 
   const Write = (type: any, select: string, title: string, contents: any) => {
+    console.log(type, select, title, contents);
     axios
       .post(
         `/api/board`,

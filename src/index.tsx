@@ -91,9 +91,9 @@ a {
   background-color: #373e59;
 }
 
-.quill > .ql-toolbar:first-child {
+/* .quill > .ql-toolbar:first-child {
   display: none !important;
-}
+} */
 .ql-toolbar .ql-stroke {
     fill: none;
     stroke: whitesmoke;
