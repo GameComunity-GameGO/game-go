@@ -153,7 +153,7 @@ function BoardWrite() {
       formData.append("img", file); // formData는 키-밸류 구조
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post("/s3/images", formData, {
+        const result = await axios.post("/api/s3/images", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
