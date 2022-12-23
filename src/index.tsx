@@ -1,11 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import axios from "axios";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  compose,
+} from "redux";
+import promiseMiddleware from "redux-promise";
+import ReduxThunk from "redux-thunk";
+import rootReducer from "./redux/reducer";
+axios.defaults.withCredentials = true;
+
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -56,6 +66,7 @@ table {
 }
 * {
   box-sizing: border-box;
+  
 }
 body {
   font-weight: 300;
@@ -63,27 +74,58 @@ body {
   background-color: #373E59;
   color: whitesmoke;
   line-height: 1.2;
-  overflow-x:hidden;
-  display: flex;
-  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+ 
 }
 a {
   text-decoration:none;
   color:inherit;
 }
+.ql-editor {
+  box-shadow: 0 0 0 1px black !important;
+}
+.ql-toolbar{
+  border: 1px solid black !important;
+}
+.ql-editor, .ql-toolbar{
+  background-color: #373e59;
+}
+
+/* .quill > .ql-toolbar:first-child {
+  display: none !important;
+} */
+.ql-toolbar .ql-stroke {
+    fill: none;
+    stroke: whitesmoke;
+}
+.ql-toolbar .ql-fill {
+    fill: whitesmoke;
+    stroke: none;
+}
+
+.ql-toolbar .ql-picker {
+    color: whitesmoke;
+}
+.ql-toolbar{
+}
+
 `;
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 const client = new QueryClient();
+const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+const devTools = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
+
+{
+  /* <React.StrictMode> */
+}
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={client}>
-        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-        <GlobalStyle />
-        <App />
-      </QueryClientProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store(rootReducer, devTools && devTools())}>
+    <QueryClientProvider client={client}>
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <GlobalStyle />
+      <App />
+    </QueryClientProvider>
+  </Provider>
 );
